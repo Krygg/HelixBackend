@@ -41,7 +41,8 @@ public class Main {
         instrumentSplitter.addInstrument(instrument);
         instrumentSplitter.addInstrument(instrument1);
         instrumentSplitter.loadAddress();
-        instrumentSplitter.playInstruments();
+        instrumentSplitter.prepForPlay();
+        instrumentSplitter.play();
     }
 
 

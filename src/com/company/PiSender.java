@@ -15,15 +15,7 @@ public class PiSender  {
     public PiSender() throws IOException {
     }
 
-
-    /**
-     *
-     * @param sender Et sender object som skal sendes
-     * @param address Addressen som den skal sendes til
-     */
-    public void send(Sender sender, String address) {
-
-        List<Object> arguments = createArgs(sender);
+    public void send(List<Object> arguments, String address) {
 
         OSCMessage msg = new OSCMessage(address, arguments);
         try {
@@ -35,27 +27,9 @@ public class PiSender  {
 
     }
 
-    public void playInstrument(Instrument instrument, ArrayList<String> address) {
 
-    }
 
-    /**
-     *
-     * @param sender Takes
-     * @return Returnere en list, som skal sendes over OCS
-     */
 
-    private List<Object> createArgs(Sender sender) {
-        List<Object> arguments = new ArrayList<>();
-        arguments.add(sender.getSynth());
-        arguments.add(sender.getNode());
-        arguments.add(sender.getRelease());
-        arguments.add(sender.getSustain());
-        arguments.add(sender.getAttack());
-        arguments.add(sender.getDecay());
-
-        return arguments;
-    }
 
 
 }
