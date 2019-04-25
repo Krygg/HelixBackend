@@ -9,24 +9,25 @@ public class InstrumentSplitter {
     private ArrayList<Instrument> instrumentArrayList = new ArrayList<>();
     private ArrayList<String> availableAddress = new ArrayList<>();
     private ArrayList<List> streamToPlay = new ArrayList<>();
+    private int flag = 0;
 
 
     public InstrumentSplitter() {
     }
 
-
     public void addInstrument(Instrument instrument) {
         instrumentArrayList.add(instrument);
     }
 
-    public void loadAddress() {
+    private void loadAddress() {
+        flag = 1;
         availableAddress.add("/trigger/prophet");
         for (int i = 1; i < 16; i++) {
             availableAddress.add("/trigger/prophet" + i);
         }
     }
 
-    public void getStreamToPlay() {
+    private void getStreamToPlay() {
         ArrayList<Sender> senders;
         for (Instrument anInstrumentArrayList : instrumentArrayList) {
             senders = anInstrumentArrayList.getSenderArrayList();
@@ -36,10 +37,8 @@ public class InstrumentSplitter {
         }
     }
      public void prepForPlay() throws IOException {
-        StringBuilder stringBuilder = new StringBuilder();
-        PiSender piSender = new PiSender();
+        if (flag == 0) loadAddress();
         getStreamToPlay();
-        ArrayList<List> stream = new ArrayList<>(streamToPlay);
     }
     private List<Object> createArgs(Sender sender) {
         List<Object> arguments = new ArrayList<>();
@@ -60,10 +59,12 @@ public class InstrumentSplitter {
                 System.out.println(aStream);
             }
             piSender.send(stream, availableAddress.get(addressCounter));
+            System.out.println("Counter is: " + addressCounter);
             addressCounter++;
+            if (addressCounter == 16) break;
         }
-
-        //TODO: nuke everything after played
+        streamToPlay.clear();
+        instrumentArrayList.clear();
     }
 
 
