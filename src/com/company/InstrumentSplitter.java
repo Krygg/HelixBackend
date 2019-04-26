@@ -19,6 +19,8 @@ public class InstrumentSplitter {
         instrumentArrayList.add(instrument);
     }
 
+
+    //Loading all addresses intro an array, for use to send to sonic 3.1415926
     private void loadAddress() {
         flag = 1;
         availableAddress.add("/trigger/prophet");
@@ -27,6 +29,7 @@ public class InstrumentSplitter {
         }
     }
 
+    //Goes though every instrument, to convert them intro stream format.
     private void getStreamToPlay() {
         ArrayList<Sender> senders;
         for (Instrument anInstrumentArrayList : instrumentArrayList) {
@@ -36,10 +39,14 @@ public class InstrumentSplitter {
             }
         }
     }
-     public void prepForPlay() throws IOException {
+
+    //public method for starting the process for getting the stream ready.
+     public void prepForPlay() {
         if (flag == 0) loadAddress();
         getStreamToPlay();
     }
+
+    //Takes the sender opject and returns it at a list of object
     private List<Object> createArgs(Sender sender) {
         List<Object> arguments = new ArrayList<>();
         arguments.add(sender.getSynth());
@@ -51,15 +58,15 @@ public class InstrumentSplitter {
 
         return arguments;
     }
+
+
+
+    //Sends the stream to Sonic pi, after clears the arrays.
     public void play() throws IOException {
         PiSender piSender = new PiSender();
         int addressCounter = 0;
         for (List stream : streamToPlay) {
-            for (Object aStream : stream) {
-                System.out.println(aStream);
-            }
             piSender.send(stream, availableAddress.get(addressCounter));
-            System.out.println("Counter is: " + addressCounter);
             addressCounter++;
             if (addressCounter == 16) break;
         }
