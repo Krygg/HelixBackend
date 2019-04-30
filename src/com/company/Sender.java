@@ -5,7 +5,7 @@ package com.company;
 //todo a better name for this badboi
 
 public class Sender {
-    private int node;
+    private String node;
     private String synth;
     private int attack, decay,sustain,release;
 
@@ -55,20 +55,38 @@ public class Sender {
             sender.release = this.release;
             sender.synth = this.synth;
 
-
             //Sender builder takes a chord and convertes it into a midi number, while building.
-            MidiLookUp midiLookUp = MidiLookUp.getInstance();
-            sender.node = midiLookUp.getMidiNumber(this.node);
+            sender.node = convertNodeToMidi(this.node);
+
 
             return sender;
 
+        }
+
+
+        //TODO make this pretty
+        private String convertNodeToMidi(String node) {
+            MidiLookUp midiLookUp = MidiLookUp.getInstance();
+            String[] strings = node.split(",");
+            StringBuilder stringBuilder = new StringBuilder("");
+
+            if (strings.length > 1) {
+                for (int i = 0; i < strings.length-1; i++) {
+                    stringBuilder.append(midiLookUp.getMidiNumber(strings[i])).append(", ");
+                }
+                stringBuilder.append(midiLookUp.getMidiNumber(strings[strings.length-1]));
+            } else {
+                stringBuilder.append(midiLookUp.getMidiNumber(strings[0]));
+            }
+            System.out.println(stringBuilder.toString());
+            return stringBuilder.toString();
         }
     }
 
     private Sender() {
     }
 
-    public int getNode() {
+    public String getNode() {
         return node;
     }
 

@@ -16,19 +16,7 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        Sender sender = new Sender.Builder().Node("c4").build();
-        Sender sender1 = new Sender.Builder().Node("e4").build();
-        Sender sender2 = new Sender.Builder().Node("g4").Synth("dull_bell").build();
-
-
-
-        ArrayList<Sender> senders = new ArrayList<>();
-        senders.add(sender);
-        senders.add(sender1);
-
-        Instrument instrument = new Instrument(senders);
-
-        Sender sender3 = new Sender.Builder().Node("c2").build();
+        Sender sender3 = new Sender.Builder().Node("c2,c4,b3").build();
         Sender sender4 = new Sender.Builder().Node("e2").build();
 
         ArrayList<Sender> senders1 = new ArrayList<>();
@@ -38,13 +26,6 @@ public class Main {
         Instrument instrument1 = new Instrument(senders1);
 
         InstrumentSplitter instrumentSplitter = new InstrumentSplitter();
-        instrumentSplitter.addInstrument(instrument);
-        instrumentSplitter.addInstrument(instrument1);
-        instrumentSplitter.prepForPlay();
-        instrumentSplitter.play();
-
-        Thread.sleep(300);
-        instrumentSplitter.addInstrument(instrument);
         instrumentSplitter.addInstrument(instrument1);
         instrumentSplitter.prepForPlay();
         instrumentSplitter.play();
