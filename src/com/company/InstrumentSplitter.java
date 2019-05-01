@@ -35,11 +35,11 @@ public class InstrumentSplitter {
 
     //Goes though every instrument, to convert them intro stream format.
     private void getStreamToPlay() {
-        ArrayList<Sender> senders;
+        ArrayList<Synth> synths;
         for (Instrument anInstrumentArrayList : instrumentArrayList) {
-            senders = anInstrumentArrayList.getSenderArrayList();
-            for (Sender sender : senders) {
-                streamToPlay.add(createArgs(sender));
+            synths = anInstrumentArrayList.getSynthArrayList();
+            for (Synth synth : synths) {
+                streamToPlay.add(createArgs(synth));
             }
         }
     }
@@ -53,14 +53,14 @@ public class InstrumentSplitter {
     }
 
     //Takes the sender opject and returns it at a list of object
-    private List<Object> createArgs(Sender sender) {
+    private List<Object> createArgs(Synth synth) {
         List<Object> arguments = new ArrayList<>();
-        arguments.add(sender.getSynth());
-        arguments.add(sender.getNode());
-        arguments.add(sender.getRelease());
-        arguments.add(sender.getSustain());
-        arguments.add(sender.getAttack());
-        arguments.add(sender.getDecay());
+        arguments.add(synth.getSynth());
+        arguments.add(synth.getNode());
+        arguments.add(synth.getRelease());
+        arguments.add(synth.getSustain());
+        arguments.add(synth.getAttack());
+        arguments.add(synth.getDecay());
 
         return arguments;
     }

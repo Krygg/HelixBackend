@@ -49,7 +49,7 @@ public class MidiLookUp {
 
     //Man kan kalde denne funktion for at få et midi number tilbage fra en node
 
-    public int getMidiNumber(String midiNote) {
+    public int getMidiNumber(String midiNote)   {
         //Bruger checkflag så vi kun skal indlæse filen engang.
         if (checkFlag == 0) {
             getMidiList();

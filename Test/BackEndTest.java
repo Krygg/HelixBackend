@@ -1,7 +1,7 @@
 import com.company.Instrument;
 import com.company.InstrumentSplitter;
 import com.company.MidiLookUp;
-import com.company.Sender;
+import com.company.Synth;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,9 +11,9 @@ import java.util.List;
 public class BackEndTest {
     @Test
     public void getStreamToPlayTest() {
-        Sender sender = new Sender.Builder().Node("c4,e4").build();
-        ArrayList<Sender> arrayList = new ArrayList();
-        arrayList.add(sender);
+        Synth synth = new Synth.Builder().Node("c4,e4").build();
+        ArrayList<Synth> arrayList = new ArrayList();
+        arrayList.add(synth);
         Instrument instrument =  new Instrument(arrayList);
 
         InstrumentSplitter instrumentSplitter = new InstrumentSplitter();
@@ -41,21 +41,21 @@ public class BackEndTest {
 
     @Test
     public void testBuilderMoreNotes() {
-        Sender sender = new Sender.Builder().Node("c4, c5, c6, c7,                c8").build();
-        sender.getNode();
-        Assert.assertEquals(sender.getNode(),"60, 72, 84, 96, 108");
+        Synth synth = new Synth.Builder().Node("c4, c5, c6, c7,                c8").build();
+        synth.getNode();
+        Assert.assertEquals(synth.getNode(),"60, 72, 84, 96, 108");
     }
 
     @Test
     public void testBuilderOneNote() {
-        Sender sender = new Sender.Builder().Node("c4").build();
-        Assert.assertEquals(sender.getNode(),"60" +
+        Synth synth = new Synth.Builder().Node("c4").build();
+        Assert.assertEquals(synth.getNode(),"60" +
                 "");
     }
 
     @Test
     public void testBuilderBuilding() {
-        Sender sender = new Sender.Builder().
+        Synth synth = new Synth.Builder().
                 Node("c4").Attack(1).Decay(1).Release(1).Sustain(1).Synth("piano").build();
 
         ArrayList<Object> expectedList = new ArrayList();
@@ -68,12 +68,12 @@ public class BackEndTest {
 
 
         ArrayList<Object>  senderList = new ArrayList<>();
-        senderList.add(sender.getNode());
-        senderList.add(sender.getDecay());
-        senderList.add(sender.getAttack());
-        senderList.add(sender.getSustain());
-        senderList.add(sender.getRelease());
-        senderList.add(sender.getSynth());
+        senderList.add(synth.getNode());
+        senderList.add(synth.getDecay());
+        senderList.add(synth.getAttack());
+        senderList.add(synth.getSustain());
+        senderList.add(synth.getRelease());
+        senderList.add(synth.getSynth());
 
         Assert.assertEquals(senderList,expectedList);
     }
