@@ -26,7 +26,7 @@ public class Metronome{
             }
         }
     }
-    private static double bpmMilliDouble(double bpm){
+    public static double bpmMilliDouble(double bpm){
         double timeBetweenBeats = 1000*(60/bpm);
         return timeBetweenBeats;
     }
