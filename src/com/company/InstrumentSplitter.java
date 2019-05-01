@@ -11,7 +11,8 @@ public class InstrumentSplitter {
     private ArrayList<Instrument> instrumentArrayList = new ArrayList<>();
     private ArrayList<String> availableAddressInstrument = new ArrayList<>();
     private ArrayList<Drum> drumArrayList = new ArrayList<>();
-    private ArrayList<List> streamToPlay = new ArrayList<>();
+    private ArrayList<List> streamToPlayInstrument = new ArrayList<>();
+    private ArrayList<List> streamToPlayDrum = new ArrayList<>();
     private ArrayList<String> availableAddressDrum  = new ArrayList<>();
     private int flag = 0;
 
@@ -20,7 +21,7 @@ public class InstrumentSplitter {
     }
 
     public ArrayList<List> getStream() {
-        return this.streamToPlay;
+        return this.streamToPlayInstrument;
     }
 
     public void addMusicElement(Object object) {
@@ -56,9 +57,13 @@ public class InstrumentSplitter {
         for (Instrument anInstrumentArrayList : instrumentArrayList) {
             synths = anInstrumentArrayList.getSynthArrayList();
             for (Synth synth : synths) {
-                streamToPlay.add(createArgs(synth));
+                streamToPlayInstrument.add(createArgsInstrument(synth));
             }
         }
+        for (Drum aDrumArrayList : drumArrayList) {
+            streamToPlayDrum.add(createArgsDrums(aDrumArrayList));
+        }
+
     }
 
 
@@ -70,7 +75,7 @@ public class InstrumentSplitter {
     }
 
     //Takes the sender opject and returns it at a list of object
-    private List<Object> createArgs(Synth synth) {
+    private List<Object> createArgsInstrument(Synth synth) {
         List<Object> arguments = new ArrayList<>();
         arguments.add(synth.getSynth());
         arguments.add(synth.getNode());
@@ -82,20 +87,37 @@ public class InstrumentSplitter {
         return arguments;
     }
 
+    private List<Object> createArgsDrums(Drum drum) {
+        List<Object> arguemnt = new ArrayList<>();
+        arguemnt.add(drum.getSubDrum(drum.getLastI()));
+        return arguemnt;
+    }
+
 
 
     //Sends the stream to Sonic pi, after clears the arrays.
     public void play() throws IOException {
-        final int maxAddress = 6;
+        final int maxAddressInstrument = 6;
+        final int maxAddressDrum = 4;
         PiSender piSender = new PiSender();
         int addressCounter = 0;
-        for (List stream : streamToPlay) {
+        for (List stream : streamToPlayInstrument) {
             piSender.send(stream, availableAddressInstrument.get(addressCounter));
             addressCounter++;
-            if (addressCounter == maxAddress) break;
+            if (addressCounter == maxAddressInstrument) break;
         }
-        streamToPlay.clear();
+
+        addressCounter = 0;
+        for (int i = 0; i < streamToPlayDrum.size(); i++) {
+            piSender.send(streamToPlayDrum.get(i),availableAddressDrum.get(addressCounter));
+            addressCounter++;
+            if (addressCounter == maxAddressDrum) break;
+        }
+
+        streamToPlayInstrument.clear();
         instrumentArrayList.clear();
+        drumArrayList.clear();
+        streamToPlayDrum.clear();
     }
 
 

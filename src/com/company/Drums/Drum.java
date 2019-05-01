@@ -7,6 +7,9 @@ public interface Drum {
 
     void initSubDrums();
     String getDrumName();
+    int getLastI();
+    void setI(int i);
+
 
 
 
