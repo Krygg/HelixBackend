@@ -67,6 +67,7 @@ public class Sender {
         //TODO make this pretty
         private String convertNodeToMidi(String node) {
             MidiLookUp midiLookUp = MidiLookUp.getInstance();
+            node = node.replaceAll("\\s+","");
             String[] strings = node.split(",");
             StringBuilder stringBuilder = new StringBuilder("");
 

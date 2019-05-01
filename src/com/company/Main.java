@@ -16,7 +16,7 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        Sender sender3 = new Sender.Builder().Node("c2,c4,b3").build();
+        Sender sender3 = new Sender.Builder().Node("c2,        c4,b3").build();
         Sender sender4 = new Sender.Builder().Node("e2").build();
 
         ArrayList<Sender> senders1 = new ArrayList<>();
