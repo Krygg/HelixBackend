@@ -19,7 +19,7 @@ public class MidiLookUp {
         return ourInstance;
     }
 
-    private MidiLookUp() {
+    public MidiLookUp() {
     }
 
 

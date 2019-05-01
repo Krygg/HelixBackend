@@ -15,6 +15,10 @@ public class InstrumentSplitter {
     public InstrumentSplitter() {
     }
 
+    public ArrayList<List> getStream() {
+        return this.streamToPlay;
+    }
+
     public void addInstrument(Instrument instrument) {
         instrumentArrayList.add(instrument);
     }
@@ -39,6 +43,8 @@ public class InstrumentSplitter {
             }
         }
     }
+
+
 
     //public method for starting the process for getting the stream ready.
      public void prepForPlay() {
