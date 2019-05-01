@@ -17,7 +17,7 @@ public class BackEndTest {
         Instrument instrument =  new Instrument(arrayList);
 
         InstrumentSplitter instrumentSplitter = new InstrumentSplitter();
-        instrumentSplitter.addInstrument(instrument);
+        instrumentSplitter.addMusicElement(instrument);
         instrumentSplitter.prepForPlay();
         ArrayList<List> listOfStream = instrumentSplitter.getStream();
 

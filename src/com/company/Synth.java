@@ -33,6 +33,7 @@ public class Synth {
             return this;
         }
 
+
         public Builder Sustain(int sustain) {
             this.sustain = sustain;
             return this;

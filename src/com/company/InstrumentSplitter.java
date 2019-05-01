@@ -1,14 +1,18 @@
 package com.company;
 
 
+import com.company.Drums.Drum;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InstrumentSplitter {
     private ArrayList<Instrument> instrumentArrayList = new ArrayList<>();
-    private ArrayList<String> availableAddress = new ArrayList<>();
+    private ArrayList<String> availableAddressInstrument = new ArrayList<>();
+    private ArrayList<Drum> drumArrayList = new ArrayList<>();
     private ArrayList<List> streamToPlay = new ArrayList<>();
+    private ArrayList<String> availableAddressDrum  = new ArrayList<>();
     private int flag = 0;
 
 
@@ -19,17 +23,30 @@ public class InstrumentSplitter {
         return this.streamToPlay;
     }
 
-    public void addInstrument(Instrument instrument) {
-        instrumentArrayList.add(instrument);
+    public void addMusicElement(Object object) {
+        if (object instanceof Drum) {
+            drumArrayList.add((Drum) object);
+        }
+        else if (object instanceof Instrument) {
+            instrumentArrayList.add((Instrument) object);
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
     }
 
 
     //Loading all addresses intro an array, for use to send to sonic 3.1415926
     private void loadAddress() {
         flag = 1;
-        availableAddress.add("/trigger/prophet");
-        for (int i = 1; i < 16; i++) {
-            availableAddress.add("/trigger/prophet" + i);
+        for (int i = 1; i < 7; i++) {
+            availableAddressInstrument.add("/trigger/prophet" + i);
+            System.out.println("INSTRUMENT /trigger/prophet" + i);
+        }
+
+        for (int i = 7; i < 11; i++) {
+            availableAddressDrum.add("/trigger/prophet" + i);
+            System.out.println(" DRUM /trigger/prophet" + i);
         }
     }
 
@@ -69,12 +86,13 @@ public class InstrumentSplitter {
 
     //Sends the stream to Sonic pi, after clears the arrays.
     public void play() throws IOException {
+        final int maxAddress = 6;
         PiSender piSender = new PiSender();
         int addressCounter = 0;
         for (List stream : streamToPlay) {
-            piSender.send(stream, availableAddress.get(addressCounter));
+            piSender.send(stream, availableAddressInstrument.get(addressCounter));
             addressCounter++;
-            if (addressCounter == 16) break;
+            if (addressCounter == maxAddress) break;
         }
         streamToPlay.clear();
         instrumentArrayList.clear();

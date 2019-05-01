@@ -3,9 +3,9 @@ set :bpm, 128
 
 live_loop :foo do
   use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet"
+  s,a, b, c, d = sync "/osc/trigger/prophet1"
   a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, sustain: c, attack: d, vel: 1
+  synth s, note: a, sustain: c, attack: d, vel: 0.4
 end
 
 
@@ -46,64 +46,23 @@ end
 
 live_loop :foo7 do
   use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet7"
-  a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
+  a = sync "/osc/trigger/prophet7"
+  sample a
 end
-
 live_loop :foo8 do
   use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet8"
-  a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
+  a = sync "/osc/trigger/prophet8"
+  sample a
 end
-
 live_loop :foo9 do
   use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet9"
-  a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
+  a = sync "/osc/trigger/prophet9"
+  sample a
 end
-
 live_loop :foo10 do
   use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet10"
-  a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
+  a = sync "/osc/trigger/prophet10"
+  sample a
 end
 
-live_loop :foo11 do
-  use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet11"
-  a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
-end
-
-live_loop :foo12 do
-  use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet12"
-  a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
-end
-
-live_loop :foo13 do
-  use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet13"
-  a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
-end
-
-live_loop :foo14 do
-  use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet14"
-  a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
-end
-
-live_loop :foo15 do
-  use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet15"
-  a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
-end
 

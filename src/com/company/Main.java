@@ -21,7 +21,7 @@ public class Main {
         Instrument instrument1 = new Instrument(senders1);
 
         InstrumentSplitter instrumentSplitter = new InstrumentSplitter();
-        instrumentSplitter.addInstrument(instrument1);
+        instrumentSplitter.addMusicElement(instrument1);
         instrumentSplitter.prepForPlay();
         instrumentSplitter.play();
 
