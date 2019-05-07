@@ -30,7 +30,7 @@ public class BackEndTest {
         expectedObject.add(1);
         expectedObject.add(1);
         expectedObject.add(1);
-        expectedObject.add(1);
+        expectedObject.add(1.0);
         Assert.assertEquals(listOfStream.get(0),expectedObject);
     }
 

@@ -10,6 +10,10 @@ public class Instrument {
         this.synthArrayList = synthArrayList;
     }
 
+    public void addSynth(Synth synth) {
+        this.synthArrayList.add(synth);
+    }
+
     public ArrayList<Synth> getSynthArrayList() {
         return synthArrayList;
     }
