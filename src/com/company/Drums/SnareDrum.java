@@ -5,13 +5,29 @@ import java.util.ArrayList;
 public class SnareDrum implements Drum {
     private int flag = 0;
     private int lastI = 0;
+    private double volume = 1;
     private String drumName = "SnareDrum";
     private ArrayList<String> subDrums = new ArrayList<>();
+
+
+    public ArrayList<String> getSubDrums() {
+        return subDrums;
+    }
 
 
     @Override
     public void setI(int i) {
         lastI = i;
+    }
+
+    @Override
+    public void setVolume(double volume) {
+        this.volume = volume;
+    }
+
+    @Override
+    public double getVolume() {
+        return this.volume;
     }
 
     @Override

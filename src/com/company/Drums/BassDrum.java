@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class BassDrum implements Drum {
     private int flag = 0;
     private int lastI = 0;
+    private double volume = 1;
     private String drumName = "BassDrum";
     private ArrayList<String> subDrums = new ArrayList<>();
 
@@ -12,6 +13,20 @@ public class BassDrum implements Drum {
     @Override
     public void setI(int i) {
         lastI = i;
+    }
+
+    @Override
+    public void setVolume(double volume) {
+        this.volume = volume;
+    }
+
+    @Override
+    public double getVolume() {
+        return this.volume;
+    }
+
+    public ArrayList<String> getSubDrums() {
+        return subDrums;
     }
 
     @Override

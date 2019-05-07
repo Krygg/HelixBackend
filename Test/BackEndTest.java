@@ -1,3 +1,6 @@
+import com.company.Drums.BassDrum;
+import com.company.Drums.Drum;
+import com.company.Drums.SnareDrum;
 import com.company.Instrument;
 import com.company.InstrumentSplitter;
 import com.company.MidiLookUp;
@@ -78,5 +81,7 @@ public class BackEndTest {
         Assert.assertEquals(senderList,expectedList);
     }
 
+
+    //TODO add test for drums
 
 }

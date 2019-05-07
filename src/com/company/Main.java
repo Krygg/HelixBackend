@@ -18,18 +18,23 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        //Main.testBackEnd();
+        Main.testBackEnd();
+
+
+
+    }
+
+    private void testBPM() {
         TestJobs testJob = new TestJobs();
         JobHandler jobHandler = new JobHandler(testJob.getJob());
         Metronome metronome = new Metronome(128, 4);
         metronome.startComputingOnBeat(jobHandler, metronome.getBpm());
 
-
     }
 
     private static void testBackEnd() throws IOException, InterruptedException {
-        Synth synth3 = new Synth.Builder().Node("c4,e4").build();
-        Synth synth4 = new Synth.Builder().Node("e2").build();
+        Synth synth3 = new Synth.Builder().Node("c4,e4").Volume(0.4).build();
+        Synth synth4 = new Synth.Builder().Node("e2").Volume(0.1).build();
 
         ArrayList<Synth> senders1 = new ArrayList<>();
         senders1.add(synth3);
@@ -38,7 +43,9 @@ public class Main {
         Drum drum1 = new SnareDrum();
 
         drum.setI(4);
+        drum.setVolume(0.9);
         drum1.setI(2);
+        drum1.setVolume(0.1);
 
 
         Instrument instrument1 = new Instrument(senders1);

@@ -9,6 +9,8 @@ public interface Drum {
     String getDrumName();
     int getLastI();
     void setI(int i);
+    void setVolume(double volume);
+    double getVolume();
 
 
 
