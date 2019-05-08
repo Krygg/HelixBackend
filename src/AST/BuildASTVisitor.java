@@ -83,7 +83,6 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         }
 
         return null;
-
     }
 
     /** Start a process (don't know if error handling should be done here)*/
@@ -102,10 +101,23 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         return null;
     }
 
+    /** Statements (Should be checked once more, to be sure it's correct)*/
     @Override
     public Node visitStmt(CFGParser.StmtContext ctx) {
 
-        //Check if the statement is an assignment
+        // Block of statements
+        if(ctx.SEMI() != null){
+            BlockNode block = new BlockNode();
+            block.addNode(visitStmt(ctx.stmt(0)));
+
+            if(ctx.stmt(1) != null){
+                block.addNode(visitStmt(ctx.stmt(1)));
+            }
+
+            return block;
+        }
+
+        // Assignment
         if(ctx.ASSIGN() != null){
 
             if(varNames.contains(ctx.VARNAME().getText())){
@@ -114,32 +126,126 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
                 assignNode.setVarName(ctx.VARNAME().getText());
                 assignNode.setValue(visitAExp(ctx.aExp(0)));
 
-                System.out.println("Assign: " + assignNode.getValue());
+                return assignNode;
 
             } else {
                 throw new VarException("You can't assign a value to a non-declared variable!");
             }
+        }
 
-        } else if(ctx.startPause() != null){
+        // Start statement
+        else if(ctx.startPause() != null){
 
             StartNode start = new StartNode();
             start.setVarName(ctx.p().getText());
 
+            return start;
+
+        }
+
+        // Melody statement
+        else if(ctx.MEL() != null){
+
+            MelNode mel = new MelNode();
+            mel.setVarName(ctx.VARNAME().getText());
+
+            return mel;
+
+        }
+
+        // ADSR command
+        else if(ctx.ADSR() != null){
+
+            ADSRNode adsrNode = new ADSRNode();
+
+            adsrNode.setExp1(visitAExp(ctx.aExp(0)));
+            adsrNode.setExp2(visitAExp(ctx.aExp(1)));
+            adsrNode.setExp3(visitAExp(ctx.aExp(2)));
+            adsrNode.setExp4(visitAExp(ctx.aExp(3)));
+
+            return adsrNode;
+        }
+
+        // Time statement
+        else if(ctx.TIME() != null){
+
+            TimeNode time = new TimeNode();
+
+            time.setTop(Integer.parseInt(ctx.NUMBER(0).getText()));
+            time.setBot(Integer.parseInt(ctx.NUMBER(1).getText()));
+
+            return time;
+
+        }
+
+        // Send statement
+        else if(ctx.SEND() != null){
+
+            SendNode send = new SendNode();
+
+            send.setChannel(ctx.c().getText());
+            send.setValue(visitAExp(ctx.aExp(0)));
+
+            return send;
+        }
+
+        // Receive statement
+        else if(ctx.RECEIVE() != null){
+
+            ReceiveNode receive = new ReceiveNode();
+
+            receive.setChannel(ctx.c().getText());
+            receive.setVarName(ctx.VARNAME().getText());
+            receive.setStatement(visitStmt(ctx.stmt(0)));
+
+            return receive;
+
+        }
+
+        // If-else statement
+        else if(ctx.IF() != null){
+
+            IfElseNode ifElseNode = new IfElseNode();
+
+            ifElseNode.setBool(visitBExp(ctx.bExp()));
+            ifElseNode.setStmtTrue(visitStmt(ctx.stmt(0)));
+
+            if(ctx.ELSE() != null){
+
+                ifElseNode.setStmtFalse(visitStmt(ctx.stmt(1)));
+            }
+
+            return ifElseNode;
         }
 
         return super.visitStmt(ctx);
     }
 
+
+    /**Equals expression (may need to change precedence)*/
     @Override
     public Node visitBExp(CFGParser.BExpContext ctx) {
 
-        visitNAexp(ctx.nAexp(0));
-        visitNAexp(ctx.nAexp(1));
-        return null;
+        EqualNode equal = new EqualNode();
+
+        equal.setLeft(visitNAexp(ctx.nAexp(0)));
+        equal.setRight(visitNAexp(ctx.nAexp(1)));
+
+        return equal;
     }
 
+    /**Not expression (may need to change precedence)*/
     @Override
     public Node visitNAexp(CFGParser.NAexpContext ctx) {
+
+        if(ctx.NOT() != null){
+
+            NotNode not = new NotNode();
+
+            not.setExpressionNode(visitAExp(ctx.aExp()));
+
+            return not;
+        }
 
         return visitAExp(ctx.aExp());
     }
@@ -150,15 +256,20 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
         // Addition
         if(ctx.PLUS() != null){
+
             PlusNode plus = new PlusNode();
+
             plus.setLeft(visitMultExp(ctx.multExp()));
             plus.setRight(visitAExp(ctx.aExp()));
 
             return plus;
         }
+
         // Subtraction
         else if(ctx.MINUS() != null){
+
             MinusNode minus = new MinusNode();
+
             minus.setLeft(visitMultExp(ctx.multExp()));
             minus.setRight(visitAExp(ctx.aExp()));
 
@@ -169,6 +280,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         return visitMultExp(ctx.multExp());
     }
 
+    /**Multiplication (OK)*/
     @Override
     public Node visitMultExp(CFGParser.MultExpContext ctx) {
 
@@ -184,6 +296,8 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         return visitAtom(ctx.atom());
     }
 
+
+    /** Atom (OK) */
     @Override
     public Node visitAtom(CFGParser.AtomContext ctx) {
 
@@ -219,40 +333,12 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         return super.visitK(ctx);
     }
 
-    @Override
-    public Node visitP(CFGParser.PContext ctx) {
-        return super.visitP(ctx);
-    }
-
-    @Override
-    public Node visitC(CFGParser.CContext ctx) {
-        return super.visitC(ctx);
-    }
-
-    @Override
-    public Node visitInst(CFGParser.InstContext ctx) {
-        return super.visitInst(ctx);
-    }
-
-    @Override
-    public Node visitStartPause(CFGParser.StartPauseContext ctx) {
-        return super.visitStartPause(ctx);
-    }
-
     private void checkVarNames(String varName){
         if(!varNames.contains(varName)){
             varNames.add(varName);
         } else {
             throw new VarException("This variable name has already been used!");
         }
-    }
-
-    private void emptyRight(BinaryExpression binaryNode, CFGParser.AExpContext ctx){
-
-        if(ctx.aExp()!= null){
-            binaryNode.setRight(visitAExp(ctx.aExp()));
-        }
-
     }
 }
 

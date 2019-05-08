@@ -11,11 +11,11 @@ di: inst p BEGIN stmt END di | ;
 
 sp: startPause p SEMI sp | ;
 
-stmt:  startPause p | MEL LPAR (VARNAME|k) RPAR
+stmt:  startPause p | MEL LPAR VARNAME RPAR
     | VARNAME ASSIGN aExp
-    | ADSR LPAR (aExp COMMA aExp COMMA aExp COMMA aExp) RPAR
+    | ADSR LPAR aExp COMMA aExp COMMA aExp COMMA aExp RPAR
     | stmt SEMI stmt
-    | TIME LPAR MEASURE RPAR
+    | TIME LPAR NUMBER COMMA NUMBER RPAR
     | SEND LPAR c COMMA aExp RPAR
     | RECEIVE LPAR c COMMA VARNAME RPAR '.' stmt
     | IF LPAR bExp RPAR BEGIN stmt END (ELSE BEGIN stmt END)? | ;
@@ -77,7 +77,6 @@ EQUAL: '==';
 // TERMINALS
 NUMBER: [0-9]+;
 VARNAME: [a-zA-Z]+('_'[0-9]+)?;
-MEASURE: [0-9]+'/'[0-9]+;
 KEY: [A-Ga-g]('#')?([0-9]|'-1');
 
 /* WHITE SPACE */

@@ -14,12 +14,14 @@ public class TestClass {
                 "num x = 9*8+5;" +
                 "notes y = c4,c5;" +
                 "start p;" +
-                "Piano p {" +
+                "Piano p { time(3,4);" +
                     "x = 9 + 8 * 7 + 6;" +
                     "mel(x);" +
+                    "adsr(5,4,3,6);" +
                 "}" +
-                "Drum d {" +
-                "if(1==3){" +
+                "Drum d { send(c,4+5);" +
+                "if(!3==2){" +
+                    "x = 3;" +
                 "}}";
         CharStream charStream = CharStreams.fromString(string);
 
