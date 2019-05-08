@@ -3,66 +3,66 @@ set :bpm, 128
 
 live_loop :foo do
   use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet1"
+  s,a, b, c, d, e = sync "/osc/trigger/prophet1"
   a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, sustain: c, attack: d, vel: 0.4
+  synth s, note: a, cutoff: b, sustain: c, attack: d, vel: e
 end
 
 
 live_loop :foo2 do
   use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet2"
+  s,a, b, c, d, e = sync "/osc/trigger/prophet2"
   a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
+  synth s, note: a, cutoff: b, sustain: c, attack: d, vel: e
 end
 
 live_loop :foo3 do
   use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet3"
+  s,a, b, c, d, e = sync "/osc/trigger/prophet3"
   a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
+  synth s, note: a, cutoff: b, sustain: c, attack: d, vel: e
 end
 
 live_loop :foo4 do
   use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet4"
+  s,a, b, c, d, e = sync "/osc/trigger/prophet4"
   a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
+  synth s, note: a, cutoff: b, sustain: c, attack: d, vel: e
 end
 
 live_loop :foo5 do
   use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet5"
+  s,a, b, c, d, e = sync "/osc/trigger/prophet5"
   a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
+  synth s, note: a, cutoff: b, sustain: c, attack: d, vel: e
 end
 
 live_loop :foo6 do
   use_real_time
-  s,a, b, c, d = sync "/osc/trigger/prophet6"
+  s,a, b, c, d, e = sync "/osc/trigger/prophet6"
   a = a.split.map{|chr| chr.to_i}
-  synth s, note: a, cutoff: b, sustain: c, attack: d
+  synth s, note: a, cutoff: b, sustain: c, attack: d, vel: e
 end
 
 live_loop :foo7 do
   use_real_time
-  a = sync "/osc/trigger/prophet7"
-  sample a
+  a,b = sync "/osc/trigger/prophet7"
+  sample a, amp: b
 end
 live_loop :foo8 do
   use_real_time
-  a = sync "/osc/trigger/prophet8"
-  sample a
+  a,b = sync "/osc/trigger/prophet8"
+  sample a, amp: b
 end
 live_loop :foo9 do
   use_real_time
-  a = sync "/osc/trigger/prophet9"
-  sample a
+  a,b = sync "/osc/trigger/prophet9"
+  sample a, amp: b
 end
 live_loop :foo10 do
   use_real_time
-  a = sync "/osc/trigger/prophet10"
-  sample a
+  a,b = sync "/osc/trigger/prophet10"
+  sample a, amp: b
 end
 
 

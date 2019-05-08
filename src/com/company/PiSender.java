@@ -18,9 +18,7 @@ public class PiSender  {
     public void send(List<Object> arguments, String address) {
 
         OSCMessage msg = new OSCMessage(address, arguments);
-        System.out.println("We send to address" +  address);
         try {
-            System.out.println(arguments.toString());
             System.out.println(msg.getAddress());
             portOut.send(msg);
         } catch (Exception ex) {

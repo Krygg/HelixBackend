@@ -32,7 +32,7 @@ public class SnareDrum implements Drum {
 
     @Override
     public String getSubDrum(int i) {
-        if (flag == 0) initSubDrums();
+        if (flag == 0) initSamples();
         if (i > subDrums.size()) {
             lastI = i % subDrums.size();
             return subDrums.get(lastI);
@@ -42,7 +42,7 @@ public class SnareDrum implements Drum {
     }
 
     @Override
-    public void initSubDrums() {
+    public void initSamples() {
         flag = 1;
         subDrums.add("sn_dub");
         subDrums.add("sn_dolf");
@@ -56,7 +56,7 @@ public class SnareDrum implements Drum {
     }
 
     @Override
-    public String getDrumName() {
+    public String getName() {
         return this.drumName;
     }
 }

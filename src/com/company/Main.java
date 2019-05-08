@@ -3,6 +3,7 @@ package com.company;
 
 import com.company.Drums.BassDrum;
 import com.company.Drums.Drum;
+import com.company.Drums.Guitar;
 import com.company.Drums.SnareDrum;
 import com.company.TimedJobs.Metronome;
 import com.company.TimedJobs.JobHandler;
@@ -46,16 +47,24 @@ public class Main {
         drum.setVolume(0.9);
         drum1.setI(2);
         drum1.setVolume(0.1);
-
+        Drum drum2 = new Guitar();
+        drum2.setI(3);
+        drum2.setVolume(0.99);
 
         Instrument instrument1 = new Instrument(senders1);
 
         InstrumentSplitter instrumentSplitter = new InstrumentSplitter();
-        instrumentSplitter.addMusicElement(instrument1);
-        instrumentSplitter.addMusicElement(drum);
-        instrumentSplitter.addMusicElement(drum1);
-        instrumentSplitter.prepForPlay();
-        instrumentSplitter.play();
+
+        while(true) {
+            instrumentSplitter.addMusicElement(instrument1);
+            instrumentSplitter.addMusicElement(drum);
+            instrumentSplitter.addMusicElement(drum1);
+            instrumentSplitter.addMusicElement(drum2);
+            instrumentSplitter.prepForPlay();
+            instrumentSplitter.play();
+            Thread.sleep(5000);
+        }
+
     }
 
 }

@@ -5,14 +5,12 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.*;
-
 public class BassDrumTest {
     @Test
     public void testLastIModuloBassDrum() {
         Drum bassDrum = new BassDrum();
         int i = 7;
-        bassDrum.initSubDrums();
+        bassDrum.initSamples();
         bassDrum.setI(i);
         bassDrum.getSubDrum(i);
 
@@ -24,7 +22,7 @@ public class BassDrumTest {
     public void testLastIBassDrum() {
         Drum bassDrum = new BassDrum();
         int i = 3;
-        bassDrum.initSubDrums();
+        bassDrum.initSamples();
         bassDrum.setI(i);
         bassDrum.getSubDrum(i);
 
@@ -36,7 +34,7 @@ public class BassDrumTest {
     @Test
     public void testNameBassDrum() {
         Drum bassDrum =  new BassDrum();
-        Assert.assertEquals(bassDrum.getDrumName().toLowerCase(),"bassdrum");
+        Assert.assertEquals(bassDrum.getName().toLowerCase(),"bassdrum");
 
     }
 
