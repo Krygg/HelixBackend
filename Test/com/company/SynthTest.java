@@ -13,6 +13,26 @@ public class SynthTest {
     }
 
     @Test
+    public void midiSplitterTest()  {
+        String node = "c4,   c7,    e4";
+        String expected = "60, 96, 64";
+        Synth synth = new Synth.Builder().Node(node).build();
+        assertEquals(synth.getNode(),expected);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void midiSplitterException() {
+        String node = "c4,.,.c7";
+        Synth synth = new Synth.Builder().Node(node).build();
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testVolumeException() {
+        Synth synth = new Synth.Builder().Volume(2).build();
+    }
+
+    @Test
     public void getAttack() {
         int attack = 1;
         Synth synth = new Synth.Builder().Attack(attack).build();

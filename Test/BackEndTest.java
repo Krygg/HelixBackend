@@ -34,13 +34,6 @@ public class BackEndTest {
         Assert.assertEquals(listOfStream.get(0),expectedObject);
     }
 
-    @Test
-    public void testMidiLookUp() {
-        MidiLookUp midiLookUp = new MidiLookUp();
-        String note  = "c4";
-        int midi = midiLookUp.getMidiNumber(note);
-        Assert.assertEquals(midi,60);
-    }
 
     @Test
     public void testBuilderMoreNotes() {
