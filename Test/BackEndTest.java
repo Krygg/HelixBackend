@@ -1,3 +1,6 @@
+import com.company.Drums.BassDrum;
+import com.company.Drums.Drum;
+import com.company.Drums.SnareDrum;
 import com.company.Instrument;
 import com.company.InstrumentSplitter;
 import com.company.MidiLookUp;
@@ -27,17 +30,10 @@ public class BackEndTest {
         expectedObject.add(1);
         expectedObject.add(1);
         expectedObject.add(1);
-        expectedObject.add(1);
+        expectedObject.add(1.0);
         Assert.assertEquals(listOfStream.get(0),expectedObject);
     }
 
-    @Test
-    public void testMidiLookUp() {
-        MidiLookUp midiLookUp = new MidiLookUp();
-        String note  = "c4";
-        int midi = midiLookUp.getMidiNumber(note);
-        Assert.assertEquals(midi,60);
-    }
 
     @Test
     public void testBuilderMoreNotes() {
@@ -78,5 +74,7 @@ public class BackEndTest {
         Assert.assertEquals(senderList,expectedList);
     }
 
+
+    //TODO add test for drums
 
 }

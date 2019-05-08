@@ -1,18 +1,19 @@
 package com.company;
 
 
-
 //todo a better name for this badboi
 
 public class Synth {
     private String node;
     private String synth;
-    private int attack, decay,sustain,release;
+    private int attack, decay, sustain, release;
+    private double volume;
 
-    public static class Builder{
+    public static class Builder {
         //Here we ajust standard values
         private String node = "c4";
-        private int attack=1, decay=1,sustain=1,release=1;
+        private int attack = 1, decay = 1, sustain = 1, release = 1;
+        private double volume = 1;
         private String synth = "piano";
 
         public Builder() {
@@ -39,6 +40,7 @@ public class Synth {
             return this;
         }
 
+        //TODO make sure, the synth is true.
         public Builder Synth(String synth) {
             this.synth = synth;
             return this;
@@ -48,6 +50,17 @@ public class Synth {
             this.release = release;
             return this;
         }
+
+        //Check if volume is between 0-1
+        public Builder Volume(double volume) {
+            if (volume > 0 && volume < 1) {
+                this.volume = volume;
+            } else {
+                throw new IllegalArgumentException();
+            }
+            return this;
+        }
+
         public Synth build() {
             Synth synth = new Synth();
             synth.attack = this.attack;
@@ -55,6 +68,7 @@ public class Synth {
             synth.decay = this.decay;
             synth.release = this.release;
             synth.synth = this.synth;
+            synth.volume = this.volume;
 
             //Sender builder takes a chord and convertes it into a midi number, while building.
             synth.node = convertNodeToMidi(this.node);
@@ -68,15 +82,15 @@ public class Synth {
         //TODO make this pretty
         private String convertNodeToMidi(String node) {
             MidiLookUp midiLookUp = MidiLookUp.getInstance();
-            node = node.replaceAll("\\s+","");
+            node = node.replaceAll("\\s+", "");
             String[] strings = node.split(",");
             StringBuilder stringBuilder = new StringBuilder("");
 
             if (strings.length > 1) {
-                for (int i = 0; i < strings.length-1; i++) {
+                for (int i = 0; i < strings.length - 1; i++) {
                     stringBuilder.append(midiLookUp.getMidiNumber(strings[i])).append(", ");
                 }
-                stringBuilder.append(midiLookUp.getMidiNumber(strings[strings.length-1]));
+                stringBuilder.append(midiLookUp.getMidiNumber(strings[strings.length - 1]));
             } else {
                 stringBuilder.append(midiLookUp.getMidiNumber(strings[0]));
             }
@@ -110,5 +124,9 @@ public class Synth {
 
     public String getSynth() {
         return synth;
+    }
+
+    public double getVolume() {
+        return volume;
     }
 }

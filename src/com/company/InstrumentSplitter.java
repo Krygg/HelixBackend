@@ -74,7 +74,7 @@ public class InstrumentSplitter {
         getStreamToPlay();
     }
 
-    //Takes the sender opject and returns it at a list of object
+    //Takes the synth opject and returns it at a list of object
     private List<Object> createArgsInstrument(Synth synth) {
         List<Object> arguments = new ArrayList<>();
         arguments.add(synth.getSynth());
@@ -82,7 +82,7 @@ public class InstrumentSplitter {
         arguments.add(synth.getRelease());
         arguments.add(synth.getSustain());
         arguments.add(synth.getAttack());
-        arguments.add(synth.getDecay());
+        arguments.add(synth.getVolume());
 
         return arguments;
     }
@@ -90,6 +90,7 @@ public class InstrumentSplitter {
     private List<Object> createArgsDrums(Drum drum) {
         List<Object> arguemnt = new ArrayList<>();
         arguemnt.add(drum.getSubDrum(drum.getLastI()));
+        arguemnt.add(drum.getVolume());
         return arguemnt;
     }
 
@@ -102,7 +103,7 @@ public class InstrumentSplitter {
         PiSender piSender = new PiSender();
         int addressCounter = 0;
         for (List stream : streamToPlayInstrument) {
-            piSender.send(stream, availableAddressInstrument.get(addressCounter));
+           piSender.send(stream, availableAddressInstrument.get(addressCounter));
             addressCounter++;
             if (addressCounter == maxAddressInstrument) break;
         }
