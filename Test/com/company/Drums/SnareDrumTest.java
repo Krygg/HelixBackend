@@ -30,6 +30,16 @@ public class SnareDrumTest {
         Assert.assertEquals(snareDrum.getLastI(), i % strings.size());
     }
 
+    @Test
+    public void testIndexOut() {
+        Drum snareDrum = new SnareDrum();
+        snareDrum.initSamples();
+        ArrayList<String> strings = ((SnareDrum) snareDrum).getSubDrums();
+        snareDrum.setI(strings.size());
+        snareDrum.getSubDrum(snareDrum.getLastI());
+        Assert.assertEquals(snareDrum.getLastI(),0);
+    }
+
 
     @Test
     public void testNameSnareDrum() {

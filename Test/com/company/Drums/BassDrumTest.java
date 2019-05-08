@@ -25,6 +25,7 @@ public class BassDrumTest {
         ArrayList<String> strings = ((BassDrum) bassDrum).getSubDrums();
         bassDrum.setI(strings.size());
         bassDrum.getSubDrum(bassDrum.getLastI());
+        Assert.assertEquals(bassDrum.getLastI(),0);
     }
 
     @Test
