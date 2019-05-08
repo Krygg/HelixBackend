@@ -43,9 +43,9 @@ public class Main {
         Drum drum = new BassDrum();
         Drum drum1 = new SnareDrum();
 
-        drum.setI(4);
+        drum.setI(3);
         drum.setVolume(0.9);
-        drum1.setI(2);
+        drum1.setI(5);
         drum1.setVolume(0.1);
         Drum drum2 = new Guitar();
         drum2.setI(3);

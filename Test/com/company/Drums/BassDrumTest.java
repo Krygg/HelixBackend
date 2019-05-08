@@ -19,6 +19,15 @@ public class BassDrumTest {
     }
 
     @Test
+    public void testIndexOut() {
+        Drum bassDrum = new BassDrum();
+        bassDrum.initSamples();
+        ArrayList<String> strings = ((BassDrum) bassDrum).getSubDrums();
+        bassDrum.setI(strings.size());
+        bassDrum.getSubDrum(bassDrum.getLastI());
+    }
+
+    @Test
     public void testLastIBassDrum() {
         Drum bassDrum = new BassDrum();
         int i = 3;

@@ -33,7 +33,7 @@ public class SnareDrum implements Drum {
     @Override
     public String getSubDrum(int i) {
         if (flag == 0) initSamples();
-        if (i > subDrums.size()) {
+        if (i > subDrums.size()-1) {
             lastI = i % subDrums.size();
             return subDrums.get(lastI);
         }
