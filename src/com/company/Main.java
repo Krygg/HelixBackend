@@ -1,10 +1,10 @@
 package com.company;
 
 
-import com.company.Drums.BassDrum;
-import com.company.Drums.Drum;
-import com.company.Drums.Guitar;
-import com.company.Drums.SnareDrum;
+import com.company.Samples.BassDrum;
+import com.company.Samples.Sample;
+import com.company.Samples.Guitar;
+import com.company.Samples.SnareDrum;
 import com.company.TimedJobs.Metronome;
 import com.company.TimedJobs.JobHandler;
 import com.company.TimedJobs.TestJobs;
@@ -40,16 +40,16 @@ public class Main {
         ArrayList<Synth> senders1 = new ArrayList<>();
         senders1.add(synth3);
         senders1.add(synth4);
-        Drum drum = new BassDrum();
-        Drum drum1 = new SnareDrum();
+        Sample sample = new BassDrum();
+        Sample sample1 = new SnareDrum();
 
-        drum.setI(3);
-        drum.setVolume(0.9);
-        drum1.setI(5);
-        drum1.setVolume(0.1);
-        Drum drum2 = new Guitar();
-        drum2.setI(3);
-        drum2.setVolume(0.99);
+        sample.setI(3);
+        sample.setVolume(0.9);
+        sample1.setI(5);
+        sample1.setVolume(0.1);
+        Sample sample2 = new Guitar();
+        sample2.setI(3);
+        sample2.setVolume(0.99);
 
         Instrument instrument1 = new Instrument(senders1);
 
@@ -57,12 +57,12 @@ public class Main {
 
         while(true) {
             instrumentSplitter.addMusicElement(instrument1);
-            instrumentSplitter.addMusicElement(drum);
-            instrumentSplitter.addMusicElement(drum1);
-            instrumentSplitter.addMusicElement(drum2);
+            instrumentSplitter.addMusicElement(sample);
+            instrumentSplitter.addMusicElement(sample1);
+            instrumentSplitter.addMusicElement(sample2);
             instrumentSplitter.prepForPlay();
             instrumentSplitter.play();
-            Thread.sleep(5000);
+            Thread.sleep(4000);
         }
 
     }

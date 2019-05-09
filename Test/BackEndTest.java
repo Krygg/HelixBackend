@@ -1,9 +1,5 @@
-import com.company.Drums.BassDrum;
-import com.company.Drums.Drum;
-import com.company.Drums.SnareDrum;
 import com.company.Instrument;
 import com.company.InstrumentSplitter;
-import com.company.MidiLookUp;
 import com.company.Synth;
 import org.junit.Assert;
 import org.junit.Test;

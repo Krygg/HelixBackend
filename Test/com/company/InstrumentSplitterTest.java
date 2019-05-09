@@ -1,14 +1,11 @@
 package com.company;
 
-import com.company.Drums.BassDrum;
-import com.company.Drums.Drum;
-import org.junit.Rule;
+import com.company.Samples.BassDrum;
+import com.company.Samples.Sample;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class InstrumentSplitterTest {
 
@@ -18,12 +15,12 @@ public class InstrumentSplitterTest {
 
     @Test
     public void addMusicElement() {
-        Drum drum = new BassDrum();
+        Sample sample = new BassDrum();
         Synth synth = new Synth.Builder().build();
         Instrument instrument = new Instrument(new ArrayList<>());
         instrument.addSynth(synth);
         InstrumentSplitter instrumentSplitter = new InstrumentSplitter();
-        instrumentSplitter.addMusicElement(drum);
+        instrumentSplitter.addMusicElement(sample);
         instrumentSplitter.addMusicElement(instrument);
 
     }
@@ -37,27 +34,27 @@ public class InstrumentSplitterTest {
 
     @Test
     public void prepForPlay() {
-        Drum drum = new BassDrum();
-        drum.setI(2);
+        Sample sample = new BassDrum();
+        sample.setI(2);
         Instrument instrument = new Instrument(new ArrayList<>());
         instrument.addSynth(new Synth.Builder().build());
 
         InstrumentSplitter instrumentSplitter = new InstrumentSplitter();
         instrumentSplitter.addMusicElement(instrument);
-        instrumentSplitter.addMusicElement(drum);
+        instrumentSplitter.addMusicElement(sample);
         instrumentSplitter.prepForPlay();
     }
 
     @Test
     public void play() throws IOException {
-        Drum drum = new BassDrum();
-        drum.setI(2);
+        Sample sample = new BassDrum();
+        sample.setI(2);
         Instrument instrument = new Instrument(new ArrayList<>());
         instrument.addSynth(new Synth.Builder().build());
 
         InstrumentSplitter instrumentSplitter = new InstrumentSplitter();
         instrumentSplitter.addMusicElement(instrument);
-        instrumentSplitter.addMusicElement(drum);
+        instrumentSplitter.addMusicElement(sample);
         instrumentSplitter.prepForPlay();
         instrumentSplitter.play();
     }

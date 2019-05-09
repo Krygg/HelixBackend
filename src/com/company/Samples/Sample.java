@@ -1,8 +1,6 @@
-package com.company.Drums;
+package com.company.Samples;
 
-import java.util.ArrayList;
-
-public interface Drum {
+public interface Sample {
     String getSubDrum(int i);
 
     void initSamples();
