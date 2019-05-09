@@ -1,4 +1,4 @@
-// Generated from C:/Users/Maria-Theresa/IdeaProjects/HelixBackend\CFG.g4 by ANTLR 4.7.2
+// Generated from /Users/Maria/Documents/GitHub/HelixBackend/CFG.g4 by ANTLR 4.7.2
 package antlr;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
