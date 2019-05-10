@@ -1,4 +1,4 @@
-package AST;
+package Interpreter.AST;
 
 public class VarException extends RuntimeException {
 

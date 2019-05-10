@@ -4,27 +4,29 @@ program: db dv sp di;
 
 db: BPM LPAR NUMBER RPAR SEMI db | ;
 
-dv: NUM VARNAME ASSIGN aExp SEMI dv
+dv: NUM VARNAME ASSIGN (aExp | VARNAME) SEMI dv
     | NOTES VARNAME ASSIGN k SEMI dv | ;
 
-di: inst p BEGIN stmt END di | ;
+di: inst p BEGIN stmts END di | ;
 
 sp: startPause p SEMI sp | ;
+
+stmts: stmt SEMI stmts
+    | stmt;
 
 stmt:  startPause p | MEL LPAR VARNAME RPAR
     | VARNAME ASSIGN aExp
     | ADSR LPAR aExp COMMA aExp COMMA aExp COMMA aExp RPAR
-    | stmt SEMI stmt
     | TIME LPAR NUMBER COMMA NUMBER RPAR
     | SEND LPAR c COMMA aExp RPAR
     | RECEIVE LPAR c COMMA VARNAME RPAR '.' stmt
-    | IF LPAR bExp RPAR BEGIN stmt END (ELSE BEGIN stmt END)? | ;
+    | IF LPAR bExp RPAR BEGIN stmts END (ELSE BEGIN stmts END)? | ;
 
 bExp: nAexp EQUAL nAexp;
 nAexp: (NOT)? aExp;
 
-aExp: multExp ((MINUS|PLUS) aExp)?;
-multExp: atom (MULT multExp)?;
+aExp: multExp | aExp (MINUS|PLUS) aExp;
+multExp: atom | multExp MULT multExp;
 atom: NUMBER | VARNAME | LPAR aExp RPAR;
 
 k: k COMMA k | KEY | LPAR k RPAR | NUMBER | ;

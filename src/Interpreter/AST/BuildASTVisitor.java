@@ -1,4 +1,10 @@
-package AST;
+package Interpreter.AST;
+import Interpreter.AST.Nodes.declarationNodes.BPMDeclaration;
+import Interpreter.AST.Nodes.declarationNodes.Declaration;
+import Interpreter.AST.Nodes.expressionNodes.*;
+import Interpreter.AST.Nodes.statementNodes.*;
+import Interpreter.AST.Nodes.terminalNodes.AtomNode;
+import Interpreter.AST.Nodes.terminalNodes.NotesNode;
 import antlr.CFGBaseVisitor;
 import antlr.CFGParser;
 
@@ -8,9 +14,11 @@ import java.util.List;
 public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
     private List<String> varNames = new ArrayList<>();
+    private List<Node> nodeList = new ArrayList<>();
 
     @Override
     public Node visitProgram(CFGParser.ProgramContext ctx) {
+
         return super.visitProgram(ctx);
     }
 
@@ -18,40 +26,60 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
     @Override
     public Node visitDb(CFGParser.DbContext ctx) {
 
-        BPMDeclaration bpmDeclaration = new BPMDeclaration();
+        if(ctx.BPM() != null){
 
-        bpmDeclaration.setValue((Integer.parseInt(ctx.NUMBER().getText())));
+            BPMDeclaration bpmDeclaration = new BPMDeclaration();
 
-        return bpmDeclaration;
+            bpmDeclaration.setValue((Integer.parseInt(ctx.NUMBER().getText())));
+
+            nodeList.add(bpmDeclaration);
+
+            return bpmDeclaration;
+        }
+
+        return null;
     }
 
     /** Variable declaration (OK)*/
     @Override
     public Node visitDv(CFGParser.DvContext ctx) {
 
-        if(ctx.aExp() != null){
+        // Expression assigned
+        if(ctx.NUM() != null){
 
             // Check if variable name has been used before
-            checkVarNames(ctx.VARNAME().getText());
+            checkVarNames(ctx.VARNAME(0).getText());
 
             Declaration numDecl = new Declaration();
             numDecl.setType("num");
-            numDecl.setVarName(ctx.VARNAME().getText());
-            numDecl.setValue(visitAExp(ctx.aExp()));
+            numDecl.setVarName(ctx.VARNAME(0).getText());
+
+            if(ctx.aExp() != null){
+
+                numDecl.setValue(visitAExp(ctx.aExp()));
+
+            } else if(ctx.VARNAME(1) != null){}
+
+
+            nodeList.add(numDecl);
 
             visitDv(ctx.dv());
 
             return numDecl;
 
-        } else if (ctx.k() != null){
+        }
+        // Notes assigned
+        else if (ctx.k() != null){
 
             // Check if variable name has been used before
-            checkVarNames(ctx.VARNAME().getText());
+            checkVarNames(ctx.VARNAME(0).getText());
 
             Declaration notesDecl = new Declaration();
             notesDecl.setType("notes");
-            notesDecl.setVarName(ctx.VARNAME().getText());
+            notesDecl.setVarName(ctx.VARNAME(0).getText());
             notesDecl.setValue(visitK(ctx.k()));
+
+            nodeList.add(notesDecl);
 
             visitDv(ctx.dv());
 
@@ -73,9 +101,16 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             checkVarNames(ctx.p().getText());
 
             Declaration instDecl = new Declaration();
+            BlockNode blockNode = new BlockNode();
+
             instDecl.setType(ctx.inst().getText());
             instDecl.setVarName(ctx.p().getText());
-            instDecl.setValue(visitStmt(ctx.stmt()));
+
+            visitStmts(ctx.stmts(), blockNode);
+
+            instDecl.setValue(blockNode);
+
+            nodeList.add(instDecl);
 
             visitDi(ctx.di());
 
@@ -95,27 +130,33 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
             visitSp(ctx.sp());
 
+            nodeList.add(start);
+
             return start;
         }
 
         return null;
     }
 
-    /** Statements (Should be checked once more, to be sure it's correct)*/
-    @Override
-    public Node visitStmt(CFGParser.StmtContext ctx) {
+    public void visitStmts(CFGParser.StmtsContext ctx, BlockNode blockNode) {
 
         // Block of statements
         if(ctx.SEMI() != null){
-            BlockNode block = new BlockNode();
-            block.addNode(visitStmt(ctx.stmt(0)));
 
-            if(ctx.stmt(1) != null){
-                block.addNode(visitStmt(ctx.stmt(1)));
-            }
+            blockNode.addNode(visitStmt(ctx.stmt()));
 
-            return block;
+            visitStmts(ctx.stmts(), blockNode);
+
+        } else if (ctx.stmt() != null) {
+
+            blockNode.addNode(visitStmt(ctx.stmt()));
+
         }
+    }
+
+    /** Statements (Should be checked once more, to be sure it's correct)*/
+    @Override
+    public Node visitStmt(CFGParser.StmtContext ctx) {
 
         // Assignment
         if(ctx.ASSIGN() != null){
@@ -196,7 +237,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
             receive.setChannel(ctx.c().getText());
             receive.setVarName(ctx.VARNAME().getText());
-            receive.setStatement(visitStmt(ctx.stmt(0)));
+            receive.setStatement(visitStmt(ctx.stmt()));
 
             return receive;
 
@@ -206,13 +247,21 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         else if(ctx.IF() != null){
 
             IfElseNode ifElseNode = new IfElseNode();
+            BlockNode block1 = new BlockNode();
+            BlockNode block2 = new BlockNode();
 
+            // Boolean
             ifElseNode.setBool(visitBExp(ctx.bExp()));
-            ifElseNode.setStmtTrue(visitStmt(ctx.stmt(0)));
 
+            // True block
+            visitStmts(ctx.stmts(0), block1);
+            ifElseNode.setStmtTrue(block1);
+
+            // False Block
             if(ctx.ELSE() != null){
 
-                ifElseNode.setStmtFalse(visitStmt(ctx.stmt(1)));
+                visitStmts(ctx.stmts(1), block2);
+                ifElseNode.setStmtFalse(block2);
             }
 
             return ifElseNode;
@@ -259,8 +308,8 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
             PlusNode plus = new PlusNode();
 
-            plus.setLeft(visitMultExp(ctx.multExp()));
-            plus.setRight(visitAExp(ctx.aExp()));
+            plus.setLeft(visitAExp(ctx.aExp(0)));
+            plus.setRight(visitAExp(ctx.aExp(1)));
 
             return plus;
         }
@@ -270,8 +319,8 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
             MinusNode minus = new MinusNode();
 
-            minus.setLeft(visitMultExp(ctx.multExp()));
-            minus.setRight(visitAExp(ctx.aExp()));
+            minus.setLeft(visitAExp(ctx.aExp(0)));
+            minus.setRight(visitAExp(ctx.aExp(1)));
 
             return minus;
 
@@ -287,8 +336,8 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         if(ctx.MULT() != null){
             MultNode mult = new MultNode();
 
-            mult.setLeft(visitAtom(ctx.atom()));
-            mult.setRight(visitMultExp(ctx.multExp()));
+            mult.setLeft(visitMultExp(ctx.multExp(0)));
+            mult.setRight(visitMultExp(ctx.multExp(1)));
 
             return mult;
         }
@@ -301,27 +350,38 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
     @Override
     public Node visitAtom(CFGParser.AtomContext ctx) {
 
-        AtomNode atom = new AtomNode();
-
+        // Reached the terminal
         if(ctx.VARNAME() != null){
+
+            AtomNode atom = new AtomNode();
+
             if(varNames.contains(ctx.VARNAME().getText())){
                 atom.setValue(ctx.VARNAME().getText());
+
+                return atom;
+
             } else {
                 throw new VarException("This variable hasn't been declared!");
             }
         } else if(ctx.NUMBER() != null){
+
+            AtomNode atom = new AtomNode();
+
             atom.setValue(ctx.NUMBER().getText());
+
+            return atom;
         }
 
 
+        // Parenthesis rule
         if(ctx.aExp() != null){
-            visitAExp(ctx.aExp());
+            return visitAExp(ctx.aExp());
         }
 
-        return atom;
+        return null;
     }
 
-    /** Notes (OK)*/
+    /** Notes (May have to change because of the semantics)*/
     @Override
     public Node visitK(CFGParser.KContext ctx) {
 
@@ -339,6 +399,10 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         } else {
             throw new VarException("This variable name has already been used!");
         }
+    }
+
+    public List<Node> getNodeList() {
+        return nodeList;
     }
 }
 

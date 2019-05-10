@@ -1,4 +1,4 @@
-// Generated from C:/Users/Maria-Theresa/IdeaProjects/HelixBackend\CFG.g4 by ANTLR 4.7.2
+// Generated from /Users/Maria/Documents/GitHub/HelixBackend/CFG.g4 by ANTLR 4.7.2
 package antlr;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -40,6 +40,12 @@ public interface CFGVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitSp(CFGParser.SpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link CFGParser#stmts}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStmts(CFGParser.StmtsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CFGParser#stmt}.
 	 * @param ctx the parse tree
