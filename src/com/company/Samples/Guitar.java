@@ -1,8 +1,8 @@
-package com.company.Drums;
+package com.company.Samples;
 
 import java.util.ArrayList;
 
-public class Guitar implements Drum {
+public class Guitar implements Sample {
     private String name = "Guitar";
     private int flag = 0;
     private int lastI = 0;

@@ -1,7 +1,7 @@
 package com.company;
 
 
-import com.company.Drums.Drum;
+import com.company.Samples.Sample;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
 public class InstrumentSplitter {
     private ArrayList<Instrument> instrumentArrayList = new ArrayList<>();
     private ArrayList<String> availableAddressInstrument = new ArrayList<>();
-    private ArrayList<Drum> drumArrayList = new ArrayList<>();
+    private ArrayList<Sample> sampleArrayList = new ArrayList<>();
     private ArrayList<List> streamToPlayInstrument = new ArrayList<>();
     private ArrayList<List> streamToPlayDrum = new ArrayList<>();
     private ArrayList<String> availableAddressDrum  = new ArrayList<>();
@@ -25,8 +25,8 @@ public class InstrumentSplitter {
     }
 
     public void addMusicElement(Object object) {
-        if (object instanceof Drum) {
-            drumArrayList.add((Drum) object);
+        if (object instanceof Sample) {
+            sampleArrayList.add((Sample) object);
         }
         else if (object instanceof Instrument) {
             instrumentArrayList.add((Instrument) object);
@@ -60,8 +60,8 @@ public class InstrumentSplitter {
                 streamToPlayInstrument.add(createArgsInstrument(synth));
             }
         }
-        for (Drum aDrumArrayList : drumArrayList) {
-            streamToPlayDrum.add(createArgsDrums(aDrumArrayList));
+        for (Sample aSampleArrayList : sampleArrayList) {
+            streamToPlayDrum.add(createArgsDrums(aSampleArrayList));
         }
 
     }
@@ -87,10 +87,10 @@ public class InstrumentSplitter {
         return arguments;
     }
 
-    private List<Object> createArgsDrums(Drum drum) {
+    private List<Object> createArgsDrums(Sample sample) {
         List<Object> arguemnt = new ArrayList<>();
-        arguemnt.add(drum.getSubDrum(drum.getLastI()));
-        arguemnt.add(drum.getVolume());
+        arguemnt.add(sample.getSubDrum(sample.getLastI()));
+        arguemnt.add(sample.getVolume());
         return arguemnt;
     }
 
@@ -117,7 +117,7 @@ public class InstrumentSplitter {
 
         streamToPlayInstrument.clear();
         instrumentArrayList.clear();
-        drumArrayList.clear();
+        sampleArrayList.clear();
         streamToPlayDrum.clear();
     }
 
