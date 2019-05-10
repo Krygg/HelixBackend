@@ -37,9 +37,11 @@ public class TestClass {
         semantics.updateState(buildASTVisitor.getNodeList().get(1));
         semantics.updateState(buildASTVisitor.getNodeList().get(2));
 
+        System.out.println(semantics.getState());
+
 
         // Equals
-        AtomNode atomNode1 = new AtomNode();
+        /*AtomNode atomNode1 = new AtomNode();
         atomNode1.setValue("3");
 
         AtomNode atomNode2 = new AtomNode();
@@ -49,7 +51,7 @@ public class TestClass {
         node.setLeft(atomNode1);
         node.setRight(atomNode2);
 
-        System.out.println(semantics.BexpSemantics(node));
+        System.out.println(semantics.BexpSemantics(node));*/
 
     }
 

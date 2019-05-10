@@ -20,7 +20,7 @@ public class Semantics {
         Node nodeValue = declNode.getValue();
 
         // A num variable has been declared
-        if(nodeValue instanceof ExpressionNode){
+        if(nodeValue instanceof ExpressionNode || nodeValue instanceof AtomNode){
 
             int value = AexpSemantics(nodeValue);
 
@@ -36,11 +36,11 @@ public class Semantics {
 
         }
 
-        System.out.println(state);
     }
 
     /** Semantics for arithmetic expressions */
     public int AexpSemantics(Node node){
+
 
         // Plus expression
         if(node instanceof PlusNode){
@@ -97,5 +97,13 @@ public class Semantics {
         }
 
         return true;
+    }
+
+    public HashMap<String, Object> getState() {
+        return state;
+    }
+
+    public void setState(HashMap<String, Object> state) {
+        this.state = state;
     }
 }

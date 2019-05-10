@@ -1,4 +1,4 @@
 bpm(60);
 
-num x = 3-5+0;
-num y = 5+5-x;
+num x = 3;
+num m = 69+x;
