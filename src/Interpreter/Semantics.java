@@ -3,6 +3,7 @@ package Interpreter;
 import Interpreter.AST.Node;
 import Interpreter.AST.Nodes.declarationNodes.Declaration;
 import Interpreter.AST.Nodes.expressionNodes.*;
+import Interpreter.AST.Nodes.statementNodes.AssignNode;
 import Interpreter.AST.Nodes.terminalNodes.AtomNode;
 import Interpreter.AST.Nodes.terminalNodes.NotesNode;
 
@@ -12,38 +13,59 @@ public class Semantics {
 
     private HashMap<String, Object> state = new HashMap<>();
 
-    /** Update the state */
-    public void updateState(Node node){
+    /**
+     * Update the state
+     */
+    public void updateState(Node node) {
 
-        Declaration declNode = (Declaration) node;
 
-        Node nodeValue = declNode.getValue();
+        if (node instanceof Declaration) {
 
-        // A num variable has been declared
-        if(nodeValue instanceof ExpressionNode || nodeValue instanceof AtomNode){
+            Declaration declNode = (Declaration) node;
 
-            int value = AexpSemantics(nodeValue);
+            Node nodeValue = declNode.getValue();
 
-            state.put(declNode.getVarName(), value);
+            // A num variable has been declared
+            if (nodeValue instanceof ExpressionNode || nodeValue instanceof AtomNode) {
+
+                int value = AexpSemantics(nodeValue);
+
+                state.put(declNode.getVarName(), value);
+            }
+
+            //TODO: doesn't work yet
+            else if (nodeValue instanceof NotesNode) {
+
+                String value = "KEY";
+
+                state.put(declNode.getVarName(), value);
+            }
+
+        } else if (node instanceof AssignNode) {
+
+            AssignNode assignNode = (AssignNode) node;
+
+            Node nodeValue = assignNode.getValue();
+
+
+            if (nodeValue instanceof ExpressionNode || nodeValue instanceof AtomNode) {
+                int value = AexpSemantics(nodeValue);
+
+                state.replace(assignNode.getVarName(), value);
+            }
         }
 
-        //TODO: doesn't work yet
-        else if (nodeValue instanceof NotesNode){
-
-            String value = "KEY";
-
-            state.put(declNode.getVarName(), value);
-
-        }
 
     }
 
-    /** Semantics for arithmetic expressions */
-    public int AexpSemantics(Node node){
+    /**
+     * Semantics for arithmetic expressions
+     */
+    public int AexpSemantics(Node node) {
 
 
         // Plus expression
-        if(node instanceof PlusNode){
+        if (node instanceof PlusNode) {
 
             PlusNode plusNode = (PlusNode) node;
 
@@ -52,7 +74,7 @@ public class Semantics {
         }
 
         // Minus expression
-        else if(node instanceof MinusNode){
+        else if (node instanceof MinusNode) {
 
             MinusNode minusNode = (MinusNode) node;
 
@@ -61,7 +83,7 @@ public class Semantics {
         }
 
         // Multiplication expression
-        else if(node instanceof MultNode){
+        else if (node instanceof MultNode) {
 
             MultNode multNode = (MultNode) node;
 
@@ -70,12 +92,12 @@ public class Semantics {
         }
 
         // Terminal
-        else if(node instanceof AtomNode){
+        else if (node instanceof AtomNode) {
 
             AtomNode atomNode = (AtomNode) node;
 
             // If it's a variable name
-            if(state.containsKey(atomNode.getValue())){
+            if (state.containsKey(atomNode.getValue())) {
 
                 return Integer.parseInt(state.get(atomNode.getValue()).toString());
             }
@@ -87,11 +109,13 @@ public class Semantics {
 
     }
 
-    /** Semantics for boolean expressions*/
+    /**
+     * Semantics for boolean expressions
+     */
     //TODO: Missing NOT since the precedence doesn't make sense
-    public Boolean BexpSemantics(Node node){
+    public Boolean BexpSemantics(Node node) {
 
-        if(node instanceof EqualNode){
+        if (node instanceof EqualNode) {
 
             return AexpSemantics(((EqualNode) node).getLeft()) == AexpSemantics(((EqualNode) node).getRight());
         }

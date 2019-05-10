@@ -1,6 +1,9 @@
 package Interpreter.AST;
 
+import Interpreter.AST.Nodes.declarationNodes.Declaration;
 import Interpreter.AST.Nodes.expressionNodes.EqualNode;
+import Interpreter.AST.Nodes.statementNodes.AssignNode;
+import Interpreter.AST.Nodes.statementNodes.BlockNode;
 import Interpreter.AST.Nodes.terminalNodes.AtomNode;
 import Interpreter.Semantics;
 import antlr.CFGLexer;
@@ -36,6 +39,15 @@ public class TestClass {
 
         semantics.updateState(buildASTVisitor.getNodeList().get(1));
         semantics.updateState(buildASTVisitor.getNodeList().get(2));
+
+        System.out.println(semantics.getState());
+
+
+        Declaration test = (Declaration) buildASTVisitor.getNodeList().get(3);
+
+        BlockNode node = (BlockNode) test.getValue();
+
+        semantics.updateState(node.getNodeList().get(0));
 
         System.out.println(semantics.getState());
 

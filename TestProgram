@@ -2,3 +2,7 @@ bpm(60);
 
 num x = 3;
 num m = 69+x;
+
+Piano p {
+    x = 6;
+}
