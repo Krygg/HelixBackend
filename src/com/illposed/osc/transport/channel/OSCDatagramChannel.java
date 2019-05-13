@@ -99,7 +99,10 @@ public class OSCDatagramChannel extends SelectableChannel {
 			final OSCSerializer serializer = serializerFactory.create(buffer);
 			buffer.rewind();
 			serializer.write(packet);
+
 			buffer.flip();
+
+
 			if (underlyingChannel.isConnected()) {
 				underlyingChannel.write(buffer);
 			} else if (remoteAddress == null) {

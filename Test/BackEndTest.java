@@ -34,14 +34,14 @@ public class BackEndTest {
     @Test
     public void testBuilderMoreNotes() {
         Synth synth = new Synth.Builder().Node("c4, c5, c6, c7,                c8").build();
-        synth.getNode();
-        Assert.assertEquals(synth.getNode(),"60, 72, 84, 96, 108");
+        synth.getNote();
+        Assert.assertEquals(synth.getNote(),"60, 72, 84, 96, 108");
     }
 
     @Test
     public void testBuilderOneNote() {
         Synth synth = new Synth.Builder().Node("c4").build();
-        Assert.assertEquals(synth.getNode(),"60" +
+        Assert.assertEquals(synth.getNote(),"60" +
                 "");
     }
 
@@ -60,7 +60,7 @@ public class BackEndTest {
 
 
         ArrayList<Object>  senderList = new ArrayList<>();
-        senderList.add(synth.getNode());
+        senderList.add(synth.getNote());
         senderList.add(synth.getDecay());
         senderList.add(synth.getAttack());
         senderList.add(synth.getSustain());

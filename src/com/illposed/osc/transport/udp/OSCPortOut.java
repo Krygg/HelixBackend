@@ -122,6 +122,7 @@ public class OSCPortOut extends OSCPort {
 		final DatagramChannel channel = getChannel();
 		final OSCDatagramChannel oscChannel = new OSCDatagramChannel(channel, null, serializerFactory);
 		oscChannel.send(outputBuffer, packet, getRemoteAddress());
+        System.out.println(packet);
 	}
 
 	@Override
