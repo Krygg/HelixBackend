@@ -53,17 +53,17 @@ public interface CFGVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStmt(CFGParser.StmtContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link CFGParser#nBExp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNBExp(CFGParser.NBExpContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link CFGParser#bExp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBExp(CFGParser.BExpContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link CFGParser#nAexp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNAexp(CFGParser.NAexpContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link CFGParser#aExp}.
 	 * @param ctx the parse tree

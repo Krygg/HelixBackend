@@ -188,10 +188,15 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         // Melody statement
         else if(ctx.MEL() != null){
 
-            MelNode mel = new MelNode();
-            mel.setVarName(ctx.VARNAME().getText());
+            if(varNames.contains(ctx.VARNAME().getText())){
 
-            return mel;
+                MelNode mel = new MelNode();
+                mel.setVarName(ctx.VARNAME().getText());
+
+                return mel;
+            }
+
+            throw new VarException("This variable hasn't been declared!");
 
         }
 
@@ -252,7 +257,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             BlockNode block2 = new BlockNode();
 
             // Boolean
-            ifElseNode.setBool(visitBExp(ctx.bExp()));
+            ifElseNode.setBool(visitNBExp(ctx.nBExp()));
 
             // True block
             visitStmts(ctx.stmts(0), block1);
@@ -271,30 +276,34 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         return super.visitStmt(ctx);
     }
 
-
-    /**Equals expression (may need to change precedence)*/
     @Override
-    public Node visitBExp(CFGParser.BExpContext ctx) {
-
-        EqualNode equal = new EqualNode();
-
-        equal.setLeft(visitNAexp(ctx.nAexp(0)));
-        equal.setRight(visitNAexp(ctx.nAexp(1)));
-
-        return equal;
-    }
-
-    /**Not expression (may need to change precedence)*/
-    @Override
-    public Node visitNAexp(CFGParser.NAexpContext ctx) {
+    public Node visitNBExp(CFGParser.NBExpContext ctx) {
 
         if(ctx.NOT() != null){
 
             NotNode not = new NotNode();
 
-            not.setExpressionNode(visitAExp(ctx.aExp()));
+            not.setExpressionNode(visitBExp(ctx.bExp()));
 
             return not;
+        }
+
+        return visitBExp(ctx.bExp());
+
+    }
+
+    /**Equals expression (may need to change precedence)*/
+    @Override
+    public Node visitBExp(CFGParser.BExpContext ctx) {
+
+        if(ctx.EQUAL() != null){
+
+            EqualNode equal = new EqualNode();
+
+            equal.setLeft(visitBExp(ctx.bExp(0)));
+            equal.setRight(visitBExp(ctx.bExp(1)));
+
+            return equal;
         }
 
         return visitAExp(ctx.aExp());

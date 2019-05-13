@@ -20,10 +20,10 @@ stmt:  startPause p | MEL LPAR VARNAME RPAR
     | TIME LPAR NUMBER COMMA NUMBER RPAR
     | SEND LPAR c COMMA aExp RPAR
     | RECEIVE LPAR c COMMA VARNAME RPAR '.' stmt
-    | IF LPAR bExp RPAR BEGIN stmts END (ELSE BEGIN stmts END)? | ;
+    | IF LPAR nBExp RPAR BEGIN stmts END (ELSE BEGIN stmts END)? | ;
 
-bExp: nAexp EQUAL nAexp;
-nAexp: (NOT)? aExp;
+nBExp: NOT LPAR bExp RPAR | bExp ;
+bExp: bExp EQUAL bExp | aExp;
 
 aExp: multExp | aExp (MINUS|PLUS) aExp;
 multExp: atom | multExp MULT multExp;
