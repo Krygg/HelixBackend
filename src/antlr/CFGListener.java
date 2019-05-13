@@ -78,6 +78,16 @@ public interface CFGListener extends ParseTreeListener {
 	 */
 	void exitStmt(CFGParser.StmtContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CFGParser#nBExp}.
+	 * @param ctx the parse tree
+	 */
+	void enterNBExp(CFGParser.NBExpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CFGParser#nBExp}.
+	 * @param ctx the parse tree
+	 */
+	void exitNBExp(CFGParser.NBExpContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CFGParser#bExp}.
 	 * @param ctx the parse tree
 	 */
@@ -87,16 +97,6 @@ public interface CFGListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBExp(CFGParser.BExpContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link CFGParser#nAexp}.
-	 * @param ctx the parse tree
-	 */
-	void enterNAexp(CFGParser.NAexpContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link CFGParser#nAexp}.
-	 * @param ctx the parse tree
-	 */
-	void exitNAexp(CFGParser.NAexpContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link CFGParser#aExp}.
 	 * @param ctx the parse tree

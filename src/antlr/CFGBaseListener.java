@@ -100,6 +100,18 @@ public class CFGBaseListener implements CFGListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNBExp(CFGParser.NBExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNBExp(CFGParser.NBExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBExp(CFGParser.BExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -107,18 +119,6 @@ public class CFGBaseListener implements CFGListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBExp(CFGParser.BExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNAexp(CFGParser.NAexpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNAexp(CFGParser.NAexpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
