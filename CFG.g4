@@ -4,7 +4,7 @@ program: db dv sp di;
 
 db: BPM LPAR NUMBER RPAR SEMI db | ;
 
-dv: NUM VARNAME ASSIGN (aExp | VARNAME) SEMI dv
+dv: NUM VARNAME ASSIGN aExp SEMI dv
     | NOTES VARNAME ASSIGN k SEMI dv | ;
 
 di: inst p BEGIN stmts END di | ;

@@ -25,4 +25,19 @@ public class BlockNode extends StatementNode {
     public String toString() {
         return "BlockNode" + nodeList;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BlockNode blockNode = (BlockNode) o;
+
+        return nodeList != null ? nodeList.equals(blockNode.nodeList) : blockNode.nodeList == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return nodeList != null ? nodeList.hashCode() : 0;
+    }
 }

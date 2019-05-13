@@ -19,7 +19,6 @@ public class TestClass {
 
     public static void main(String[] args) throws IOException {
 
-
         CharStream charStream = CharStreams.fromFileName("TestProgram");
 
         CFGLexer lexer = new CFGLexer(charStream);
@@ -35,7 +34,7 @@ public class TestClass {
 
 
         // Declaration of a number
-        Semantics semantics = new Semantics();
+        /*Semantics semantics = new Semantics();
 
         semantics.updateState(buildASTVisitor.getNodeList().get(1));
         semantics.updateState(buildASTVisitor.getNodeList().get(2));
@@ -49,7 +48,7 @@ public class TestClass {
 
         semantics.updateState(node.getNodeList().get(0));
 
-        System.out.println(semantics.getState());
+        System.out.println(semantics.getState());*/
 
 
         // Equals

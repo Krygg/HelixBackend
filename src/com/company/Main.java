@@ -47,8 +47,8 @@ public class Main {
         sample.setVolume(0.9);
         sample1.setI(5);
         sample1.setVolume(0.1);
-        Sample sample2 = new Guitar();
-        sample2.setI(3);
+        Sample sample2 = new SnareDrum();
+        sample2.setI(2);
         sample2.setVolume(0.99);
 
         Instrument instrument1 = new Instrument(senders1);

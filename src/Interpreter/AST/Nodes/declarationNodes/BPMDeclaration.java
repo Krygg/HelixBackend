@@ -17,4 +17,19 @@ public class BPMDeclaration implements Node {
     public String toString() {
         return "BPM{" + value + '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BPMDeclaration that = (BPMDeclaration) o;
+
+        return value == that.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value;
+    }
 }

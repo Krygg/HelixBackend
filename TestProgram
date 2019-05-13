@@ -5,4 +5,5 @@ num m = 69+x;
 
 Piano p {
     x = 6;
+    mel(chord);
 }

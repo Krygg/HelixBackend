@@ -17,4 +17,19 @@ public class StartNode extends StatementNode {
     public String toString() {
         return "StartNode{" + varName + '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StartNode startNode = (StartNode) o;
+
+        return varName != null ? varName.equals(startNode.varName) : startNode.varName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return varName != null ? varName.hashCode() : 0;
+    }
 }
