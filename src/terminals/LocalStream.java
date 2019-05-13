@@ -7,10 +7,10 @@ import com.company.Instrument;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocalStream {
+public class LocalStream <T> {
 
     private String soundProfile;
-    private List<Object> notes;
+    private List<T> notes;
     private ADSR adsr;
     private TimeSignature time;
 
@@ -19,14 +19,14 @@ public class LocalStream {
         notes = new ArrayList<>();
     }
 
-    public LocalStream(String soundProfile, List<Object> notes, ADSR adsr, TimeSignature time) {
+    public LocalStream(String soundProfile, List<T> notes, ADSR adsr, TimeSignature time) {
         this.soundProfile = soundProfile;
         this.notes = notes;
         this.adsr = adsr;
         this.time = time;
     }
 
-    public void addNote(Object note){
+    public void addNote(T note){
         notes.add(note);
     }
 
@@ -38,11 +38,11 @@ public class LocalStream {
         this.soundProfile = soundProfile;
     }
 
-    public List<Object> getNotes() {
+    public List<T> getNotes() {
         return notes;
     }
 
-    public void setNotes(List<Object> notes) {
+    public void setNotes(List<T> notes) {
         this.notes = notes;
     }
 
@@ -64,11 +64,10 @@ public class LocalStream {
 
     @Override
     public String toString() {
-        return "LocalStream{" +
-                "soundProfile='" + soundProfile + '\'' +
-                ", notes=" + notes +
-                ", adsr=" + adsr +
-                ", time=" + time +
+        return "{soundProfile='" + soundProfile + '\n' +
+                "notes=" + notes + '\n' +
+                "adsr=" + adsr + '\n' +
+                "time=" + time +
                 '}';
     }
 }

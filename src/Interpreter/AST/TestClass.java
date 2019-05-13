@@ -1,12 +1,14 @@
 package Interpreter.AST;
 
-import Interpreter.AST.Nodes.declarationNodes.Declaration;
+import Interpreter.AST.Nodes.declarationNodes.*;
 import Interpreter.AST.Nodes.expressionNodes.EqualNode;
 import Interpreter.AST.Nodes.expressionNodes.NotNode;
 import Interpreter.AST.Nodes.statementNodes.AssignNode;
 import Interpreter.AST.Nodes.statementNodes.BlockNode;
+import Interpreter.AST.Nodes.statementNodes.StartNode;
 import Interpreter.AST.Nodes.terminalNodes.AtomNode;
 import Interpreter.AST.Nodes.terminalNodes.NotesNode;
+import Interpreter.InstrumentInfo;
 import Interpreter.Semantics;
 import antlr.CFGLexer;
 import antlr.CFGParser;
@@ -16,6 +18,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import terminals.LocalStream;
+import terminals.Note;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -35,9 +38,41 @@ public class TestClass {
         BuildASTVisitor buildASTVisitor = new BuildASTVisitor();
         buildASTVisitor.visit(tree);
 
-        //System.out.println(buildASTVisitor.getNodeList());
+        System.out.println(buildASTVisitor.getNodeList());
 
+        // Semantics
+        Semantics semantics = new Semantics();
 
+        HashMap<String, Object> state = new HashMap<>();
+        HashMap<String, InstrumentInfo> envI = new HashMap<>();
+        LocalStream<LocalStream> localStream = new LocalStream<>();
+
+        for(Node node : buildASTVisitor.getNodeList()){
+
+            if(node instanceof BPMDeclaration){
+
+                semantics.bpmDeclSemantics(node, state);
+
+            } else if(node instanceof NumDecl || node instanceof NotesDecl){
+
+                semantics.varDeclSemantics(node, state);
+
+            } else if(node instanceof InstDecl){
+
+                semantics.instDeclSemantics(node, envI);
+            }
+        }
+
+        // Start instrument/process
+        for(Node node : buildASTVisitor.getNodeList()){
+
+            if(node instanceof StartNode){
+
+                semantics.communicationSemantics(node, state, localStream);
+            }
+        }
+
+        System.out.println(state);
 
 
         // Assignment

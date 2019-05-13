@@ -2,15 +2,26 @@ bpm(60);
 
 num x = 3;
 num m = 69+x;
-notes chord = c4,(c5,c6);
+num y = 0;
+
+start p;
 
 Piano p {
 
-    x = 0;
+    x = x + 1;
 
-    mel(chord);
+    time(3,5);
 
-    if(x == 20){
+    adsr(2,3,4,5);
 
-    }
+    send(c,7+4);
+
+    start d;
+
+}
+
+Drum d {
+
+    receive(c,y) . if(y == 10){x=3};
+
 }
