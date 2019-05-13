@@ -48,18 +48,17 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         if(ctx.NUM() != null){
 
             // Check if variable name has been used before
-            checkVarNames(ctx.VARNAME(0).getText());
+            checkVarNames(ctx.VARNAME().getText());
 
             Declaration numDecl = new Declaration();
             numDecl.setType("num");
-            numDecl.setVarName(ctx.VARNAME(0).getText());
+            numDecl.setVarName(ctx.VARNAME().getText());
 
             if(ctx.aExp() != null){
 
                 numDecl.setValue(visitAExp(ctx.aExp()));
 
-            } else if(ctx.VARNAME(1) != null){}
-
+            }
 
             nodeList.add(numDecl);
 
@@ -72,11 +71,11 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         else if (ctx.k() != null){
 
             // Check if variable name has been used before
-            checkVarNames(ctx.VARNAME(0).getText());
+            checkVarNames(ctx.VARNAME().getText());
 
             Declaration notesDecl = new Declaration();
             notesDecl.setType("notes");
-            notesDecl.setVarName(ctx.VARNAME(0).getText());
+            notesDecl.setVarName(ctx.VARNAME().getText());
             notesDecl.setValue(visitK(ctx.k()));
 
             nodeList.add(notesDecl);
@@ -145,7 +144,9 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
             blockNode.addNode(visitStmt(ctx.stmt()));
 
-            visitStmts(ctx.stmts(), blockNode);
+            if(!ctx.stmts().getText().equals("")){
+                visitStmts(ctx.stmts(), blockNode);
+            }
 
         } else if (ctx.stmt() != null) {
 

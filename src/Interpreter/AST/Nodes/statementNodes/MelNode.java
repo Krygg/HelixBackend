@@ -18,4 +18,19 @@ public class MelNode extends StatementNode {
     public String toString() {
         return "MelNode{" + varName + '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MelNode melNode = (MelNode) o;
+
+        return varName != null ? varName.equals(melNode.varName) : melNode.varName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return varName != null ? varName.hashCode() : 0;
+    }
 }

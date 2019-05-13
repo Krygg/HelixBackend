@@ -13,12 +13,10 @@ public class Semantics {
 
     private HashMap<String, Object> state = new HashMap<>();
 
-    /**
-     * Update the state
-     */
+    /** Update the state */
     public void updateState(Node node) {
 
-
+        // Declaration
         if (node instanceof Declaration) {
 
             Declaration declNode = (Declaration) node;
@@ -40,22 +38,22 @@ public class Semantics {
 
                 state.put(declNode.getVarName(), value);
             }
+        }
 
-        } else if (node instanceof AssignNode) {
+        // Assignment
+        else if (node instanceof AssignNode) {
 
             AssignNode assignNode = (AssignNode) node;
 
             Node nodeValue = assignNode.getValue();
 
-
             if (nodeValue instanceof ExpressionNode || nodeValue instanceof AtomNode) {
+
                 int value = AexpSemantics(nodeValue);
 
                 state.replace(assignNode.getVarName(), value);
             }
         }
-
-
     }
 
     /**
