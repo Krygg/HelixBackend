@@ -15,8 +15,10 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import terminals.LocalStream;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class TestClass {
 
@@ -36,6 +38,29 @@ public class TestClass {
         //System.out.println(buildASTVisitor.getNodeList());
 
 
+
+
+        // Assignment
+        /* Semantics semantics = new Semantics();
+
+        HashMap<String, Object> state = new HashMap<>();
+        state.put("x", "5");
+
+        LocalStream localStream = new LocalStream();
+
+        AtomNode atomNode1 = new AtomNode();
+        atomNode1.setValue("3");
+
+        AssignNode assignNode = new AssignNode();
+        assignNode.setVarName("x");
+        assignNode.setValue(atomNode1);
+
+        System.out.println(semantics.statementsSemantics(assignNode,state,localStream));*/
+
+
+
+
+        // Notes declaration
         /* Semantics semantics = new Semantics();
 
         Declaration notesDecl = new Declaration();
@@ -71,8 +96,10 @@ public class TestClass {
         System.out.println(semantics.getState());*/
 
 
+
+
         // Equals
-        Semantics semantics = new Semantics();
+        /*Semantics semantics = new Semantics();
 
         AtomNode atomNode1 = new AtomNode();
         atomNode1.setValue("3");
@@ -92,10 +119,10 @@ public class TestClass {
         node.setLeft(node2);
         node.setRight(node3);
 
-        //NotNode notNode = new NotNode();
-        //notNode.setExpressionNode(node);
+        NotNode notNode = new NotNode();
+        notNode.setExpressionNode(node);
 
-        System.out.println(semantics.bexpSemantics(node));
+        System.out.println(semantics.bexpSemantics(node));*/
 
     }
 

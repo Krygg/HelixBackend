@@ -55,13 +55,14 @@ public class Main {
 
         InstrumentSplitter instrumentSplitter = new InstrumentSplitter();
 
+        //TODO: Had to comment one line out because it had an error.
         while(true) {
             instrumentSplitter.addMusicElement(instrument1);
             instrumentSplitter.addMusicElement(sample);
             instrumentSplitter.addMusicElement(sample1);
             instrumentSplitter.addMusicElement(sample2);
             instrumentSplitter.prepForPlay();
-            instrumentSplitter.play();
+            //instrumentSplitter.play();
             Thread.sleep(4000);
         }
 

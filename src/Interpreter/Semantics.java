@@ -4,6 +4,7 @@ import Interpreter.AST.Node;
 import Interpreter.AST.Nodes.declarationNodes.BPMDeclaration;
 import Interpreter.AST.Nodes.declarationNodes.Declaration;
 import Interpreter.AST.Nodes.expressionNodes.*;
+import Interpreter.AST.Nodes.statementNodes.AssignNode;
 import Interpreter.AST.Nodes.terminalNodes.AtomNode;
 import Interpreter.AST.Nodes.terminalNodes.NotesNode;
 import com.company.MidiLookUp;
@@ -180,6 +181,27 @@ public class Semantics {
         }
 
         throw new IllegalArgumentException();
+    }
+
+    /** Statement semantics */
+    public EndConfiguration statementsSemantics(Node node, HashMap<String, Object> state, LocalStream localStream) {
+
+        // Assign Statement
+        if (node instanceof AssignNode) {
+            AssignNode assignNode = (AssignNode) node;
+
+            Node nodeValue = assignNode.getValue();
+
+            if (nodeValue instanceof ExpressionNode || nodeValue instanceof AtomNode) {
+                int value = aExpSemantics(nodeValue);
+                state.replace(assignNode.getVarName(), value);
+            }
+
+            return new EndConfiguration(localStream, state);
+        }
+
+        throw new IllegalArgumentException();
+
     }
 
 
