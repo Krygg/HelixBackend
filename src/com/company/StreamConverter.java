@@ -3,6 +3,7 @@ package com.company;
 import terminals.GlobalStream;
 import terminals.LocalStream;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class StreamConverter {
     }
 
 
-    private void convertToOSCFormat() {
+    private void convertToOSCFormat() throws IOException {
         for (Synth aStreamToPlay : streamToPlay) {
             OSCList.add(OSCFormatHelper(aStreamToPlay));
         }
