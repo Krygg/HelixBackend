@@ -78,7 +78,7 @@ public class InstrumentSplitter {
     private List<Object> createArgsInstrument(Synth synth) {
         List<Object> arguments = new ArrayList<>();
         arguments.add(synth.getSynth());
-        arguments.add(synth.getNode());
+        arguments.add(synth.getNote());
         arguments.add(synth.getRelease());
         arguments.add(synth.getSustain());
         arguments.add(synth.getAttack());

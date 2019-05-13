@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.util.List;
 
 public class PiSender  {
+    //TODO: here is one sout.
 
     private InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
     private OSCPortOut portOut = new OSCPortOut(inetAddress,4559);
@@ -18,7 +19,7 @@ public class PiSender  {
     public void send(List<Object> arguments, String address) {
 
         OSCMessage msg = new OSCMessage(address, arguments);
-
+        System.out.println(msg.toString());
         try {
             System.out.println(msg.getAddress());
             portOut.send(msg);

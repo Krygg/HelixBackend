@@ -9,7 +9,7 @@ public class SynthTest {
     @Test
     public void getNode() {
         Synth synth = new Synth.Builder().Node("c4").build();
-        assertEquals(synth.getNode(),"60");
+        assertEquals(synth.getNote(),"60");
     }
 
     @Test
@@ -17,7 +17,7 @@ public class SynthTest {
         String node = "c4,   c7,    e4";
         String expected = "60, 96, 64";
         Synth synth = new Synth.Builder().Node(node).build();
-        assertEquals(synth.getNode(),expected);
+        assertEquals(synth.getNote(),expected);
     }
 
     @Test(expected = NullPointerException.class)

@@ -3,11 +3,26 @@ package com.company;
 
 //todo a better name for this badboi
 
+import terminals.TimeSignature;
+
 public class Synth {
-    private String node;
+    private String note;
     private String synth;
     private int attack, decay, sustain, release;
     private double volume;
+    private TimeSignature timeSignature;
+    private int delayTime;
+
+    public Synth(String note, String synth, int attack, int decay, int sustain, int release, double volume, TimeSignature timeSignature) {
+        this.note = note;
+        this.synth = synth;
+        this.attack = attack;
+        this.decay = decay;
+        this.sustain = sustain;
+        this.release = release;
+        this.volume = volume;
+        this.timeSignature = timeSignature;
+    }
 
     public static class Builder {
         //Here we ajust standard values
@@ -71,7 +86,7 @@ public class Synth {
             synth.volume = this.volume;
 
             //Sender builder takes a chord and convertes it into a midi number, while building.
-            synth.node = convertNodeToMidi(this.node);
+            synth.note = convertNodeToMidi(this.node);
 
 
             return synth;
@@ -102,8 +117,8 @@ public class Synth {
     private Synth() {
     }
 
-    public String getNode() {
-        return node;
+    public String getNote() {
+        return note;
     }
 
     public int getAttack() {
@@ -120,6 +135,22 @@ public class Synth {
 
     public int getRelease() {
         return release;
+    }
+
+    public int getDelayTime() {
+        return delayTime;
+    }
+
+    public TimeSignature getTimeSignature() {
+        return timeSignature;
+    }
+
+    public void setTimeSignature(TimeSignature timeSignature) {
+        this.timeSignature = timeSignature;
+    }
+
+    public void setDelayTime(int delayTime) {
+        this.delayTime = delayTime;
     }
 
     public String getSynth() {

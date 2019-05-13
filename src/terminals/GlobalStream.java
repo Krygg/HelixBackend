@@ -11,7 +11,6 @@ public class GlobalStream {
         this.localStreams = localStreams;
     }
 
-
     public List<LocalStream> getLocalStreams() {
         return localStreams;
     }
