@@ -23,7 +23,7 @@ stmt:  startPause p | MEL LPAR VARNAME RPAR
     | IF LPAR nBExp RPAR BEGIN stmts END (ELSE BEGIN stmts END)? | ;
 
 nBExp: NOT LPAR bExp RPAR | bExp ;
-bExp: bExp EQUAL bExp | aExp;
+bExp: bExp EQUAL bExp | aExp EQUAL aExp ;
 
 aExp: multExp | aExp (MINUS|PLUS) aExp;
 multExp: atom | multExp MULT multExp;

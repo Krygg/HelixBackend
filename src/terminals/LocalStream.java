@@ -1,24 +1,33 @@
 package terminals;
 
+import Interpreter.AST.Node;
+import Interpreter.AST.Nodes.terminalNodes.NotesNode;
 import com.company.Instrument;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LocalStream {
 
     private String soundProfile;
-    private List<Note> notes;
+    private List<Object> notes;
     private ADSR adsr;
     private TimeSignature time;
 
     public LocalStream() {
+
+        notes = new ArrayList<>();
     }
 
-    public LocalStream(String soundProfile, List<Note> notes, ADSR adsr, TimeSignature time) {
+    public LocalStream(String soundProfile, List<Object> notes, ADSR adsr, TimeSignature time) {
         this.soundProfile = soundProfile;
         this.notes = notes;
         this.adsr = adsr;
         this.time = time;
+    }
+
+    public void addNote(Object note){
+        notes.add(note);
     }
 
     public String getSoundProfile() {
@@ -29,11 +38,11 @@ public class LocalStream {
         this.soundProfile = soundProfile;
     }
 
-    public List<Note> getNotes() {
+    public List<Object> getNotes() {
         return notes;
     }
 
-    public void setNotes(List<Note> notes) {
+    public void setNotes(List<Object> notes) {
         this.notes = notes;
     }
 
@@ -51,5 +60,15 @@ public class LocalStream {
 
     public void setTime(TimeSignature time) {
         this.time = time;
+    }
+
+    @Override
+    public String toString() {
+        return "LocalStream{" +
+                "soundProfile='" + soundProfile + '\'' +
+                ", notes=" + notes +
+                ", adsr=" + adsr +
+                ", time=" + time +
+                '}';
     }
 }

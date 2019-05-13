@@ -2,12 +2,15 @@ package Interpreter.AST;
 
 import Interpreter.AST.Nodes.declarationNodes.Declaration;
 import Interpreter.AST.Nodes.expressionNodes.EqualNode;
+import Interpreter.AST.Nodes.expressionNodes.NotNode;
 import Interpreter.AST.Nodes.statementNodes.AssignNode;
 import Interpreter.AST.Nodes.statementNodes.BlockNode;
 import Interpreter.AST.Nodes.terminalNodes.AtomNode;
+import Interpreter.AST.Nodes.terminalNodes.NotesNode;
 import Interpreter.Semantics;
 import antlr.CFGLexer;
 import antlr.CFGParser;
+import com.company.MidiLookUp;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -30,7 +33,24 @@ public class TestClass {
         BuildASTVisitor buildASTVisitor = new BuildASTVisitor();
         buildASTVisitor.visit(tree);
 
-        System.out.println(buildASTVisitor.getNodeList());
+        //System.out.println(buildASTVisitor.getNodeList());
+
+
+        /* Semantics semantics = new Semantics();
+
+        Declaration notesDecl = new Declaration();
+        NotesNode notes = new NotesNode();
+        notes.setValue("c4,(c4,c5),c4");
+
+        notesDecl.setVarName("chordC4");
+        notesDecl.setValue(notes);
+
+        semantics.varDeclSemantics(notesDecl);
+
+        System.out.println(semantics.getState());*/
+
+
+
 
 
         // Declaration of a number
@@ -52,17 +72,30 @@ public class TestClass {
 
 
         // Equals
-        /*AtomNode atomNode1 = new AtomNode();
+        Semantics semantics = new Semantics();
+
+        AtomNode atomNode1 = new AtomNode();
         atomNode1.setValue("3");
 
         AtomNode atomNode2 = new AtomNode();
-        atomNode2.setValue("2");
+        atomNode2.setValue("4");
+
+        EqualNode node2 = new EqualNode();
+        node2.setLeft(atomNode1);
+        node2.setRight(atomNode1);
+
+        EqualNode node3 = new EqualNode();
+        node3.setLeft(atomNode1);
+        node3.setRight(atomNode2);
 
         EqualNode node = new EqualNode();
-        node.setLeft(atomNode1);
-        node.setRight(atomNode2);
+        node.setLeft(node2);
+        node.setRight(node3);
 
-        System.out.println(semantics.BexpSemantics(node));*/
+        //NotNode notNode = new NotNode();
+        //notNode.setExpressionNode(node);
+
+        System.out.println(semantics.bexpSemantics(node));
 
     }
 

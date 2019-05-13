@@ -1,65 +1,108 @@
 package Interpreter;
 
 import Interpreter.AST.Node;
+import Interpreter.AST.Nodes.declarationNodes.BPMDeclaration;
 import Interpreter.AST.Nodes.declarationNodes.Declaration;
 import Interpreter.AST.Nodes.expressionNodes.*;
-import Interpreter.AST.Nodes.statementNodes.AssignNode;
 import Interpreter.AST.Nodes.terminalNodes.AtomNode;
 import Interpreter.AST.Nodes.terminalNodes.NotesNode;
+import com.company.MidiLookUp;
+import terminals.GlobalStream;
+import terminals.LocalStream;
 
 import java.util.HashMap;
 
 public class Semantics {
 
+    private static final int ONE_NOTE = 3;
     private HashMap<String, Object> state = new HashMap<>();
 
-    /** Update the state */
-    public void updateState(Node node) {
+    /** BPM declaration semantics */
+    public void bpmDeclSemantics(Node node){
 
-        // Declaration
-        if (node instanceof Declaration) {
+        BPMDeclaration bpm = (BPMDeclaration) node;
 
-            Declaration declNode = (Declaration) node;
-
-            Node nodeValue = declNode.getValue();
-
-            // A num variable has been declared
-            if (nodeValue instanceof ExpressionNode || nodeValue instanceof AtomNode) {
-
-                int value = AexpSemantics(nodeValue);
-
-                state.put(declNode.getVarName(), value);
-            }
-
-            //TODO: doesn't work yet
-            else if (nodeValue instanceof NotesNode) {
-
-                String value = "KEY";
-
-                state.put(declNode.getVarName(), value);
-            }
-        }
-
-        // Assignment
-        else if (node instanceof AssignNode) {
-
-            AssignNode assignNode = (AssignNode) node;
-
-            Node nodeValue = assignNode.getValue();
-
-            if (nodeValue instanceof ExpressionNode || nodeValue instanceof AtomNode) {
-
-                int value = AexpSemantics(nodeValue);
-
-                state.replace(assignNode.getVarName(), value);
-            }
-        }
+        state.put("bpm", bpm.getValue());
     }
 
-    /**
-     * Semantics for arithmetic expressions
-     */
-    public int AexpSemantics(Node node) {
+    /** Variable declaration semantics */
+    public void varDeclSemantics(Node node){
+
+        Declaration declNode = (Declaration) node;
+
+        Node nodeValue = declNode.getValue();
+
+        // Num declaration
+        if (nodeValue instanceof ExpressionNode || nodeValue instanceof AtomNode) {
+
+            int value = aExpSemantics(nodeValue);
+
+            state.put(declNode.getVarName(), value);
+        }
+
+        // Notes declaration
+        else if (nodeValue instanceof NotesNode) {
+
+            GlobalStream value = keySemantics(nodeValue);
+
+            state.put(declNode.getVarName(), value);
+        }
+
+    }
+
+    /** Chord/notes semantics */
+    public GlobalStream keySemantics(Node node){
+
+        NotesNode notes = (NotesNode) node;
+
+        String noteValues = notes.getValue();
+
+        GlobalStream globalStream = new GlobalStream();
+
+        // Midi-lookup information
+        MidiLookUp midiLookUp = MidiLookUp.getInstance();
+        noteValues = noteValues.replaceAll("\\s+", "");
+        String[] noteStrings = noteValues.split("[()]");
+
+        int i;
+
+        for (i = 0; i < noteStrings.length; i++){
+
+            LocalStream stream = new LocalStream();
+
+            // A chord
+            if(noteStrings[i].length() > ONE_NOTE){
+
+                String[] chord = noteStrings[i].split(",");
+
+                int j;
+
+                for(j = 0; j < chord.length; j++){
+
+                    stream.addNote(midiLookUp.getMidiNumber(chord[j]));
+
+                }
+
+                globalStream.addStream(stream);
+
+            }
+
+            // A single note
+            else {
+
+                String note = noteStrings[i].replace(",", "");
+
+                stream.addNote(midiLookUp.getMidiNumber(note));
+
+                globalStream.addStream(stream);
+            }
+        }
+
+        return globalStream;
+    }
+
+    /** Semantics for arithmetic expressions */
+    public int aExpSemantics(Node node) {
 
 
         // Plus expression
@@ -67,7 +110,7 @@ public class Semantics {
 
             PlusNode plusNode = (PlusNode) node;
 
-            return AexpSemantics(plusNode.getLeft()) + AexpSemantics(plusNode.getRight());
+            return aExpSemantics(plusNode.getLeft()) + aExpSemantics(plusNode.getRight());
 
         }
 
@@ -76,7 +119,7 @@ public class Semantics {
 
             MinusNode minusNode = (MinusNode) node;
 
-            return AexpSemantics(minusNode.getLeft()) - AexpSemantics(minusNode.getRight());
+            return aExpSemantics(minusNode.getLeft()) - aExpSemantics(minusNode.getRight());
 
         }
 
@@ -85,7 +128,7 @@ public class Semantics {
 
             MultNode multNode = (MultNode) node;
 
-            return AexpSemantics(multNode.getLeft()) * AexpSemantics(multNode.getRight());
+            return aExpSemantics(multNode.getLeft()) * aExpSemantics(multNode.getRight());
 
         }
 
@@ -100,6 +143,7 @@ public class Semantics {
                 return Integer.parseInt(state.get(atomNode.getValue()).toString());
             }
 
+            // If it's only a number
             return Integer.parseInt(atomNode.getValue());
         }
 
@@ -107,20 +151,39 @@ public class Semantics {
 
     }
 
-    /**
-     * Semantics for boolean expressions
-     */
-    //TODO: Missing NOT since the precedence doesn't make sense
-    public Boolean BexpSemantics(Node node) {
+    /** Semantics for boolean expressions */
+    public Boolean bexpSemantics(Node node) {
 
-        if (node instanceof EqualNode) {
+        // Not expression
+        if(node instanceof NotNode){
 
-            return AexpSemantics(((EqualNode) node).getLeft()) == AexpSemantics(((EqualNode) node).getRight());
+            NotNode notNode = (NotNode) node;
+
+            return !bexpSemantics(notNode.getExpressionNode());
         }
 
-        return true;
+        // Equal expression
+        else if (node instanceof EqualNode) {
+
+            EqualNode equalNode = (EqualNode) node;
+
+
+            // If it's another boolean expression
+            if(equalNode.getLeft() instanceof EqualNode){
+
+                return bexpSemantics(equalNode.getLeft()) == bexpSemantics(equalNode.getRight());
+            }
+
+            // If it's an arithmetic expression
+            return aExpSemantics(equalNode.getLeft()) == aExpSemantics(equalNode.getRight());
+
+        }
+
+        throw new IllegalArgumentException();
     }
 
+
+    /** Getters and Setters */
     public HashMap<String, Object> getState() {
         return state;
     }

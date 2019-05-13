@@ -296,7 +296,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
     @Override
     public Node visitBExp(CFGParser.BExpContext ctx) {
 
-        if(ctx.EQUAL() != null){
+        if(ctx.bExp(0) != null){
 
             EqualNode equal = new EqualNode();
 
@@ -306,7 +306,17 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             return equal;
         }
 
-        return visitAExp(ctx.aExp());
+        else if(ctx.aExp(0) != null){
+
+            EqualNode equal = new EqualNode();
+
+            equal.setLeft(visitAExp(ctx.aExp(0)));
+            equal.setLeft(visitAExp(ctx.aExp(1)));
+
+            return equal;
+        }
+
+        throw new IllegalArgumentException();
     }
 
     /** Arithmetic expression (OK)*/

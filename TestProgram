@@ -2,12 +2,15 @@ bpm(60);
 
 num x = 3;
 num m = 69+x;
-notes chord = c4;
+notes chord = c4,(c5,c6);
 
 Piano p {
-    x = 6;
+
+    x = 0;
+
     mel(chord);
 
-    if(!(3==2)){
+    if(x == 20){
+
     }
 }
