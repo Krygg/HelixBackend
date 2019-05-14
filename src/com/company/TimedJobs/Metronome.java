@@ -1,17 +1,18 @@
 package com.company.TimedJobs;
 
+import terminals.TimeSignature;
+
 public class Metronome implements Runnable{
     private double bpm;
-    private int measure, counter;
-    public Metronome(double bpm, int measure){
+    private int measure, counter=0;
+    public Metronome(double bpm){
         this.bpm = bpm;
-        this.measure = measure;
     }
-    public void startComputingOnBeat(JobHandler jobHandler, Double bpm) {
+    public void startComputingOnBeat(TimeSignature timeSignature) {
+
         while(true) {
             try {
                 //TODO check that this ensures a steady bpm
-                jobHandler.executorMethod(jobHandler.getJob(), bpm);
                 Thread.sleep((long) bpmMilliDouble(bpm));
             }catch(InterruptedException e) {
                 e.printStackTrace();

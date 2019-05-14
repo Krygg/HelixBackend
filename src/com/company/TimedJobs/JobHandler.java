@@ -1,28 +1,31 @@
 package com.company.TimedJobs;
 
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.ArrayList;
+import java.util.concurrent.*;
 
 public class JobHandler
         implements Runnable
         {
 
-    int id = 0;
-    Runnable job;
+    private int id=0;
+    Runnable JHjob;
+    ArrayList<Runnable> JHjobs;
+    public BlockingQueue<JobHandler> queue = new ArrayBlockingQueue<JobHandler>(100);
 
-    public JobHandler(Runnable job) {
-        this.id = 0;
-        this.job = job;
+    public JobHandler(){}
+
+
+    public void JobPackager(int id, Runnable job) throws InterruptedException {
+        this.id = id;
+        this.JHjob = job;
+        queue.put(this);
     }
 
-    public void executorMethod(Runnable job, double bpm) throws InterruptedException {
+    void executorMethod(double bpm) throws InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(16);
-        int i = 0;
-        for (i=0; i<= 25; i++) {
-            this.setId(i);
-            executor.submit(job);
+        int i;
+        for (i=0; i<= this.queue.size(); i++) {
+            executor.submit(this.queue.take());
         }
         executor.shutdown();
 
@@ -40,10 +43,6 @@ public class JobHandler
 
             public int getId() {
                 return id;
-            }
-
-            public Runnable getJob() {
-                return job;
             }
 
             @Override

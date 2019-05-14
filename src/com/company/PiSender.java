@@ -21,11 +21,14 @@ public class PiSender  {
     public void send(List<Object> arguments) {
         if (flag == 0)  loadAddress();
 
-        OSCMessage msg = new OSCMessage(availableAddressInstrument.get(1), arguments);
+        OSCMessage msg = new OSCMessage("null", arguments);
         System.out.println(msg.toString());
         try {
-            System.out.println(msg.getAddress());
-            portOut.send(msg);
+            //synchronized (this){
+                System.out.println(msg.getAddress());
+                //wait();
+                portOut.send(msg);
+            //}
         } catch (Exception ex) {
             System.err.println("Couldn't send");
         }

@@ -11,13 +11,25 @@ import java.util.List;
 public class StreamConverter {
     ArrayList<Synth> streamToPlay = new ArrayList<>();
     ArrayList<List> OSCList = new ArrayList<>();
+    PiSender piSender;
 
 
-    public void ConvertGlobalStreamToOSC(GlobalStream globalStream) {
+    public void ConvertGlobalStreamToOSC(GlobalStream globalStream) throws IOException {
         List<LocalStream> localStreams = globalStream.getLocalStreams();
+
+        int i = 0;
         for (LocalStream localStream : localStreams) {
             streamToPlay.add(convertToSynth(localStream));
+            convertToOSCFormat();
+            System.out.println("jjj");
         }
+        System.out.println(OSCList.isEmpty());
+
+
+        List<Object> arugements = new ArrayList<>();
+        arugements.add("5");
+        arugements.add(5);
+        piSender.send(arugements);
     }
 
     private Synth convertToSynth(LocalStream localStream) {
@@ -37,6 +49,7 @@ public class StreamConverter {
 
     private void convertToOSCFormat() throws IOException {
         for (Synth aStreamToPlay : streamToPlay) {
+            System.out.println("iii");
             OSCList.add(OSCFormatHelper(aStreamToPlay));
         }
     }
@@ -51,6 +64,7 @@ public class StreamConverter {
         arguments.add(synth.getSustain());
         arguments.add(synth.getAttack());
         arguments.add(synth.getVolume());
+        System.out.println("kkk");
 
         return arguments;
     }

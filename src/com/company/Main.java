@@ -6,11 +6,13 @@ import com.company.Samples.Sample;
 import com.company.Samples.Guitar;
 import com.company.Samples.SnareDrum;
 import com.company.TimedJobs.Metronome;
-import com.company.TimedJobs.JobHandler;
-import com.company.TimedJobs.TestJobs;
+import terminals.*;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Main {
 
@@ -19,17 +21,17 @@ public class Main {
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        Main.testBackEnd();
+        //Main.testBackEnd();
+        testStreamConverter();
 
 
 
     }
 
     private void testBPM() {
-        TestJobs testJob = new TestJobs();
-        JobHandler jobHandler = new JobHandler(testJob.getJob());
-        Metronome metronome = new Metronome(128, 4);
-        metronome.startComputingOnBeat(jobHandler, metronome.getBpm());
+        Metronome metronome = new Metronome(128);
+        TimeSignature timeSignature = new TimeSignature(4, 4);
+        metronome.startComputingOnBeat(timeSignature);
 
     }
 
@@ -67,5 +69,30 @@ public class Main {
         }
 
     }
+    private static void testStreamConverter() throws IOException {
+
+        Note note = new Note();
+        ArrayList<Note> list = new ArrayList<Note>();
+        list.add(note);
+
+        ADSR adsr = new ADSR(1, 1, 1, 1);
+
+        TimeSignature timeSignature = new TimeSignature(4, 4);
+
+        LocalStream localStream = new LocalStream("piano",list, adsr, timeSignature);
+
+        ArrayList<LocalStream> localStreams = new ArrayList<LocalStream>();
+        localStreams.add(localStream);
+
+
+        GlobalStream globalStream = new GlobalStream(localStreams);
+        globalStream.setLocalStreams(localStreams);
+
+        StreamConverter streamConverter = new StreamConverter();
+
+        streamConverter.ConvertGlobalStreamToOSC(globalStream);
+
+    }
+
 
 }
