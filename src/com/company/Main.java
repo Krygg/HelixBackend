@@ -57,6 +57,7 @@ public class Main {
 
         InstrumentSplitter instrumentSplitter = new InstrumentSplitter();
 
+
         while(true) {
             instrumentSplitter.addMusicElement(instrument1);
             instrumentSplitter.addMusicElement(sample);

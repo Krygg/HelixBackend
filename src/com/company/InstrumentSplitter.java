@@ -94,8 +94,6 @@ public class InstrumentSplitter {
         return arguemnt;
     }
 
-
-
     //Sends the stream to Sonic pi, after clears the arrays.
     public void play() throws IOException {
         final int maxAddressInstrument = 6;

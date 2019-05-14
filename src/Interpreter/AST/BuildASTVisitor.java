@@ -1,6 +1,5 @@
 package Interpreter.AST;
-import Interpreter.AST.Nodes.declarationNodes.BPMDeclaration;
-import Interpreter.AST.Nodes.declarationNodes.Declaration;
+import Interpreter.AST.Nodes.declarationNodes.*;
 import Interpreter.AST.Nodes.expressionNodes.*;
 import Interpreter.AST.Nodes.statementNodes.*;
 import Interpreter.AST.Nodes.terminalNodes.AtomNode;
@@ -50,7 +49,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             // Check if variable name has been used before
             checkVarNames(ctx.VARNAME().getText());
 
-            Declaration numDecl = new Declaration();
+            NumDecl numDecl = new NumDecl();
             numDecl.setType("num");
             numDecl.setVarName(ctx.VARNAME().getText());
 
@@ -73,7 +72,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             // Check if variable name has been used before
             checkVarNames(ctx.VARNAME().getText());
 
-            Declaration notesDecl = new Declaration();
+            NotesDecl notesDecl = new NotesDecl();
             notesDecl.setType("notes");
             notesDecl.setVarName(ctx.VARNAME().getText());
             notesDecl.setValue(visitK(ctx.k()));
@@ -99,7 +98,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             // Check if variable name has been used before
             checkVarNames(ctx.p().getText());
 
-            Declaration instDecl = new Declaration();
+            InstDecl instDecl = new InstDecl();
             BlockNode blockNode = new BlockNode();
 
             instDecl.setType(ctx.inst().getText());
@@ -296,7 +295,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
     @Override
     public Node visitBExp(CFGParser.BExpContext ctx) {
 
-        if(ctx.EQUAL() != null){
+        if(ctx.bExp(0) != null){
 
             EqualNode equal = new EqualNode();
 
@@ -306,7 +305,17 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             return equal;
         }
 
-        return visitAExp(ctx.aExp());
+        else if(ctx.aExp(0) != null){
+
+            EqualNode equal = new EqualNode();
+
+            equal.setLeft(visitAExp(ctx.aExp(0)));
+            equal.setRight(visitAExp(ctx.aExp(1)));
+
+            return equal;
+        }
+
+        throw new IllegalArgumentException();
     }
 
     /** Arithmetic expression (OK)*/
