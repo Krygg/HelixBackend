@@ -103,7 +103,7 @@ public class InstrumentSplitter {
         PiSender piSender = new PiSender();
         int addressCounter = 0;
         for (List stream : streamToPlayInstrument) {
-           //piSender.send(stream, availableAddressInstrument.get(addressCounter));
+           piSender.send(stream);
             addressCounter++;
             if (addressCounter == maxAddressInstrument) break;
         }
