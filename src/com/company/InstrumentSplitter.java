@@ -94,11 +94,8 @@ public class InstrumentSplitter {
         return arguemnt;
     }
 
-
-
-    //TODO: Had to comment out because it had an error.
     //Sends the stream to Sonic pi, after clears the arrays.
-    /*public void play() throws IOException {
+    public void play() throws IOException {
         final int maxAddressInstrument = 6;
         final int maxAddressDrum = 4;
         PiSender piSender = new PiSender();
@@ -120,7 +117,7 @@ public class InstrumentSplitter {
         instrumentArrayList.clear();
         sampleArrayList.clear();
         streamToPlayDrum.clear();
-    }*/
+    }
 
 
 }
