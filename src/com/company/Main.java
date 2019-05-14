@@ -82,7 +82,9 @@ public class Main {
 
         ArrayList<LocalStream> localStreams = new ArrayList<LocalStream>();
         localStreams.add(localStream);
-
+        localStreams.add(localStream);
+        localStreams.add(localStream);
+        localStreams.add(localStream);
 
         GlobalStream globalStream = new GlobalStream(localStreams);
         globalStream.setLocalStreams(localStreams);

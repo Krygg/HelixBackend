@@ -8,27 +8,40 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PiSender  {
+public class PiSender extends Thread{
     //TODO: here is one sout.
     private int flag = 0;
     private ArrayList<String> availableAddressInstrument = new ArrayList<>();
     private InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
-    private OSCPortOut portOut = new OSCPortOut(inetAddress,4559);
+    private OSCPortOut portOut = new OSCPortOut(inetAddress, 4559);
+    private List<Object> objects = new ArrayList<>();
+    private String address = "";
 
     public PiSender() throws IOException {
     }
 
-    public void send(List<Object> arguments) {
-        if (flag == 0)  loadAddress();
+    public void addObjectList(List<Object> objects) {
+        this.objects = objects;
+    }
+    public void setAddress(String str) {
+        this.address = str;
+    }
 
-        OSCMessage msg = new OSCMessage("null", arguments);
+
+    public void run() {
+        this.send();
+
+    }
+
+    public void send() {
+        System.out.println(this.address);
+        AddressHolder addressHolder = AddressHolder.getInstance();
+        OSCMessage msg = new OSCMessage(this.address, this.objects);
+        addressHolder.returnAddress(this.address);
         System.out.println(msg.toString());
         try {
-            //synchronized (this){
-                System.out.println(msg.getAddress());
-                //wait();
-                portOut.send(msg);
-            //}
+            portOut.send(msg);
+
         } catch (Exception ex) {
             System.err.println("Couldn't send");
         }
