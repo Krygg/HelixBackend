@@ -5,6 +5,7 @@ import com.company.Samples.BassDrum;
 import com.company.Samples.Sample;
 import com.company.Samples.Guitar;
 import com.company.Samples.SnareDrum;
+import com.company.ThreadManager.ThreadSync;
 import com.company.TimedJobs.Metronome;
 import terminals.*;
 
@@ -20,9 +21,10 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
-
-        //Main.testBackEnd();
-        testStreamConverter();
+        //ThreadSync mainLead = new ThreadSync(new GlobalStream(new ArrayList<>()));
+       // mainLead.start();
+    //Main.testBackEnd();
+       testStreamConverter();
 
 
 

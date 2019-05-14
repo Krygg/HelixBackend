@@ -1,5 +1,6 @@
 package com.company;
 
+import com.company.ThreadManager.ThreadSync;
 import terminals.GlobalStream;
 import terminals.LocalStream;
 
@@ -18,16 +19,15 @@ public class StreamConverter {
         List<LocalStream> localStreams = globalStream.getLocalStreams();
         AddressHolder addressHolder = AddressHolder.getInstance();
 
-        int i = 0;
         for (LocalStream localStream : localStreams) {
             streamToPlay.add(convertToSynth(localStream));
             convertToOSCFormat();
-            PiSender piSender = new PiSender();
-            piSender.addObjectList(OSCList.get(i));
-            piSender.setAddress(addressHolder.getAddress());
-            piSender.start();
-            i++;
         }
+
+        ThreadSync threadSync = new ThreadSync(OSCList,addressHolder.getAddresses());
+        threadSync.start();
+
+
     }
 
     private Synth convertToSynth(LocalStream localStream) {
@@ -40,7 +40,7 @@ public class StreamConverter {
         soundProfile = localStream.getSoundProfile();
 
 
-        Synth synth = new Synth("hello",soundProfile,
+        Synth synth = new Synth("60",soundProfile,
                 localStream.getAdsr().getAttack(),localStream.getAdsr().getDecay(),localStream.getAdsr().getSustain(),
                 localStream.getAdsr().getRelease(),1,localStream.getTime());
 
@@ -55,12 +55,13 @@ public class StreamConverter {
         }
     }
 
+
+
     private List<Object> OSCFormatHelper(Synth synth) {
 
         List<Object> arguments = new ArrayList<>();
         arguments.add(synth.getSynth());
         arguments.add(synth.getNote());
-        //TODO make sure notes is in sonic pi order
         arguments.add(synth.getRelease());
         arguments.add(synth.getSustain());
         arguments.add(synth.getAttack());

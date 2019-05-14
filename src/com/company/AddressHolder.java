@@ -31,6 +31,10 @@ public class AddressHolder {
         addresses.add(string);
     }
 
+    public ArrayList<String> getAddresses() {
+        if (flag == 0) this.initAddresses();
+        return addresses;
+    }
 
     private void initAddresses() {
         flag = 1;

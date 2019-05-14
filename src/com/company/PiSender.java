@@ -28,16 +28,9 @@ public class PiSender extends Thread{
     }
 
 
-    public void run() {
-        this.send();
 
-    }
-
-    public void send() {
-        System.out.println(this.address);
-        AddressHolder addressHolder = AddressHolder.getInstance();
-        OSCMessage msg = new OSCMessage(this.address, this.objects);
-        addressHolder.returnAddress(this.address);
+    public void send(String address, List<Object> arguments) {
+        OSCMessage msg = new OSCMessage(address, arguments);
         System.out.println(msg.toString());
         try {
             portOut.send(msg);
@@ -48,13 +41,6 @@ public class PiSender extends Thread{
 
     }
 
-    private void loadAddress() {
-        flag = 1;
-        for (int i = 1; i < 7; i++) {
-            availableAddressInstrument.add("/trigger/prophet" + i);
-            System.out.println("INSTRUMENT /trigger/prophet" + i);
-        }
-    }
 
 
 }
