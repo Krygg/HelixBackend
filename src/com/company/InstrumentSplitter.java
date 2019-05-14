@@ -103,14 +103,14 @@ public class InstrumentSplitter {
         PiSender piSender = new PiSender();
         int addressCounter = 0;
         for (List stream : streamToPlayInstrument) {
-           piSender.send(stream, availableAddressInstrument.get(addressCounter));
+           //piSender.send(stream, availableAddressInstrument.get(addressCounter));
             addressCounter++;
             if (addressCounter == maxAddressInstrument) break;
         }
 
         addressCounter = 0;
         for (int i = 0; i < streamToPlayDrum.size(); i++) {
-            piSender.send(streamToPlayDrum.get(i),availableAddressDrum.get(addressCounter));
+           // piSender.send(streamToPlayDrum.get(i),availableAddressDrum.get(addressCounter));
             addressCounter++;
             if (addressCounter == maxAddressDrum) break;
         }
