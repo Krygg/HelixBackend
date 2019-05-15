@@ -31,7 +31,7 @@ public class ThreadSync extends Thread {
     private void startWorkers() {
         for (int i = 0; i < streamToPlay.size(); i++) {
             ThreadWorker threadWorker = new ThreadWorker();
-            threadWorker.setTimeSplit(calculateDelay(timeSignatures.get(i)));
+            threadWorker.setTimeSplit(calculateDelay(this.bpm, timeSignatures.get(i)));
             threadWorker.setArguments(streamToPlay.get(i));
             threadWorker.setAddress(getAddress());
             threadWorker.start();
@@ -39,8 +39,9 @@ public class ThreadSync extends Thread {
     }
 
 
-    private long calculateDelay(TimeSignature timeSignature) {
-        return 1000;
+    private long calculateDelay(int bpm, TimeSignature timeSignature) {
+        long delay = (1000 * (60/bpm))/timeSignature.getN1();
+        return delay;
     }
 
 

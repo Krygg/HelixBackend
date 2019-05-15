@@ -97,7 +97,7 @@ public class InstrumentSplitter {
 
 
     //Sends the stream to Sonic pi, after clears the arrays.
-    public void play() throws IOException {
+    public void play() throws IOException, InterruptedException {
         final int maxAddressInstrument = 6;
         final int maxAddressDrum = 4;
         PiSender piSender = new PiSender();

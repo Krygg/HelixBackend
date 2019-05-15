@@ -70,7 +70,7 @@ public class Main {
         }
 
     }
-    private static void testStreamConverter() throws IOException {
+    private static void testStreamConverter() throws IOException, InterruptedException {
 
         Note note = new Note();
         ArrayList<Note> list = new ArrayList<Note>();
