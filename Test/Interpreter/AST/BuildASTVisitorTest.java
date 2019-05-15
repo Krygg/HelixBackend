@@ -1,11 +1,8 @@
 package Interpreter.AST;
 
-import Interpreter.AST.Nodes.declarationNodes.BPMDeclaration;
-import Interpreter.AST.Nodes.declarationNodes.Declaration;
-import Interpreter.AST.Nodes.statementNodes.AssignNode;
-import Interpreter.AST.Nodes.statementNodes.BlockNode;
-import Interpreter.AST.Nodes.statementNodes.MelNode;
-import Interpreter.AST.Nodes.statementNodes.StartNode;
+import Interpreter.AST.Nodes.declarationNodes.*;
+import Interpreter.AST.Nodes.expressionNodes.*;
+import Interpreter.AST.Nodes.statementNodes.*;
 import Interpreter.AST.Nodes.terminalNodes.AtomNode;
 import Interpreter.AST.Nodes.terminalNodes.NotesNode;
 import Interpreter.Semantics;
@@ -42,7 +39,7 @@ public class BuildASTVisitorTest {
 
         AST(charStream, visitor);
 
-        Declaration test = new Declaration();
+        NumDecl test = new NumDecl();
         AtomNode node = new AtomNode();
         node.setValue("1");
 
@@ -60,7 +57,7 @@ public class BuildASTVisitorTest {
 
         AST(charStream, visitor);
 
-        Declaration test = new Declaration();
+        NotesDecl test = new NotesDecl();
         NotesNode node = new NotesNode();
         node.setValue("c4");
 
@@ -79,7 +76,7 @@ public class BuildASTVisitorTest {
 
         AST(charStream, visitor);
 
-        Declaration test = new Declaration();
+        InstDecl test = new InstDecl();
         BlockNode node = new BlockNode();
         node.addNode(null);
 
@@ -111,7 +108,7 @@ public class BuildASTVisitorTest {
 
         AST(charStream, visitor);
 
-        Declaration testInstrument = (Declaration) visitor.getNodeList().get(1);
+        InstDecl testInstrument = (InstDecl) visitor.getNodeList().get(1);
 
         AtomNode atomNode1 = new AtomNode();
         atomNode1.setValue("1");
@@ -131,7 +128,7 @@ public class BuildASTVisitorTest {
         node.addNode(assignNode1);
         node.addNode(assignNode2);
 
-        Declaration instrument = new Declaration();
+        InstDecl instrument = new InstDecl();
         instrument.setType("Piano");
         instrument.setVarName("p");
         instrument.setValue(node);
@@ -195,12 +192,305 @@ public class BuildASTVisitorTest {
 
     @Test
     public void visitADSR(){
-        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { adsr(2,3,4,1);}");
+        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { adsr(2,2,2,2);}");
         BuildASTVisitor visitor = new BuildASTVisitor();
 
         AST(charStream, visitor);
 
+        Declaration testInstrument = (Declaration) visitor.getNodeList().get(1);
+        BlockNode node = (BlockNode) testInstrument.getValue();
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("2");
+
+        ADSRNode adsrNode = new ADSRNode();
+
+        adsrNode.setExp1(atomNode);
+        adsrNode.setExp2(atomNode);
+        adsrNode.setExp3(atomNode);
+        adsrNode.setExp4(atomNode);
+
+        assertEquals(adsrNode, node.getNodeList().get(0));
+
     }
+
+    @Test
+    public void visitTime(){
+
+        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { time(4,4); }");
+        BuildASTVisitor visitor = new BuildASTVisitor();
+
+        AST(charStream, visitor);
+
+        Declaration testInstrument = (Declaration) visitor.getNodeList().get(1);
+        BlockNode node = (BlockNode) testInstrument.getValue();
+
+        TimeNode timeNode = new TimeNode();
+        timeNode.setTop(4);
+        timeNode.setBot(4);
+
+        assertEquals(timeNode, node.getNodeList().get(0));
+
+    }
+
+    @Test
+    public void visitSend(){
+
+        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { send(c,2); }");
+        BuildASTVisitor visitor = new BuildASTVisitor();
+
+        AST(charStream, visitor);
+
+        Declaration testInstrument = (Declaration) visitor.getNodeList().get(1);
+        BlockNode node = (BlockNode) testInstrument.getValue();
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("2");
+
+        SendNode sendNode = new SendNode();
+        sendNode.setChannel("c");
+        sendNode.setValue(atomNode);
+
+        assertEquals(sendNode, node.getNodeList().get(0));
+
+    }
+
+    @Test
+    public void visitReceive(){
+
+        CharStream charStream = CharStreams.fromString("num x = 3; num y = 4; Piano p { receive(c,x).y=8; }");
+        BuildASTVisitor visitor = new BuildASTVisitor();
+
+        AST(charStream, visitor);
+
+        Declaration testInstrument = (Declaration) visitor.getNodeList().get(2);
+        BlockNode node = (BlockNode) testInstrument.getValue();
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("8");
+
+        AssignNode assignNode = new AssignNode();
+        assignNode.setVarName("y");
+        assignNode.setValue(atomNode);
+
+        ReceiveNode receiveNode = new ReceiveNode();
+        receiveNode.setChannel("c");
+        receiveNode.setVarName("x");
+        receiveNode.setStatement(assignNode);
+
+        assertEquals(receiveNode, node.getNodeList().get(0));
+
+    }
+
+    @Test
+    public void visitIfElse(){
+        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { if(2==2){x = 4} else{x = 5}}");
+        BuildASTVisitor visitor = new BuildASTVisitor();
+
+        AST(charStream, visitor);
+
+        Declaration testInstrument = (Declaration) visitor.getNodeList().get(1);
+        BlockNode node = (BlockNode) testInstrument.getValue();
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("2");
+
+        AtomNode atomNode1 = new AtomNode();
+        atomNode1.setValue("4");
+
+        AtomNode atomNode2 = new AtomNode();
+        atomNode2.setValue("5");
+
+        EqualNode equalNode = new EqualNode();
+        equalNode.setLeft(atomNode);
+        equalNode.setRight(atomNode);
+
+        AssignNode assignNode = new AssignNode();
+        assignNode.setVarName("x");
+        assignNode.setValue(atomNode1);
+
+        AssignNode assignNode1 = new AssignNode();
+        assignNode1.setVarName("x");
+        assignNode1.setValue(atomNode2);
+
+        BlockNode blockNode = new BlockNode();
+        blockNode.addNode(assignNode);
+
+        BlockNode blockNode1 = new BlockNode();
+        blockNode1.addNode(assignNode1);
+
+        IfElseNode ifElseNode = new IfElseNode();
+        ifElseNode.setBool(equalNode);
+        ifElseNode.setStmtTrue(blockNode);
+        ifElseNode.setStmtFalse(blockNode1);
+
+        assertEquals(ifElseNode, node.getNodeList().get(0));
+
+    }
+
+    @Test
+    public void visitNBExp(){
+        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { if(!(2==2)){x = 4} else{x = 5}}");
+        BuildASTVisitor visitor = new BuildASTVisitor();
+
+        AST(charStream, visitor);
+
+        Declaration testInstrument = (Declaration) visitor.getNodeList().get(1);
+        BlockNode node = (BlockNode) testInstrument.getValue();
+        IfElseNode ifElseNode = (IfElseNode) node.getNodeList().get(0);
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("2");
+
+        EqualNode equalNode = new EqualNode();
+        equalNode.setLeft(atomNode);
+        equalNode.setRight(atomNode);
+
+        NotNode notNode = new NotNode();
+        notNode.setExpressionNode(equalNode);
+
+        assertEquals(notNode, ifElseNode.getBool());
+    }
+
+    @Test
+    public void visitBExp1(){
+        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { if(2==2){x = 4} else{x = 5}}");
+        BuildASTVisitor visitor = new BuildASTVisitor();
+
+        AST(charStream, visitor);
+
+        Declaration testInstrument = (Declaration) visitor.getNodeList().get(1);
+        BlockNode node = (BlockNode) testInstrument.getValue();
+        IfElseNode ifElseNode = (IfElseNode) node.getNodeList().get(0);
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("2");
+
+        EqualNode equalNode = new EqualNode();
+        equalNode.setLeft(atomNode);
+        equalNode.setRight(atomNode);
+
+        assertEquals(equalNode, ifElseNode.getBool());
+    }
+
+    @Test
+    public void visitBExp2(){
+        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { if((2==2)==(2==2)){x = 4} else{x = 5}}");
+        BuildASTVisitor visitor = new BuildASTVisitor();
+
+        AST(charStream, visitor);
+
+        Declaration testInstrument = (Declaration) visitor.getNodeList().get(1);
+        BlockNode node = (BlockNode) testInstrument.getValue();
+        IfElseNode ifElseNode = (IfElseNode) node.getNodeList().get(0);
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("2");
+
+        EqualNode equalNode1 = new EqualNode();
+        equalNode1.setLeft(atomNode);
+        equalNode1.setRight(atomNode);
+
+        EqualNode equalNode2 = new EqualNode();
+        equalNode2.setLeft(atomNode);
+        equalNode2.setRight(atomNode);
+
+        EqualNode equalNode = new EqualNode();
+        equalNode.setLeft(equalNode1);
+        equalNode.setRight(equalNode2);
+
+        assertEquals(equalNode, ifElseNode.getBool());
+    }
+
+    @Test
+    public void visitAExp(){
+
+        CharStream charStream = CharStreams.fromString("num x = 3+3-3;");
+        BuildASTVisitor visitor = new BuildASTVisitor();
+
+        AST(charStream, visitor);
+
+        NumDecl numDecl = (NumDecl) visitor.getNodeList().get(0);
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("3");
+
+        PlusNode plusNode = new PlusNode();
+        plusNode.setLeft(atomNode);
+        plusNode.setRight(atomNode);
+
+        MinusNode minusNode = new MinusNode();
+        minusNode.setLeft(plusNode);
+        minusNode.setRight(atomNode);
+
+        assertEquals(minusNode, numDecl.getValue());
+
+    }
+
+    @Test
+    public void visitMultExp(){
+
+        CharStream charStream = CharStreams.fromString("num x = 3+3*3;");
+        BuildASTVisitor visitor = new BuildASTVisitor();
+
+        AST(charStream, visitor);
+
+        NumDecl numDecl = (NumDecl) visitor.getNodeList().get(0);
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("3");
+
+        MultNode multNode = new MultNode();
+        multNode.setLeft(atomNode);
+        multNode.setRight(atomNode);
+
+        PlusNode plusNode = new PlusNode();
+        plusNode.setLeft(atomNode);
+        plusNode.setRight(multNode);
+
+        assertEquals(plusNode, numDecl.getValue());
+    }
+
+    @Test
+    public void visitParan(){
+
+        CharStream charStream = CharStreams.fromString("num x = (3+3)*3;");
+        BuildASTVisitor visitor = new BuildASTVisitor();
+
+        AST(charStream, visitor);
+
+        NumDecl numDecl = (NumDecl) visitor.getNodeList().get(0);
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("3");
+
+        PlusNode plusNode = new PlusNode();
+        plusNode.setLeft(atomNode);
+        plusNode.setRight(atomNode);
+
+        MultNode multNode = new MultNode();
+        multNode.setLeft(plusNode);
+        multNode.setRight(atomNode);
+
+        assertEquals(multNode, numDecl.getValue());
+    }
+
+    @Test
+    public void visitAtomVar(){
+
+        CharStream charStream = CharStreams.fromString("num x = 3; num y = x;");
+        BuildASTVisitor visitor = new BuildASTVisitor();
+
+        AST(charStream, visitor);
+
+        NumDecl numDecl = (NumDecl) visitor.getNodeList().get(1);
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("x");
+
+        assertEquals(atomNode, numDecl.getValue());
+    }
+
 
     private void AST(CharStream charStream, BuildASTVisitor visitor){
 

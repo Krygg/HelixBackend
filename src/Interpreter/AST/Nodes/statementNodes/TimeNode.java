@@ -29,4 +29,22 @@ public class TimeNode extends StatementNode {
                 "," + bot +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TimeNode timeNode = (TimeNode) o;
+
+        if (top != timeNode.top) return false;
+        return bot == timeNode.bot;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = top;
+        result = 31 * result + bot;
+        return result;
+    }
 }
