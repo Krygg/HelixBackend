@@ -17,6 +17,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import terminals.GlobalStream;
 import terminals.LocalStream;
 import terminals.Note;
 
@@ -38,10 +39,10 @@ public class TestClass {
         BuildASTVisitor buildASTVisitor = new BuildASTVisitor();
         buildASTVisitor.visit(tree);
 
-        System.out.println(buildASTVisitor.getNodeList());
+        //System.out.println(buildASTVisitor.getNodeList());
 
         // Semantics
-        Semantics semantics = new Semantics();
+        /*Semantics semantics = new Semantics();
 
         HashMap<String, Object> state = new HashMap<>();
         HashMap<String, InstrumentInfo> envI = new HashMap<>();
@@ -62,8 +63,6 @@ public class TestClass {
                 semantics.instDeclSemantics(node, envI);
             }
         }
-
-        // Start instrument/process
         for(Node node : buildASTVisitor.getNodeList()){
 
             if(node instanceof StartNode){
@@ -72,7 +71,7 @@ public class TestClass {
             }
         }
 
-        System.out.println(state);
+        System.out.println(state);*/
 
 
         // Assignment
@@ -158,6 +157,38 @@ public class TestClass {
         notNode.setExpressionNode(node);
 
         System.out.println(semantics.bexpSemantics(node));*/
+
+        // Global START
+        HashMap<String, InstrumentInfo> envI1 = new HashMap<>();
+        HashMap<BlockNode, Object> multMap = new HashMap<>();
+        GlobalStream globalStream =new GlobalStream();
+        HashMap<String, Object> state1 = new HashMap<>();
+
+        StartNode startNode = new StartNode();
+        startNode.setVarName("p");
+
+        AtomNode atomNode = new AtomNode();
+        atomNode.setValue("3");
+
+        AssignNode assignNode = new AssignNode();
+        assignNode.setVarName("x");
+        assignNode.setValue(atomNode);
+
+        BlockNode blockNode = new BlockNode();
+        blockNode.addNode(assignNode);
+
+        InstrumentInfo info = new InstrumentInfo("piano", blockNode);
+        envI1.put("p", info);
+
+        state1.put("x",2);
+
+        Semantics semantics1 = new Semantics();
+        semantics1.setEnvI(envI1);
+        semantics1.setState(state1);
+        semantics1.globalCommuSemantics(startNode,multMap,globalStream,state1);
+
+        System.out.println(semantics1.getMultmap());
+
 
     }
 

@@ -7,6 +7,7 @@ import Interpreter.AST.Nodes.statementNodes.*;
 import Interpreter.AST.Nodes.terminalNodes.AtomNode;
 import Interpreter.AST.Nodes.terminalNodes.NotesNode;
 import com.company.MidiLookUp;
+
 import terminals.*;
 
 import java.util.ArrayList;
@@ -18,12 +19,16 @@ public class Semantics {
     private static final int ONE_NOTE = 3;
     private HashMap<String, Object> state = new HashMap<>();
     private HashMap<String, Integer> channel = new HashMap<>();
+    private HashMap<BlockNode, Object> multMap = new HashMap<>();
+    private GlobalStream globalStream;
 
     // TODO: May have to change so it fits the semantics
     private HashMap<String, InstrumentInfo> envI = new HashMap<>();
 
-    /** BPM declaration semantics */
-    public void bpmDeclSemantics(Node node, HashMap<String, Object> state){
+    /**
+     * BPM declaration semantics
+     */
+    public void bpmDeclSemantics(Node node, HashMap<String, Object> state) {
 
         BPMDeclaration bpm = (BPMDeclaration) node;
 
@@ -32,11 +37,13 @@ public class Semantics {
         this.state = state;
     }
 
-    /** Variable declaration semantics */
-    public void varDeclSemantics(Node node, HashMap<String, Object> state){
+    /**
+     * Variable declaration semantics
+     */
+    public void varDeclSemantics(Node node, HashMap<String, Object> state) {
 
         // Num declaration
-        if(node instanceof NumDecl){
+        if (node instanceof NumDecl) {
 
             NumDecl numDecl = (NumDecl) node;
             Node nodeValue = numDecl.getValue();
@@ -63,8 +70,10 @@ public class Semantics {
 
     }
 
-    /** Instrument declaration */
-    public void instDeclSemantics(Node node, HashMap<String, InstrumentInfo> envI){
+    /**
+     * Instrument declaration
+     */
+    public void instDeclSemantics(Node node, HashMap<String, InstrumentInfo> envI) {
 
         InstDecl instDecl = (InstDecl) node;
 
@@ -74,8 +83,10 @@ public class Semantics {
 
     }
 
-    /** Chord/notes semantics */
-    public List<LocalStream> keySemantics(Node node){
+    /**
+     * Chord/notes semantics
+     */
+    public List<LocalStream> keySemantics(Node node) {
 
         NotesNode notes = (NotesNode) node;
 
@@ -90,18 +101,18 @@ public class Semantics {
 
         int i;
 
-        for (i = 0; i < noteStrings.length; i++){
+        for (i = 0; i < noteStrings.length; i++) {
 
             LocalStream<Object> stream = new LocalStream<>();
 
             // A chord
-            if(noteStrings[i].length() > ONE_NOTE){
+            if (noteStrings[i].length() > ONE_NOTE) {
 
                 String[] chord = noteStrings[i].split(",");
 
                 int j;
 
-                for(j = 0; j < chord.length; j++){
+                for (j = 0; j < chord.length; j++) {
 
                     stream.addNote(midiLookUp.getMidiNumber(chord[j]));
 
@@ -125,7 +136,9 @@ public class Semantics {
         return localStreams;
     }
 
-    /** Semantics for arithmetic expressions */
+    /**
+     * Semantics for arithmetic expressions
+     */
     public int aExpSemantics(Node node) {
 
 
@@ -175,11 +188,13 @@ public class Semantics {
 
     }
 
-    /** Semantics for boolean expressions */
+    /**
+     * Semantics for boolean expressions
+     */
     public Boolean bexpSemantics(Node node) {
 
         // Not expression
-        if(node instanceof NotNode){
+        if (node instanceof NotNode) {
 
             NotNode notNode = (NotNode) node;
 
@@ -193,7 +208,7 @@ public class Semantics {
 
 
             // If it's another boolean expression
-            if(equalNode.getLeft() instanceof EqualNode){
+            if (equalNode.getLeft() instanceof EqualNode) {
 
                 return bexpSemantics(equalNode.getLeft()) == bexpSemantics(equalNode.getRight());
             }
@@ -208,7 +223,9 @@ public class Semantics {
         throw new IllegalArgumentException();
     }
 
-    /** Statement semantics */
+    /**
+     * Statement semantics
+     */
     public void statementsSemantics(Node node, HashMap<String, Object> state, LocalStream<LocalStream> localStream) {
 
         // Assign Statement
@@ -224,7 +241,7 @@ public class Semantics {
         }
 
         // Melody statement
-        else if(node instanceof MelNode){
+        else if (node instanceof MelNode) {
 
             MelNode melNode = (MelNode) node;
 
@@ -232,16 +249,16 @@ public class Semantics {
 
             List<LocalStream> noteStream = (List) state.get(melNode.getVarName());
 
-            for(LocalStream stream : noteStream){
+            for (LocalStream stream : noteStream) {
 
                 stream.setSoundProfile(soundProfile);
 
-                if(localStream.getAdsr() != null){
+                if (localStream.getAdsr() != null) {
 
                     stream.setAdsr(localStream.getAdsr());
                 }
 
-                if(localStream.getTime() != null){
+                if (localStream.getTime() != null) {
 
                     stream.setTime(localStream.getTime());
                 }
@@ -261,14 +278,14 @@ public class Semantics {
             int sustain = aExpSemantics(adsrNode.getExp3());
             int release = aExpSemantics(adsrNode.getExp4());
 
-            ADSR adsrValue = new ADSR(attack,decay,sustain,release);
+            ADSR adsrValue = new ADSR(attack, decay, sustain, release);
 
             localStream.setAdsr(adsrValue);
 
         }
 
         // Time statement
-        else if (node instanceof TimeNode){
+        else if (node instanceof TimeNode) {
 
             TimeNode timeNode = (TimeNode) node;
 
@@ -278,33 +295,33 @@ public class Semantics {
         }
 
         //Composition statement
-        else if(node instanceof BlockNode){
+        else if (node instanceof BlockNode) {
 
             BlockNode blockNode = (BlockNode) node;
 
-            for (Node bodyNode : blockNode.getNodeList()){
+            for (Node bodyNode : blockNode.getNodeList()) {
 
                 statementsSemantics(bodyNode, state, localStream);
             }
         }
 
         // If-else statement
-        else if(node instanceof IfElseNode){
+        else if (node instanceof IfElseNode) {
 
             IfElseNode ifElse = (IfElseNode) node;
 
-            if(bexpSemantics(ifElse.getBool())){
+            if (bexpSemantics(ifElse.getBool())) {
 
                 statementsSemantics(ifElse.getStmtTrue(), state, localStream);
 
             } else {
 
-                statementsSemantics(ifElse.getStmtFalse(),state,localStream);
+                statementsSemantics(ifElse.getStmtFalse(), state, localStream);
             }
         }
 
         // Communication statements
-        else if(node instanceof StartNode || node instanceof SendNode || node instanceof ReceiveNode){
+        else if (node instanceof StartNode || node instanceof SendNode || node instanceof ReceiveNode) {
 
             communicationSemantics(node, state, localStream);
 
@@ -313,10 +330,10 @@ public class Semantics {
 
 
     // TODO: Discuss whether this follows the semantics
-    public void communicationSemantics(Node node, HashMap<String, Object> state, LocalStream<LocalStream> localStream){
+    public void communicationSemantics(Node node, HashMap<String, Object> state, LocalStream<LocalStream> localStream) {
 
         // Send statement
-        if(node instanceof SendNode){
+        if (node instanceof SendNode) {
 
             SendNode sendNode = (SendNode) node;
 
@@ -327,11 +344,11 @@ public class Semantics {
         }
 
         // Receive statement
-        else if(node instanceof ReceiveNode){
+        else if (node instanceof ReceiveNode) {
 
             ReceiveNode receiveNode = (ReceiveNode) node;
 
-            state.replace(receiveNode.getVarName(),  channel.get(receiveNode.getChannel()));
+            state.replace(receiveNode.getVarName(), channel.get(receiveNode.getChannel()));
 
             this.state = state;
 
@@ -339,29 +356,58 @@ public class Semantics {
         }
 
         // Start statement
-        else if(node instanceof StartNode){
+        else if (node instanceof StartNode) {
 
-            StartNode startNode = (StartNode) node;
-            LocalStream<LocalStream> instStream = new LocalStream<>();
-
-            InstrumentInfo info = envI.get(startNode.getVarName());
-
-            instStream.setSoundProfile(info.getSoundProfile());
-
-            statementsSemantics(info.getNode(), state, instStream);
+            globalCommuSemantics(node, multMap, globalStream, state);
         }
 
     }
 
     //TODO: Global communication semantics
+    public void globalCommuSemantics(Node node, HashMap<BlockNode, Object> multMap, GlobalStream globalStream, HashMap<String, Object> state) {
 
 
-    /** Getters and Setters */
+        // START Global
+        if (node instanceof StartNode) {
+            StartNode startNode = (StartNode) node;
+
+            LocalStream localStream = new LocalStream();
+
+            InstrumentInfo info = envI.get(startNode.getVarName());
+
+            localStream.setSoundProfile(info.getSoundProfile());
+
+            multMap.put((BlockNode) info.getNode(), localStream);
+
+            this.multMap = multMap;
+        }
+    }
+
+
+    /**
+     * Getters and Setters
+     */
     public HashMap<String, Object> getState() {
         return state;
     }
 
     public void setState(HashMap<String, Object> state) {
         this.state = state;
+    }
+
+    public HashMap<String, InstrumentInfo> getEnvI() {
+        return envI;
+    }
+
+    public void setEnvI(HashMap<String, InstrumentInfo> envI) {
+        this.envI = envI;
+    }
+
+    public HashMap<BlockNode, Object> getMultmap() {
+        return multMap;
+    }
+
+    public void setMultmap(HashMap<BlockNode, Object> multmap) {
+        this.multMap = multmap;
     }
 }
