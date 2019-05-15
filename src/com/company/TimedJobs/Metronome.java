@@ -1,5 +1,6 @@
 package com.company.TimedJobs;
 
+import com.company.ThreadManager.ThreadWorker;
 import terminals.TimeSignature;
 
 public class Metronome implements Runnable{
@@ -7,6 +8,7 @@ public class Metronome implements Runnable{
     private int measure, counter=0;
     public Metronome(double bpm){
         this.bpm = bpm;
+
     }
     public void startComputingOnBeat(TimeSignature timeSignature) {
 
