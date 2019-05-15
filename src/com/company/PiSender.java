@@ -30,6 +30,7 @@ public class PiSender extends Thread{
 
 
     public void send(String address, List<Object> arguments) {
+        System.out.println(arguments.toString());
         OSCMessage msg = new OSCMessage(address, arguments);
         System.out.println(msg.toString());
         try {

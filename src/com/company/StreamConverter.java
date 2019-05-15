@@ -3,15 +3,18 @@ package com.company;
 import com.company.ThreadManager.ThreadSync;
 import terminals.GlobalStream;
 import terminals.LocalStream;
+import terminals.TimeSignature;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class StreamConverter {
-    ArrayList<Synth> streamToPlay = new ArrayList<>();
-    ArrayList<List> OSCList = new ArrayList<>();
+    private ArrayList<Synth> streamToPlay = new ArrayList<>();
+    private ArrayList<List> OSCList = new ArrayList<>();
+    private ArrayList<TimeSignature> timeSignaturList = new ArrayList<>();
+    int flag = 0;
+
 
 
 
@@ -21,10 +24,11 @@ public class StreamConverter {
 
         for (LocalStream localStream : localStreams) {
             streamToPlay.add(convertToSynth(localStream));
-            convertToOSCFormat();
+            timeSignaturList.add(localStream.getTime());
         }
+        convertToOSCFormat();
 
-        ThreadSync threadSync = new ThreadSync(OSCList,addressHolder.getAddresses());
+        ThreadSync threadSync = new ThreadSync(OSCList,addressHolder.getAddresses(),timeSignaturList);
         threadSync.start();
 
 
@@ -33,19 +37,23 @@ public class StreamConverter {
     private Synth convertToSynth(LocalStream localStream) {
         int bpm = 128;
         //TODO oversæt notes til en string;
-        String soundProfile = "";
+        String soundProfile;
         if (localStream.getSoundProfile().isEmpty()) {
             soundProfile = "piano";
         }
         soundProfile = localStream.getSoundProfile();
 
+        if (flag == 0) {
+            flag = 1;
+            return new Synth("60",soundProfile,
+                    localStream.getAdsr().getAttack(),localStream.getAdsr().getDecay(),localStream.getAdsr().getSustain(),
+                    localStream.getAdsr().getRelease(),1,localStream.getTime());
 
-        Synth synth = new Synth("60",soundProfile,
-                localStream.getAdsr().getAttack(),localStream.getAdsr().getDecay(),localStream.getAdsr().getSustain(),
-                localStream.getAdsr().getRelease(),1,localStream.getTime());
-
-
-        return synth;
+        } else {
+            return new Synth("42",soundProfile,
+                    localStream.getAdsr().getAttack(),localStream.getAdsr().getDecay(),localStream.getAdsr().getSustain(),
+                    localStream.getAdsr().getRelease(),1,localStream.getTime());
+        }
     }
 
 
@@ -54,8 +62,6 @@ public class StreamConverter {
             OSCList.add(OSCFormatHelper(aStreamToPlay));
         }
     }
-
-
 
     private List<Object> OSCFormatHelper(Synth synth) {
 
@@ -69,11 +75,4 @@ public class StreamConverter {
 
         return arguments;
     }
-
-
-
-
-
-
-
 }

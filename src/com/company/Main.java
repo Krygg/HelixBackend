@@ -76,11 +76,13 @@ public class Main {
         ArrayList<Note> list = new ArrayList<Note>();
         list.add(note);
 
+
         ADSR adsr = new ADSR(1, 1, 1, 1);
 
         TimeSignature timeSignature = new TimeSignature(4, 4);
 
         LocalStream localStream = new LocalStream("piano",list, adsr, timeSignature);
+
 
         ArrayList<LocalStream> localStreams = new ArrayList<LocalStream>();
         localStreams.add(localStream);
@@ -89,7 +91,6 @@ public class Main {
         localStreams.add(localStream);
 
         GlobalStream globalStream = new GlobalStream(localStreams);
-        globalStream.setLocalStreams(localStreams);
 
         StreamConverter streamConverter = new StreamConverter();
 
