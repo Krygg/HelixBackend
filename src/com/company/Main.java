@@ -5,6 +5,7 @@ import com.company.Samples.BassDrum;
 import com.company.Samples.Sample;
 import com.company.Samples.Guitar;
 import com.company.Samples.SnareDrum;
+import com.company.ThreadManager.ThreadSync;
 import com.company.TimedJobs.Metronome;
 import terminals.*;
 
@@ -20,9 +21,10 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException, InterruptedException {
-
-        //Main.testBackEnd();
-        testStreamConverter();
+        //ThreadSync mainLead = new ThreadSync(new GlobalStream(new ArrayList<>()));
+       // mainLead.start();
+    //Main.testBackEnd();
+       testStreamConverter();
 
 
 
@@ -69,11 +71,12 @@ public class Main {
         }
 
     }
-    private static void testStreamConverter() throws IOException {
+    private static void testStreamConverter() throws IOException, InterruptedException {
 
         Note note = new Note();
         ArrayList<Note> list = new ArrayList<Note>();
         list.add(note);
+
 
         ADSR adsr = new ADSR(1, 1, 1, 1);
 
@@ -81,16 +84,18 @@ public class Main {
 
         LocalStream localStream = new LocalStream("piano",list, adsr, timeSignature);
 
+
         ArrayList<LocalStream> localStreams = new ArrayList<LocalStream>();
         localStreams.add(localStream);
-
+        localStreams.add(localStream);
+        localStreams.add(localStream);
+        localStreams.add(localStream);
 
         GlobalStream globalStream = new GlobalStream(localStreams);
-        globalStream.setLocalStreams(localStreams);
 
         StreamConverter streamConverter = new StreamConverter();
 
-        streamConverter.ConvertGlobalStreamToOSC(globalStream);
+        streamConverter.ConvertGlobalStreamToOSC(globalStream,128);
 
     }
 

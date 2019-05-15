@@ -47,7 +47,7 @@ public class InstrumentSplitterTest {
 
     //TODO: Had to comment one line out because it had an error.
     @Test
-    public void play() throws IOException {
+    public void play() throws IOException, InterruptedException {
         Sample sample = new BassDrum();
         sample.setI(2);
         Instrument instrument = new Instrument(new ArrayList<>());
