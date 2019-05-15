@@ -40,4 +40,24 @@ public class IfElseNode extends StatementNode {
                 "," + stmtFalse +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IfElseNode that = (IfElseNode) o;
+
+        if (bool != null ? !bool.equals(that.bool) : that.bool != null) return false;
+        if (stmtTrue != null ? !stmtTrue.equals(that.stmtTrue) : that.stmtTrue != null) return false;
+        return stmtFalse != null ? stmtFalse.equals(that.stmtFalse) : that.stmtFalse == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = bool != null ? bool.hashCode() : 0;
+        result = 31 * result + (stmtTrue != null ? stmtTrue.hashCode() : 0);
+        result = 31 * result + (stmtFalse != null ? stmtFalse.hashCode() : 0);
+        return result;
+    }
 }
