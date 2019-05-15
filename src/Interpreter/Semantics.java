@@ -1,18 +1,24 @@
 package Interpreter;
 
 import Interpreter.AST.Node;
-import Interpreter.AST.Nodes.declarationNodes.*;
+import Interpreter.AST.Nodes.declarationNodes.BPMDeclaration;
+import Interpreter.AST.Nodes.declarationNodes.InstDecl;
+import Interpreter.AST.Nodes.declarationNodes.NotesDecl;
+import Interpreter.AST.Nodes.declarationNodes.NumDecl;
 import Interpreter.AST.Nodes.expressionNodes.*;
 import Interpreter.AST.Nodes.statementNodes.*;
 import Interpreter.AST.Nodes.terminalNodes.AtomNode;
 import Interpreter.AST.Nodes.terminalNodes.NotesNode;
 import com.company.MidiLookUp;
-
-import terminals.*;
+import terminals.ADSR;
+import terminals.GlobalStream;
+import terminals.LocalStream;
+import terminals.TimeSignature;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Semantics {
 
@@ -380,8 +386,29 @@ public class Semantics {
             multMap.put((BlockNode) info.getNode(), localStream);
 
             this.multMap = multMap;
+
         }
-    }
+
+        // Kommu G- SSS
+        else if (node instanceof StatementNode) {
+
+            StatementNode statementNode = (StatementNode) node;
+
+            HashMap<String, HashMap> selects = new HashMap<String, HashMap>();
+
+            for (Map.Entry<String, HashMap> entry: selects.entrySet()) {
+                String key = entry.getKey();
+                HashMap value = this.multMap;
+
+            if (node instanceof SendNode) {
+
+
+
+                }
+                }
+
+            }
+        }
 
 
     /**
