@@ -13,8 +13,10 @@ public class ThreadSync extends Thread {
     private List<List> streamToPlay;
     private List<String> addresses;
     private List<TimeSignature> timeSignatures;
+    private int bpm ;
 
-    public ThreadSync(List<List> streamToPlay, List<String> addresses, List<TimeSignature> timeSignatures) {
+    public ThreadSync(List<List> streamToPlay, List<String> addresses, List<TimeSignature> timeSignatures, int bpm) {
+        this.bpm = bpm;
         this.timeSignatures = timeSignatures;
         this.streamToPlay = streamToPlay;
         this.addresses = addresses;
@@ -27,7 +29,7 @@ public class ThreadSync extends Thread {
 
 
     private void startWorkers() {
-        for (int i = 0; i < addresses.size(); i++) {
+        for (int i = 0; i < streamToPlay.size(); i++) {
             ThreadWorker threadWorker = new ThreadWorker();
             threadWorker.setTimeSplit(calculateDelay(timeSignatures.get(i)));
             threadWorker.setArguments(streamToPlay.get(i));

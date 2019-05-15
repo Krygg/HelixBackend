@@ -13,12 +13,14 @@ public class StreamConverter {
     private ArrayList<Synth> streamToPlay = new ArrayList<>();
     private ArrayList<List> OSCList = new ArrayList<>();
     private ArrayList<TimeSignature> timeSignaturList = new ArrayList<>();
+    private int bpm = 0;
     int flag = 0;
 
 
 
 
-    public void ConvertGlobalStreamToOSC(GlobalStream globalStream) throws IOException {
+    public void ConvertGlobalStreamToOSC(GlobalStream globalStream, int bpm) throws IOException {
+        this.bpm = bpm;
         List<LocalStream> localStreams = globalStream.getLocalStreams();
         AddressHolder addressHolder = AddressHolder.getInstance();
 
@@ -28,7 +30,7 @@ public class StreamConverter {
         }
         convertToOSCFormat();
 
-        ThreadSync threadSync = new ThreadSync(OSCList,addressHolder.getAddresses(),timeSignaturList);
+        ThreadSync threadSync = new ThreadSync(OSCList,addressHolder.getAddresses(),timeSignaturList,bpm);
         threadSync.start();
 
 

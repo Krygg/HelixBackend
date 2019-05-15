@@ -94,7 +94,7 @@ public class Main {
 
         StreamConverter streamConverter = new StreamConverter();
 
-        streamConverter.ConvertGlobalStreamToOSC(globalStream);
+        streamConverter.ConvertGlobalStreamToOSC(globalStream,128);
 
     }
 
