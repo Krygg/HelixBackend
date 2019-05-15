@@ -40,8 +40,13 @@ public class ThreadSync extends Thread {
 
 
     private long calculateDelay(int bpm, TimeSignature timeSignature) {
-        long delay = (1000 * (60/bpm))/timeSignature.getN1();
-        return delay;
+        double baseDelay = (1000) * (60 / (double) bpm);
+
+        timeSignature.setN1(4);
+        timeSignature.setN2(4);
+        double timeSignDelay = (double )timeSignature.getN1() / (double) timeSignature.getN2();
+       double delay =  baseDelay * timeSignDelay;
+       return (long) delay;
     }
 
 

@@ -20,7 +20,6 @@ public class StreamConverter {
 
 
     public void ConvertGlobalStreamToOSC(GlobalStream globalStream, int bpm) throws IOException {
-        this.bpm = bpm;
         List<LocalStream> localStreams = globalStream.getLocalStreams();
         AddressHolder addressHolder = AddressHolder.getInstance();
 
