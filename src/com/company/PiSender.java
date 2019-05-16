@@ -24,7 +24,8 @@ public class PiSender extends Thread{
         this.address = str;
     }
 
-    public void send(String address, List<Object> arguments) {
+    public void send(String address, List<Object> arguments, String note) {
+        arguments.add(note);
         OSCMessage msg = new OSCMessage(address, arguments);
         try {
             portOut.send(msg);
