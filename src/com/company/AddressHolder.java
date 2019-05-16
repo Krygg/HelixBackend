@@ -38,7 +38,8 @@ public class AddressHolder {
 
     private void initAddresses() {
         flag = 1;
-        for (int i = 1; i < 7; i++) {
+        final int maxAddress = 7;
+        for (int i = 1; i < maxAddress; i++) {
             addresses.add("/trigger/prophet" + i);
         }
     }

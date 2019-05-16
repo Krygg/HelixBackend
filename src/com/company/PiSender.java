@@ -9,11 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PiSender extends Thread{
-    //TODO: here is one sout.
-    private int flag = 0;
-    private ArrayList<String> availableAddressInstrument = new ArrayList<>();
     private InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
-    private OSCPortOut portOut = new OSCPortOut(inetAddress, 4559);
+    private final OSCPortOut portOut = new OSCPortOut(inetAddress, 4559);
     private List<Object> objects = new ArrayList<>();
     private String address = "";
 
@@ -27,14 +24,12 @@ public class PiSender extends Thread{
         this.address = str;
     }
 
-
-
-    public void send(String address, List<Object> arguments) {
-        System.out.println(arguments.toString());
+    public void send(String address, List<Object> arguments, String note) {
+        arguments.add(note);
         OSCMessage msg = new OSCMessage(address, arguments);
-        System.out.println(msg.toString());
         try {
             portOut.send(msg);
+            arguments.remove(arguments.size()-1);
 
         } catch (Exception ex) {
             System.err.println("Couldn't send");
