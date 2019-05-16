@@ -13,9 +13,11 @@ public class ThreadSync extends Thread {
     private List<List> streamToPlay;
     private List<String> addresses;
     private List<TimeSignature> timeSignatures;
+    private List<List> notes;
     private int bpm;
 
-    public ThreadSync(List<List> streamToPlay, List<String> addresses, List<TimeSignature> timeSignatures, int bpm) {
+    public ThreadSync(List<List> streamToPlay, List<String> addresses, List<TimeSignature> timeSignatures, int bpm, List<List> notes) {
+        this.notes = notes;
         this.bpm = bpm;
         this.timeSignatures = timeSignatures;
         this.streamToPlay = streamToPlay;
@@ -33,6 +35,7 @@ public class ThreadSync extends Thread {
             threadWorker.setTimeSplit(calculateDelay(this.bpm, timeSignatures.get(i)));
             threadWorker.setArguments(streamToPlay.get(i));
             threadWorker.setAddress(getAddress());
+            threadWorker.setNotes(notes.get(i));
             threadWorker.start();
         }
     }
@@ -54,6 +57,7 @@ public class ThreadSync extends Thread {
         return "";
 
     }
+
 
 
 }
