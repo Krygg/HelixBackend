@@ -14,11 +14,9 @@ public class ThreadWorker extends Thread {
 
     public void run() {
         while (true) {
-            System.out.println("im playing a sound");
-            System.out.println(address);
             try {
                 PiSender piSender = new PiSender();
-                piSender.send(address,arguments);
+                piSender.send(address, arguments);
             } catch (IOException e) {
                 e.printStackTrace();
             }

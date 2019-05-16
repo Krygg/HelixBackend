@@ -1,9 +1,5 @@
 package terminals;
 
-import Interpreter.AST.Node;
-import Interpreter.AST.Nodes.terminalNodes.NotesNode;
-import com.company.Instrument;
-
 import java.util.ArrayList;
 import java.util.List;
 

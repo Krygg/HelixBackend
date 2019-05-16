@@ -27,6 +27,8 @@ public class StreamConverter {
             streamToPlay.add(convertToSynth(localStream));
             timeSignaturList.add(localStream.getTime());
         }
+
+
         convertToOSCFormat();
 
         ThreadSync threadSync = new ThreadSync(OSCList,addressHolder.getAddresses(),timeSignaturList,bpm);
@@ -36,8 +38,8 @@ public class StreamConverter {
     }
 
     private Synth convertToSynth(LocalStream localStream) {
-        int bpm = 128;
         //TODO oversæt notes til en string;
+        //TODO måske er den her redudent, og OSCformatHelper kan gøre det i stedet for
         String soundProfile;
         if (localStream.getSoundProfile().isEmpty()) {
             soundProfile = "piano";

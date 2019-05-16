@@ -1,5 +1,3 @@
-import com.company.Instrument;
-import com.company.InstrumentSplitter;
 import com.company.Synth;
 import org.junit.Assert;
 import org.junit.Test;
