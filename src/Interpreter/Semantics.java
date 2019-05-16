@@ -220,8 +220,6 @@ public class Semantics {
             }
 
             // If it's an arithmetic expression
-
-            System.out.println(equalNode.getRight());
             return aExpSemantics(equalNode.getLeft()) == aExpSemantics(equalNode.getRight());
 
         }
@@ -243,6 +241,7 @@ public class Semantics {
             if (nodeValue instanceof ExpressionNode || nodeValue instanceof AtomNode) {
                 int value = aExpSemantics(nodeValue);
                 state.replace(assignNode.getVarName(), value);
+                this.state = state;
             }
         }
 

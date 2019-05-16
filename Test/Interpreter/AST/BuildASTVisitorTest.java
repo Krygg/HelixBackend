@@ -39,10 +39,10 @@ public class BuildASTVisitorTest {
 
         AST(charStream, visitor);
 
-        NumDecl test = new NumDecl();
         AtomNode node = new AtomNode();
         node.setValue("1");
 
+        NumDecl test = new NumDecl();
         test.setType("num");
         test.setVarName("x");
         test.setValue(node);
@@ -57,10 +57,10 @@ public class BuildASTVisitorTest {
 
         AST(charStream, visitor);
 
-        NotesDecl test = new NotesDecl();
         NotesNode node = new NotesNode();
         node.setValue("c4");
 
+        NotesDecl test = new NotesDecl();
         test.setType("notes");
         test.setVarName("x");
         test.setValue(node);
@@ -76,10 +76,10 @@ public class BuildASTVisitorTest {
 
         AST(charStream, visitor);
 
-        InstDecl test = new InstDecl();
         BlockNode node = new BlockNode();
         node.addNode(null);
 
+        InstDecl test = new InstDecl();
         test.setType("Piano");
         test.setVarName("p");
         test.setValue(node);
@@ -284,7 +284,7 @@ public class BuildASTVisitorTest {
 
     @Test
     public void visitIfElse(){
-        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { if(2==2){x = 4} else{x = 5}}");
+        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { if(2==2){}}");
         BuildASTVisitor visitor = new BuildASTVisitor();
 
         AST(charStream, visitor);
@@ -305,24 +305,12 @@ public class BuildASTVisitorTest {
         equalNode.setLeft(atomNode);
         equalNode.setRight(atomNode);
 
-        AssignNode assignNode = new AssignNode();
-        assignNode.setVarName("x");
-        assignNode.setValue(atomNode1);
-
-        AssignNode assignNode1 = new AssignNode();
-        assignNode1.setVarName("x");
-        assignNode1.setValue(atomNode2);
-
-        BlockNode blockNode = new BlockNode();
-        blockNode.addNode(assignNode);
-
         BlockNode blockNode1 = new BlockNode();
-        blockNode1.addNode(assignNode1);
+        blockNode1.addNode(null);
 
         IfElseNode ifElseNode = new IfElseNode();
         ifElseNode.setBool(equalNode);
-        ifElseNode.setStmtTrue(blockNode);
-        ifElseNode.setStmtFalse(blockNode1);
+        ifElseNode.setStmtTrue(blockNode1);
 
         assertEquals(ifElseNode, node.getNodeList().get(0));
 
