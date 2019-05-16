@@ -15,6 +15,7 @@ public class ThreadWorker extends Thread {
     private int i=0;
     private int nodeSelector = 0;
 
+
     public void run() {
         while (true) {
 
@@ -23,6 +24,7 @@ public class ThreadWorker extends Thread {
 
                 nodeSelector = i % notes.size();
                 piSender.send(address, arguments, notes.get(nodeSelector));
+
                 i++;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -50,4 +52,5 @@ public class ThreadWorker extends Thread {
     }
 
     public void setNotes(List<String> notes){this.notes = notes;}
+}
 }
