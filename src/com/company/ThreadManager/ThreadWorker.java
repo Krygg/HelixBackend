@@ -12,14 +12,19 @@ public class ThreadWorker extends Thread {
     private List<Object> arguments = new ArrayList<>();
     private List<String> notes = new ArrayList<>();
     private long timeSplit = 0;
-    private int i;
+    private int i=0;
+    private int nodeSelector = 0;
+
 
     public void run() {
         while (true) {
 
             try {
                 PiSender piSender = new PiSender();
-                piSender.send(address, arguments, notes.get(i));
+
+                nodeSelector = i % notes.size();
+                piSender.send(address, arguments, notes.get(nodeSelector));
+
                 i++;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -47,4 +52,5 @@ public class ThreadWorker extends Thread {
     }
 
     public void setNotes(List<String> notes){this.notes = notes;}
+}
 }

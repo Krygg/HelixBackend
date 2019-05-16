@@ -29,6 +29,7 @@ public class PiSender extends Thread{
         OSCMessage msg = new OSCMessage(address, arguments);
         try {
             portOut.send(msg);
+            arguments.remove(arguments.size()-1);
 
         } catch (Exception ex) {
             System.err.println("Couldn't send");
