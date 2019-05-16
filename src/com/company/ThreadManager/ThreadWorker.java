@@ -11,12 +11,20 @@ public class ThreadWorker extends Thread {
     private String address = "";
     private List<Object> arguments = new ArrayList<>();
     private List<String> notes = new ArrayList<>();
-    private long timeSplit = 0;
+    private long noteDelay = 0;
     private int i=0;
     private int nodeSelector = 0;
+    private long baseDelay = 0;
+
 
 
     public void run() {
+        try {
+            Thread.sleep(baseDelay);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         while (true) {
 
             try {
@@ -32,15 +40,15 @@ public class ThreadWorker extends Thread {
 
 
             try {
-                Thread.sleep(timeSplit);
+                Thread.sleep(noteDelay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void setTimeSplit(long timeSplit) {
-        this.timeSplit = timeSplit;
+    public void setNoteDelay(long noteDelay) {
+        this.noteDelay = noteDelay;
     }
 
     public void setAddress(String address) {
@@ -53,4 +61,4 @@ public class ThreadWorker extends Thread {
 
     public void setNotes(List<String> notes){this.notes = notes;}
 }
-}
+
