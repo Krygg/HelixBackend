@@ -1,7 +1,5 @@
 package terminals;
 
-import java.util.Objects;
-
 public class ADSR {
 
     private int attack;
@@ -49,18 +47,12 @@ public class ADSR {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ADSR adsr = (ADSR) o;
-        return attack == adsr.attack &&
-                decay == adsr.decay &&
-                sustain == adsr.sustain &&
-                release == adsr.release;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(attack, decay, sustain, release);
+    public String toString() {
+        return "ADSR{" +
+                "attack=" + attack +
+                ", decay=" + decay +
+                ", sustain=" + sustain +
+                ", release=" + release +
+                '}';
     }
 }

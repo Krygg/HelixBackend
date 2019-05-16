@@ -15,21 +15,17 @@ import terminals.GlobalStream;
 import terminals.LocalStream;
 import terminals.TimeSignature;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Semantics {
 
     private static final int ONE_NOTE = 3;
     private HashMap<String, Object> state = new HashMap<>();
     private HashMap<String, Integer> channel = new HashMap<>();
-    private HashMap<BlockNode, Object> multMap = new HashMap<>();
-    private GlobalStream globalStream;
-
-    // TODO: May have to change so it fits the semantics
+    private List<MultConfig> multConfigs = new ArrayList<>();
+    private GlobalStream globalStream = new GlobalStream();
     private HashMap<String, InstrumentInfo> envI = new HashMap<>();
+    private List<String> startProcess = new ArrayList<>();
 
     /**
      * BPM declaration semantics
@@ -353,7 +349,7 @@ public class Semantics {
 
             ReceiveNode receiveNode = (ReceiveNode) node;
 
-            state.replace(receiveNode.getVarName(), channel.get(receiveNode.getChannel()));
+            state.put(receiveNode.getVarName(), channel.get(receiveNode.getChannel()));
 
             this.state = state;
 
@@ -363,50 +359,80 @@ public class Semantics {
         // Start statement
         else if (node instanceof StartNode) {
 
-            globalCommuSemantics(node, multMap, globalStream, state);
+            StartNode startNode = (StartNode) node;
+
+            localStream = new LocalStream();
+
+            if(!startProcess.contains(startNode.getVarName())){
+
+                startProcess.add(startNode.getVarName());
+
+                InstrumentInfo info = envI.get(startNode.getVarName());
+
+                localStream.setSoundProfile(info.getSoundProfile());
+
+                MultConfig multConfig = new MultConfig(info.getNode(), localStream);
+
+                multConfigs.add(multConfig);
+            }
         }
 
     }
 
     //TODO: Global communication semantics
-    public void globalCommuSemantics(Node node, HashMap<BlockNode, Object> multMap, GlobalStream globalStream, HashMap<String, Object> state) {
+    public void globalCommuSemantics(List<MultConfig> multConfigs, GlobalStream globalStream, HashMap<String, Object> state) {
 
 
-        // START Global
-        if (node instanceof StartNode) {
-            StartNode startNode = (StartNode) node;
+        // Send and receive global
+        for (MultConfig multConfig : multConfigs) {
 
-            LocalStream localStream = new LocalStream();
+            BlockNode body = (BlockNode) multConfig.getBody();
 
-            InstrumentInfo info = envI.get(startNode.getVarName());
+            for (Node statementNode : body.getNodeList()) {
 
-            localStream.setSoundProfile(info.getSoundProfile());
+                if (statementNode instanceof SendNode) {
 
-            multMap.put((BlockNode) info.getNode(), localStream);
+                    SendNode sendNode = (SendNode) statementNode;
 
-            this.multMap = multMap;
+                    int value = aExpSemantics(sendNode.getValue());
 
+                    channel.put(sendNode.getChannel(), value);
+
+                } else if (statementNode instanceof ReceiveNode) {
+
+                    ReceiveNode receiveNode = (ReceiveNode) statementNode;
+
+                    state.put(receiveNode.getVarName(), channel.get(receiveNode.getChannel()));
+
+                    this.state = state;
+
+                }
+            }
         }
 
-        // Kommu G- SSS
-        else if (node instanceof StatementNode) {
+        int j = multConfigs.size();
 
-            StatementNode statementNode = (StatementNode) node;
+        // Update
+        for(int i = 0; i < j; i++){
 
-            HashMap<String, HashMap> selects = new HashMap<String, HashMap>();
+                BlockNode body = (BlockNode) multConfigs.get(i).getBody();
 
-            for (Map.Entry<String, HashMap> entry: selects.entrySet()) {
-                String key = entry.getKey();
-                HashMap value = this.multMap;
+                LocalStream localStream = multConfigs.get(i).getStream();
 
-            if (node instanceof SendNode) {
+                for (int k = 0; k < body.getNodeList().size(); k++) {
 
+                    statementsSemantics(body.getNodeList().get(k), state, localStream);
 
+                    if(body.getNodeList().get(k) instanceof StartNode){
+
+                        j++;
+                    }
 
                 }
-                }
 
+                globalStream.addStream(localStream);
             }
+
         }
 
 
@@ -429,11 +455,11 @@ public class Semantics {
         this.envI = envI;
     }
 
-    public HashMap<BlockNode, Object> getMultmap() {
-        return multMap;
+    public List<MultConfig> getMultConfigs() {
+        return multConfigs;
     }
 
-    public void setMultmap(HashMap<BlockNode, Object> multmap) {
-        this.multMap = multmap;
+    public void setMultConfigs(List<MultConfig> multConfigs) {
+        this.multConfigs = multConfigs;
     }
 }

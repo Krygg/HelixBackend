@@ -13,6 +13,7 @@ import Interpreter.Semantics;
 import antlr.CFGLexer;
 import antlr.CFGParser;
 import com.company.MidiLookUp;
+import com.company.StreamConverter;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -38,6 +39,56 @@ public class TestClass {
 
         BuildASTVisitor buildASTVisitor = new BuildASTVisitor();
         buildASTVisitor.visit(tree);
+
+        HashMap<String, InstrumentInfo> envI = new HashMap<>();
+        GlobalStream globalStream =new GlobalStream();
+        HashMap<String, Object> state = new HashMap<>();
+        LocalStream localStream = new LocalStream();
+        Semantics semantics = new Semantics();
+
+        for(Node node : buildASTVisitor.getNodeList()){
+
+            if(node instanceof BPMDeclaration){
+
+                semantics.bpmDeclSemantics(node, state);
+
+            } else if(node instanceof NumDecl || node instanceof NotesDecl){
+
+                semantics.varDeclSemantics(node, state);
+
+            } else if(node instanceof InstDecl){
+
+                semantics.instDeclSemantics(node, envI);
+            }
+        }
+
+        for(Node node : buildASTVisitor.getNodeList()){
+
+            if(node instanceof StartNode){
+
+                semantics.communicationSemantics(node, state, localStream);
+
+            }
+        }
+
+        semantics.globalCommuSemantics(semantics.getMultConfigs(), globalStream, semantics.getState());
+
+        StreamConverter streamConverter = new StreamConverter();
+
+        int bpm = 128;
+
+        if(semantics.getState().get("bpm") != null){
+
+            bpm = (Integer) semantics.getState().get("bpm");
+        }
+
+        System.out.println(semantics.getEnvI());
+
+        //streamConverter.ConvertGlobalStreamToOSC(globalStream, bpm);
+
+
+
+
 
         //System.out.println(buildASTVisitor.getNodeList());
 
@@ -159,10 +210,11 @@ public class TestClass {
         System.out.println(semantics.bexpSemantics(node));*/
 
         // Global START
-        HashMap<String, InstrumentInfo> envI1 = new HashMap<>();
+        /*HashMap<String, InstrumentInfo> envI1 = new HashMap<>();
         HashMap<BlockNode, Object> multMap = new HashMap<>();
         GlobalStream globalStream =new GlobalStream();
         HashMap<String, Object> state1 = new HashMap<>();
+        LocalStream localStream = new LocalStream();
 
         StartNode startNode = new StartNode();
         startNode.setVarName("p");
@@ -185,9 +237,13 @@ public class TestClass {
         Semantics semantics1 = new Semantics();
         semantics1.setEnvI(envI1);
         semantics1.setState(state1);
+        semantics1.statementsSemantics(startNode, state1, localStream);
         semantics1.globalCommuSemantics(startNode,multMap,globalStream,state1);
 
-        System.out.println(semantics1.getMultmap());
+
+        System.out.println(semantics1.getMultmap());*/
+
+
 
 
     }

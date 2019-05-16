@@ -242,6 +242,10 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
             receive.setChannel(ctx.c().getText());
             receive.setVarName(ctx.VARNAME().getText());
+
+            // Check if variable name has been used before
+            checkVarNames(ctx.VARNAME().getText());
+
             receive.setStatement(visitStmt(ctx.stmt()));
 
             return receive;

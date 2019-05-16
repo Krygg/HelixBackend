@@ -41,4 +41,12 @@ public class AssignNode extends StatementNode {
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "AssignNode{" +
+                "varName='" + varName + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }
