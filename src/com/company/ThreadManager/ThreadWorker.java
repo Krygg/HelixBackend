@@ -42,7 +42,7 @@ public class ThreadWorker extends Thread {
             try {
                 Thread.sleep(noteDelay);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                break;
             }
         }
     }

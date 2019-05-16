@@ -12,13 +12,30 @@ public class ThreadCalculator extends Thread {
     private List<TimeSignature> timeSignatures;
     private List<List> notes;
     private List<Long> baseDelayList = new ArrayList<>();
+    private List<Long> normalDelayList = new ArrayList<>();
+    private ThreadSync threadSync;
     private int bpm;
 
 
     public void run() {
+        calculateBaseDelay();
+    }
+
+    private void calculateBaseDelay() {
         final long opdateRate = 10000;
 
+        long delayTime = 0;
+        for (Long aLong : normalDelayList) {
+            for (int j = 1; delayTime <= opdateRate; j++) {
+                delayTime = aLong * j;
+            }
+        }
 
+        long difTime = delayTime - opdateRate;
+
+        baseDelayList.add(delayTime);
+        threadSync.setBaseDelayList(baseDelayList);
+        threadSync.setFlag(1);
     }
 
 
@@ -56,6 +73,18 @@ public class ThreadCalculator extends Thread {
 
     public List<Long> getBaseDelayList() {
         return baseDelayList;
+    }
+
+    public void setNormalDelayList(List<Long> normalDelayList) {
+        this.normalDelayList = normalDelayList;
+    }
+
+    public List<Long> getNormalDelayList() {
+        return normalDelayList;
+    }
+
+    public void setThreadSync(ThreadSync threadSync) {
+        this.threadSync = threadSync;
     }
 
     public void setBaseDelayList(List<Long> baseDelayList) {
