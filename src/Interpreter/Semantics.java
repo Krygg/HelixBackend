@@ -91,46 +91,60 @@ public class Semantics {
     public List<LocalStream> keySemantics(Node node) {
 
         NotesNode notes = (NotesNode) node;
-
         String noteValues = notes.getValue();
-
-        List<LocalStream> localStreams = new ArrayList<>();
 
         // Midi-lookup information
         MidiLookUp midiLookUp = MidiLookUp.getInstance();
         noteValues = noteValues.replaceAll("\\s+", "");
-        String[] noteStrings = noteValues.split("[()]");
+        String[] noteStrings = noteValues.split("((?<=[()]|(?=[()])))");
 
-        int i;
+        List<String> notesList = new ArrayList<>();
 
-        for (i = 0; i < noteStrings.length; i++) {
+        for(int i = 0; i < noteStrings.length; i++){
+
+            // Chord
+            if(noteStrings[i].equals("(")){
+
+                while(!noteStrings[i].equals(")")){
+
+                    i++;
+
+                    if(!noteStrings[i].equals(")")){
+
+                        notesList.add(noteStrings[i]);
+                    }
+                }
+            }
+
+            // A single note
+            if(!noteStrings[i].equals("(") && !noteStrings[i].equals(")")){
+
+                String[] strings = noteStrings[i].split(",");
+
+                Collections.addAll(notesList, strings);
+            }
+        }
+
+        List<LocalStream> localStreams = new ArrayList<>();
+
+        for (String s : notesList) {
 
             LocalStream<Object> stream = new LocalStream<>();
 
-            // A chord
-            if (noteStrings[i].length() > ONE_NOTE) {
+            if(s.contains(",")){
 
-                String[] chord = noteStrings[i].split(",");
+                String[] strings = s.split(",");
 
-                int j;
+                for (String string : strings) {
 
-                for (j = 0; j < chord.length; j++) {
-
-                    stream.addNote(midiLookUp.getMidiNumber(chord[j]));
-
+                    stream.addNote(midiLookUp.getMidiNumber(string));
                 }
 
                 localStreams.add(stream);
 
-            }
+            } else {
 
-            // A single note
-            else {
-
-                String note = noteStrings[i].replace(",", "");
-
-                stream.addNote(midiLookUp.getMidiNumber(note));
-
+                stream.addNote(midiLookUp.getMidiNumber(s));
                 localStreams.add(stream);
             }
         }
@@ -379,9 +393,8 @@ public class Semantics {
 
     }
 
-    //TODO: Global communication semantics
+    /** Global communication semantics */
     public void globalCommuSemantics(List<MultConfig> multConfigs, GlobalStream globalStream, HashMap<String, Object> state) {
-
 
         // Send and receive global
         for (MultConfig multConfig : multConfigs) {
@@ -415,25 +428,25 @@ public class Semantics {
         // Update
         for(int i = 0; i < j; i++){
 
-                BlockNode body = (BlockNode) multConfigs.get(i).getBody();
+            BlockNode body = (BlockNode) multConfigs.get(i).getBody();
 
-                LocalStream localStream = multConfigs.get(i).getStream();
+            LocalStream localStream = multConfigs.get(i).getStream();
 
-                for (int k = 0; k < body.getNodeList().size(); k++) {
+            for (int k = 0; k < body.getNodeList().size(); k++) {
 
-                    statementsSemantics(body.getNodeList().get(k), state, localStream);
+                statementsSemantics(body.getNodeList().get(k), state, localStream);
 
-                    if(body.getNodeList().get(k) instanceof StartNode){
+                if(body.getNodeList().get(k) instanceof StartNode){
 
-                        j++;
-                    }
-
+                    j++;
                 }
 
-                globalStream.addStream(localStream);
             }
 
+            globalStream.addStream(localStream);
         }
+
+    }
 
 
     /**

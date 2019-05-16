@@ -1,5 +1,7 @@
 package terminals;
 
+import java.util.Objects;
+
 public class TimeSignature {
 
     private int n1;
@@ -32,5 +34,19 @@ public class TimeSignature {
                 "n1=" + n1 +
                 ", n2=" + n2 +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TimeSignature that = (TimeSignature) o;
+        return n1 == that.n1 &&
+                n2 == that.n2;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(n1, n2);
     }
 }
