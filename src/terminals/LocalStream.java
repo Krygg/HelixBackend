@@ -2,6 +2,7 @@ package terminals;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class LocalStream <T> {
 
@@ -60,10 +61,26 @@ public class LocalStream <T> {
 
     @Override
     public String toString() {
-        return "{soundProfile='" + soundProfile + '\n' +
-                "notes=" + notes + '\n' +
-                "adsr=" + adsr + '\n' +
+        return "{soundProfile='" + soundProfile +
+                "notes=" + notes +
+                "adsr=" + adsr +
                 "time=" + time +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LocalStream<?> that = (LocalStream<?>) o;
+        return Objects.equals(soundProfile, that.soundProfile) &&
+                Objects.equals(notes, that.notes) &&
+                Objects.equals(adsr, that.adsr) &&
+                Objects.equals(time, that.time);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(soundProfile, notes, adsr, time);
     }
 }
