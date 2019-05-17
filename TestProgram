@@ -18,7 +18,7 @@ Piano p {
 
     adsr(2,3,4,5);
 
-    send(c,7+4);
+    send(c, 7);
 
     start d;
 
@@ -26,22 +26,10 @@ Piano p {
 
 Drum d {
 
-    receive(c,h) . send(i, h);
+    receive(c,h).y = h;
+    adsr(2,3,4,5);
 
-    start q;
-
-
-}
-
-Piano q {
-
-    receive(i,l).;
-}
-
-Drum k {
-
-    start q;
-
+    start pi;
 }
 
 Piano pi{
