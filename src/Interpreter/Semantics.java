@@ -354,7 +354,7 @@ public class Semantics {
 
             int value = aExpSemantics(sendNode.getValue());
 
-            channel.put(sendNode.getChannel(), value);
+            channel.putIfAbsent(sendNode.getChannel(), value);
 
         }
 
@@ -375,9 +375,9 @@ public class Semantics {
 
             StartNode startNode = (StartNode) node;
 
-            localStream = new LocalStream<>();
-
             if(!startProcess.contains(startNode.getVarName())){
+
+                localStream = new LocalStream<>();
 
                 startProcess.add(startNode.getVarName());
 

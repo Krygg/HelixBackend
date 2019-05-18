@@ -6,6 +6,7 @@ public class MelNode extends StatementNode {
 
     private String varName;
 
+
     public String getVarName() {
         return varName;
     }
@@ -19,18 +20,4 @@ public class MelNode extends StatementNode {
         return "MelNode{" + varName + '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        MelNode melNode = (MelNode) o;
-
-        return varName != null ? varName.equals(melNode.varName) : melNode.varName == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return varName != null ? varName.hashCode() : 0;
-    }
 }

@@ -1,3 +1,6 @@
 package Interpreter.AST;
 
-public interface Node {}
+public interface Node {
+
+    String getType();
+}
