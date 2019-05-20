@@ -43,7 +43,6 @@ public class BuildASTVisitorTest {
         node.setValue("1");
 
         NumDecl test = new NumDecl();
-        test.setType("num");
         test.setVarName("x");
         test.setValue(node);
 
@@ -61,7 +60,6 @@ public class BuildASTVisitorTest {
         node.setValue("c4");
 
         NotesDecl test = new NotesDecl();
-        test.setType("notes");
         test.setVarName("x");
         test.setValue(node);
 
@@ -140,7 +138,7 @@ public class BuildASTVisitorTest {
     @Test
     public void visitAssignStmt(){
 
-        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { x = 1;}");
+        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { x = 3;}");
         BuildASTVisitor visitor = new BuildASTVisitor();
 
         AST(charStream, visitor);
@@ -160,23 +158,22 @@ public class BuildASTVisitorTest {
 
     @Test
     public void visitStart(){
-        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { start p;}");
+        CharStream charStream = CharStreams.fromString("num x = 3; start p; Piano p {}");
         BuildASTVisitor visitor = new BuildASTVisitor();
 
         AST(charStream, visitor);
 
-        Declaration testInstrument = (Declaration) visitor.getNodeList().get(1);
-        BlockNode node = (BlockNode) testInstrument.getValue();
+        StartNode startNode = (StartNode) visitor.getNodeList().get(1);
 
         StartNode start = new StartNode();
         start.setVarName("p");
 
-        assertEquals(start, node.getNodeList().get(0));
+        assertEquals(start, startNode);
     }
 
     @Test
     public void visitMel(){
-        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { mel(x);}");
+        CharStream charStream = CharStreams.fromString("notes x = c4; Piano p { mel(x);}");
         BuildASTVisitor visitor = new BuildASTVisitor();
 
         AST(charStream, visitor);
@@ -192,7 +189,7 @@ public class BuildASTVisitorTest {
 
     @Test
     public void visitADSR(){
-        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { adsr(2,2,2,2);}");
+        CharStream charStream = CharStreams.fromString("num x = 3; Piano p { adsr(x,2,2,2);}");
         BuildASTVisitor visitor = new BuildASTVisitor();
 
         AST(charStream, visitor);
@@ -258,7 +255,7 @@ public class BuildASTVisitorTest {
     @Test
     public void visitReceive(){
 
-        CharStream charStream = CharStreams.fromString("num x = 3; num y = 4; Piano p { receive(c,x).y=8; }");
+        CharStream charStream = CharStreams.fromString("num x = 3; num y = 4; Piano p { receive(c,h).y=8; }");
         BuildASTVisitor visitor = new BuildASTVisitor();
 
         AST(charStream, visitor);
@@ -275,8 +272,10 @@ public class BuildASTVisitorTest {
 
         ReceiveNode receiveNode = new ReceiveNode();
         receiveNode.setChannel("c");
-        receiveNode.setVarName("x");
+        receiveNode.setVarName("h");
         receiveNode.setStatement(assignNode);
+
+        System.out.println(visitor.getSymbolTable());
 
         assertEquals(receiveNode, node.getNodeList().get(0));
 
@@ -347,7 +346,7 @@ public class BuildASTVisitorTest {
 
         AST(charStream, visitor);
 
-        Declaration testInstrument = (Declaration) visitor.getNodeList().get(1);
+        InstDecl testInstrument = (InstDecl) visitor.getNodeList().get(1);
         BlockNode node = (BlockNode) testInstrument.getValue();
         IfElseNode ifElseNode = (IfElseNode) node.getNodeList().get(0);
 

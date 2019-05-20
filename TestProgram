@@ -1,8 +1,37 @@
 bpm(60);
 
 num x = 3;
-num m = 6+3*x+1;
+num m = 69+x;
+num y = 10;
+
+notes melody = c4,c5,d8;
+
+start d;
 
 Piano p {
-    x = 6;
+
+    x = x + 1;
+
+    mel(melody);
+
+    time(3,5);
+
+    adsr(2,3,4,5);
+
+    send(c, 7);
+}
+
+Drum d {
+
+    receive(c,h).y = h;
+    adsr(2,3,4,5);
+
+    start p;
+}
+
+Piano pi{
+
+    receive(c,l).y = l;
+    mel(melody);
+
 }

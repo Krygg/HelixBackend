@@ -3,8 +3,11 @@ package Interpreter.AST.Nodes.expressionNodes;
 import Interpreter.AST.Node;
 import Interpreter.AST.Nodes.expressionNodes.ExpressionNode;
 
+import java.util.Objects;
+
 public class UnaryExpression extends ExpressionNode {
     private Node expressionNode;
+
 
     public Node getExpressionNode() {
         return expressionNode;
@@ -23,14 +26,12 @@ public class UnaryExpression extends ExpressionNode {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         UnaryExpression that = (UnaryExpression) o;
-
-        return expressionNode != null ? expressionNode.equals(that.expressionNode) : that.expressionNode == null;
+        return Objects.equals(expressionNode, that.expressionNode);
     }
 
     @Override
     public int hashCode() {
-        return expressionNode != null ? expressionNode.hashCode() : 0;
+        return Objects.hash(expressionNode);
     }
 }

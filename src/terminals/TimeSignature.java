@@ -29,6 +29,14 @@ public class TimeSignature {
     }
 
     @Override
+    public String toString() {
+        return "TimeSignature{" +
+                "n1=" + n1 +
+                ", n2=" + n2 +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

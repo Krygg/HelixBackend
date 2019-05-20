@@ -49,6 +49,16 @@ public class ADSR {
     }
 
     @Override
+    public String toString() {
+        return "ADSR{" +
+                "attack=" + attack +
+                ", decay=" + decay +
+                ", sustain=" + sustain +
+                ", release=" + release +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

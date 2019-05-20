@@ -91,7 +91,7 @@ public class SemanticsTest {
     public void notesDeclSem(){
 
         NotesNode note = new NotesNode();
-        note.setValue("c4,(c5,c4)");
+        note.setValue("c4,c4,(c5,c4)");
 
         NotesDecl notesDecl = new NotesDecl();
         notesDecl.setVarName("x");
@@ -107,6 +107,7 @@ public class SemanticsTest {
         key2.addNote(60);
 
         List<LocalStream> keyStream = new ArrayList<>();
+        keyStream.add(key1);
         keyStream.add(key1);
         keyStream.add(key2);
 

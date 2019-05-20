@@ -1,29 +1,31 @@
 package Interpreter;
 
 import Interpreter.AST.Node;
-import Interpreter.AST.Nodes.declarationNodes.*;
+import Interpreter.AST.Nodes.declarationNodes.BPMDeclaration;
+import Interpreter.AST.Nodes.declarationNodes.InstDecl;
+import Interpreter.AST.Nodes.declarationNodes.NotesDecl;
+import Interpreter.AST.Nodes.declarationNodes.NumDecl;
 import Interpreter.AST.Nodes.expressionNodes.*;
 import Interpreter.AST.Nodes.statementNodes.*;
 import Interpreter.AST.Nodes.terminalNodes.AtomNode;
 import Interpreter.AST.Nodes.terminalNodes.NotesNode;
 import com.company.MidiLookUp;
+import terminals.ADSR;
+import terminals.GlobalStream;
+import terminals.LocalStream;
+import terminals.TimeSignature;
 
-import terminals.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Semantics {
 
     private static final int ONE_NOTE = 3;
     private HashMap<String, Object> state = new HashMap<>();
     private HashMap<String, Integer> channel = new HashMap<>();
-    private HashMap<BlockNode, Object> multMap = new HashMap<>();
-    private GlobalStream globalStream;
-
-    // TODO: May have to change so it fits the semantics
+    private List<MultConfig> multConfigs = new ArrayList<>();
+    private GlobalStream globalStream = new GlobalStream();
     private HashMap<String, InstrumentInfo> envI = new HashMap<>();
+    private List<String> startProcess = new ArrayList<>();
 
     /**
      * BPM declaration semantics
@@ -89,47 +91,69 @@ public class Semantics {
     public List<LocalStream> keySemantics(Node node) {
 
         NotesNode notes = (NotesNode) node;
-
         String noteValues = notes.getValue();
-
-        List<LocalStream> localStreams = new ArrayList<>();
 
         // Midi-lookup information
         MidiLookUp midiLookUp = MidiLookUp.getInstance();
         noteValues = noteValues.replaceAll("\\s+", "");
-        String[] noteStrings = noteValues.split("[()]");
 
-        int i;
+        // Split the string with note-information after parenthesises
+        String[] splitNotes = noteValues.split("((?<=[()]|(?=[()])))");
 
-        for (i = 0; i < noteStrings.length; i++) {
+        // The correctly split list of note information
+        List<String> notesList = new ArrayList<>();
 
-            LocalStream<Object> stream = new LocalStream<>();
+        for(int i = 0; i < splitNotes.length; i++){
 
-            // A chord
-            if (noteStrings[i].length() > ONE_NOTE) {
+            // If you see a start parenthesis, then it's the start of a chord
+            if(splitNotes[i].equals("(")){
 
-                String[] chord = noteStrings[i].split(",");
+                while(!splitNotes[i].equals(")")){
 
-                int j;
+                    i++;
 
-                for (j = 0; j < chord.length; j++) {
+                    // If you see an end parenthesis then it's the end of the chord
+                    if(!splitNotes[i].equals(")")){
+                        notesList.add(splitNotes[i]);
+                    }
+                }
+            }
 
-                    stream.addNote(midiLookUp.getMidiNumber(chord[j]));
+            // A single note if it has no relation to a parenthesis
+            if(!splitNotes[i].equals("(") && !splitNotes[i].equals(")")){
 
+                String[] strings = splitNotes[i].split(",");
+
+                Collections.addAll(notesList, strings);
+            }
+        }
+
+        // List of streams with all the individual key-streams
+        List<LocalStream> localStreams = new ArrayList<>();
+
+        for (String note : notesList) {
+
+            LocalStream<Object> keyStream = new LocalStream<>();
+
+            // If the note is a chord (contains a comma)
+            if(note.contains(",")){
+
+                String[] strings = note.split(",");
+
+                for (String string : strings) {
+
+                    keyStream.addNote(midiLookUp.getMidiNumber(string));
                 }
 
-                localStreams.add(stream);
+                localStreams.add(keyStream);
 
             }
 
-            // A single note
+            // If the note is a single note
             else {
 
-                String note = noteStrings[i].replace(",", "");
-
-                stream.addNote(midiLookUp.getMidiNumber(note));
-
-                localStreams.add(stream);
+                keyStream.addNote(midiLookUp.getMidiNumber(note));
+                localStreams.add(keyStream);
             }
         }
 
@@ -318,17 +342,9 @@ public class Semantics {
                 statementsSemantics(ifElse.getStmtFalse(), state, localStream);
             }
         }
-
-        // Communication statements
-        else if (node instanceof StartNode || node instanceof SendNode || node instanceof ReceiveNode) {
-
-            communicationSemantics(node, state, localStream);
-
-        }
     }
 
 
-    // TODO: Discuss whether this follows the semantics
     public void communicationSemantics(Node node, HashMap<String, Object> state, LocalStream<LocalStream> localStream) {
 
         // Send statement
@@ -338,7 +354,7 @@ public class Semantics {
 
             int value = aExpSemantics(sendNode.getValue());
 
-            channel.put(sendNode.getChannel(), value);
+            channel.putIfAbsent(sendNode.getChannel(), value);
 
         }
 
@@ -347,7 +363,7 @@ public class Semantics {
 
             ReceiveNode receiveNode = (ReceiveNode) node;
 
-            state.replace(receiveNode.getVarName(), channel.get(receiveNode.getChannel()));
+            state.put(receiveNode.getVarName(), channel.get(receiveNode.getChannel()));
 
             this.state = state;
 
@@ -357,31 +373,92 @@ public class Semantics {
         // Start statement
         else if (node instanceof StartNode) {
 
-            globalCommuSemantics(node, multMap, globalStream, state);
-        }
-
-    }
-
-    //TODO: Global communication semantics
-    public void globalCommuSemantics(Node node, HashMap<BlockNode, Object> multMap, GlobalStream globalStream, HashMap<String, Object> state) {
-
-
-        // START Global
-        if (node instanceof StartNode) {
             StartNode startNode = (StartNode) node;
 
-            LocalStream localStream = new LocalStream();
+            if(!startProcess.contains(startNode.getVarName())){
 
-            InstrumentInfo info = envI.get(startNode.getVarName());
+                localStream = new LocalStream<>();
 
-            localStream.setSoundProfile(info.getSoundProfile());
+                startProcess.add(startNode.getVarName());
 
-            multMap.put((BlockNode) info.getNode(), localStream);
+                InstrumentInfo info = envI.get(startNode.getVarName());
 
-            this.multMap = multMap;
+                localStream.setSoundProfile(info.getSoundProfile());
+
+                MultConfig multConfig = new MultConfig(info.getNode(), localStream);
+
+                multConfigs.add(multConfig);
+            }
         }
     }
 
+    /** Global communication semantics */
+    public void globalCommuSemantics(List<MultConfig> multConfigs, GlobalStream globalStream, HashMap<String, Object> state) {
+
+        // Look after all start
+        for (int i = 0; i < startProcess.size(); i++) {
+
+            BlockNode body = (BlockNode) multConfigs.get(i).getBody();
+
+            LocalStream localStream = multConfigs.get(i).getStream();
+
+            for (Node node : body.getNodeList()) {
+
+                if (node instanceof StartNode) {
+
+                    communicationSemantics(node, state, localStream);
+                }
+            }
+        }
+
+        // Send
+        for (MultConfig multConfig : multConfigs) {
+
+            BlockNode body = (BlockNode) multConfig.getBody();
+
+            LocalStream localStream = multConfig.getStream();
+
+            for (Node node : body.getNodeList()) {
+
+                if (node instanceof SendNode) {
+
+                    communicationSemantics(node, state, localStream);
+                }
+            }
+
+        }
+
+        // Receive
+        for (MultConfig multConfig : multConfigs) {
+
+            BlockNode body = (BlockNode) multConfig.getBody();
+
+            LocalStream localStream = multConfig.getStream();
+
+            for (Node node : body.getNodeList()) {
+
+                if (node instanceof ReceiveNode) {
+
+                    communicationSemantics(node, state, localStream);
+                }
+            }
+        }
+
+        // The rest of te statements are processed
+        for (MultConfig multConfig : multConfigs) {
+
+            BlockNode body = (BlockNode) multConfig.getBody();
+
+            LocalStream localStream = multConfig.getStream();
+
+            for (Node node : body.getNodeList()) {
+
+                statementsSemantics(node, state, localStream);
+            }
+
+            globalStream.addStream(localStream);
+        }
+    }
 
     /**
      * Getters and Setters
@@ -402,11 +479,11 @@ public class Semantics {
         this.envI = envI;
     }
 
-    public HashMap<BlockNode, Object> getMultmap() {
-        return multMap;
+    public List<MultConfig> getMultConfigs() {
+        return multConfigs;
     }
 
-    public void setMultmap(HashMap<BlockNode, Object> multmap) {
-        this.multMap = multmap;
+    public void setMultConfigs(List<MultConfig> multConfigs) {
+        this.multConfigs = multConfigs;
     }
 }

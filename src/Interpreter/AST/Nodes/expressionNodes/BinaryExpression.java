@@ -2,6 +2,8 @@ package Interpreter.AST.Nodes.expressionNodes;
 
 import Interpreter.AST.Node;
 
+import java.util.Objects;
+
 public class BinaryExpression extends ExpressionNode {
     private Node left;
     private Node right;
@@ -34,17 +36,14 @@ public class BinaryExpression extends ExpressionNode {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
+        if (!super.equals(o)) return false;
         BinaryExpression that = (BinaryExpression) o;
-
-        if (left != null ? !left.equals(that.left) : that.left != null) return false;
-        return right != null ? right.equals(that.right) : that.right == null;
+        return Objects.equals(left, that.left) &&
+                Objects.equals(right, that.right);
     }
 
     @Override
     public int hashCode() {
-        int result = left != null ? left.hashCode() : 0;
-        result = 31 * result + (right != null ? right.hashCode() : 0);
-        return result;
+        return Objects.hash(super.hashCode(), left, right);
     }
 }
