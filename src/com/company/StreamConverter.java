@@ -3,6 +3,7 @@ package com.company;
 import com.company.ThreadManager.ThreadSync;
 import terminals.GlobalStream;
 import terminals.LocalStream;
+import terminals.Note;
 import terminals.TimeSignature;
 
 import java.io.IOException;
@@ -38,21 +39,40 @@ public class StreamConverter {
 
     }
 
-    private Synth convertToSynth(LocalStream localStream) {
-        //TODO oversæt notes til en string;
-        //TODO måske er den her redudent, og OSCformatHelper kan gøre det i stedet for
+    private Synth convertToSynth(LocalStream<LocalStream> localStream) {
         String soundProfile;
+        List<LocalStream> localStreams = localStream.getNotes();
+        List<String> localNotes = new ArrayList<>();
+        StringBuilder stringBuilder = new StringBuilder("");
+        int size = 0;
+
+
+        //TODO come back and finish this
+        for (int i = 0; i < localStream.getNotes().size(); i++) {
+            for (int j = 0; j < localStream.getNotes().get(i).getNotes().size(); j++) {
+                if (localStream.getNotes().get(i).getNotes().size() > 1) {
+                    stringBuilder.append(localStream.getNotes().get(i).getNotes().get(j));
+                    if (j < (localStream.getNotes().get(i).getNotes().size()-1)) {
+                        stringBuilder.append(", ");
+                    }
+                } else {
+                    stringBuilder.append(localStream.getNotes().get(i).getNotes().get(j));
+                }
+            }
+            localNotes.add(stringBuilder.toString());
+            stringBuilder.setLength(0);
+        }
+        System.out.println(localNotes);
+
+        notes.add(localNotes);
+
+        localStream.setSoundProfile(localStream.getSoundProfile().toLowerCase());
+        //TODO check if the soundprofile is real.
         if (localStream.getSoundProfile().isEmpty()) {
             soundProfile = "piano";
         }
+
         soundProfile = localStream.getSoundProfile();
-        //TODO string splitter til array
-        ArrayList<String> stringNotes = new ArrayList<>();
-        stringNotes.add("60");
-        stringNotes.add("40");
-        stringNotes.add("20");
-        stringNotes.add("42");
-        notes.add(stringNotes);
 
         return new Synth("60",soundProfile,
                 localStream.getAdsr().getAttack(),localStream.getAdsr().getDecay(),localStream.getAdsr().getSustain(),
@@ -71,10 +91,11 @@ public class StreamConverter {
 
         List<Object> arguments = new ArrayList<>();
         arguments.add(synth.getSynth());
+        arguments.add(1);
         arguments.add(synth.getRelease());
         arguments.add(synth.getSustain());
         arguments.add(synth.getAttack());
-        arguments.add(synth.getVolume());
+        //TODO add the real values for ADSR, so alll of this works
 
 
         return arguments;

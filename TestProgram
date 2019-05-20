@@ -1,12 +1,12 @@
-bpm(60);
+bpm(20);
 
 num x = 3;
 num m = 69+x;
 num y = 10;
 
-notes melody = c4,c5,d8;
+notes melody = (c4,c5),e2;
 
-start d;
+start p;
 
 Piano p {
 
@@ -14,20 +14,14 @@ Piano p {
 
     mel(melody);
 
-    time(3,5);
+    time(3,4);
 
-    adsr(2,3,4,5);
+    adsr(1,1,1,1);
 
     send(c, 7);
 }
 
-Drum d {
 
-    receive(c,h).y = h;
-    adsr(2,3,4,5);
-
-    start p;
-}
 
 Piano pi{
 
