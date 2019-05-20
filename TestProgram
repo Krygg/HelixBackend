@@ -21,7 +21,7 @@ Piano p {
     send(c, 7);
 }
 
-
+start pi;
 
 Piano pi{
 
