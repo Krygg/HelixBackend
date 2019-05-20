@@ -3,7 +3,7 @@ set :bpm, 128
 
 live_loop :foo do
   use_real_time
-  s,a, b, c, d, e = sync "/osc/trigger/prophet1"
+  s,e, b, c, d, a = sync "/osc/trigger/prophet1"
   a = a.split.map{|chr| chr.to_i}
   synth s, note: a, cutoff: b, sustain: c, attack: d, vel: e
 end
@@ -11,21 +11,21 @@ end
 
 live_loop :foo2 do
   use_real_time
-  s,a, b, c, d, e = sync "/osc/trigger/prophet2"
+  s,e, b, c, d, a = sync "/osc/trigger/prophet2"
   a = a.split.map{|chr| chr.to_i}
   synth s, note: a, cutoff: b, sustain: c, attack: d, vel: e
 end
 
 live_loop :foo3 do
   use_real_time
-  s,a, b, c, d, e = sync "/osc/trigger/prophet3"
+  s,e, b, c, d, a = sync "/osc/trigger/prophet3"
   a = a.split.map{|chr| chr.to_i}
   synth s, note: a, cutoff: b, sustain: c, attack: d, vel: e
 end
 
 live_loop :foo4 do
   use_real_time
-  s,a, b, c, d, e = sync "/osc/trigger/prophet4"
+  s,e, b, c, d, a = sync "/osc/trigger/prophet4"
   a = a.split.map{|chr| chr.to_i}
   synth s, note: a, cutoff: b, sustain: c, attack: d, vel: e
 end

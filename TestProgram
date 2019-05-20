@@ -4,7 +4,7 @@ num x = 3;
 num m = 69+x;
 num y = 10;
 
-notes melody = c4,(c5,e2);
+notes melody = (c4,c5),e2;
 
 start p;
 
