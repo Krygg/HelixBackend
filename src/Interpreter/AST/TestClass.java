@@ -84,7 +84,7 @@ public class TestClass {
 
         System.out.println(semantics.getMultConfigs());
 
-        //streamConverter.ConvertGlobalStreamToOSC(globalStream, bpm);
+        streamConverter.ConvertGlobalStreamToOSC(globalStream, bpm);
 
 
 
