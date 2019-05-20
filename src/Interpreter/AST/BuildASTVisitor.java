@@ -1,4 +1,5 @@
 package Interpreter.AST;
+
 import Interpreter.AST.Nodes.declarationNodes.*;
 import Interpreter.AST.Nodes.expressionNodes.*;
 import Interpreter.AST.Nodes.statementNodes.*;
@@ -13,9 +14,11 @@ import java.util.List;
 
 public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
-    private HashMap<String,String> symbolTable = new HashMap<>();
+    private HashMap<String, String> symbolTable = new HashMap<>();
     private List<Node> nodeList = new ArrayList<>();
     private List<String> startProcess = new ArrayList<>();
+    private HashMap<String, String> receiveMap = new HashMap<>();
+    private HashMap<String, String> sendMap = new HashMap<>();
 
     @Override
     public Node visitProgram(CFGParser.ProgramContext ctx) {
@@ -23,11 +26,13 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         return super.visitProgram(ctx);
     }
 
-    /**BPM declaration (OK)*/
+    /**
+     * BPM declaration (OK)
+     */
     @Override
     public Node visitDb(CFGParser.DbContext ctx) {
 
-        if(ctx.BPM() != null){
+        if (ctx.BPM() != null) {
 
             BPMDeclaration bpmDeclaration = new BPMDeclaration();
 
@@ -41,12 +46,14 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         return null;
     }
 
-    /** Variable declaration (OK)*/
+    /**
+     * Variable declaration (OK)
+     */
     @Override
     public Node visitDv(CFGParser.DvContext ctx) {
 
         // Expression assigned
-        if(ctx.NUM() != null){
+        if (ctx.NUM() != null) {
 
             // Check if variable name has been used before
             checkVarNames(ctx.VARNAME().getText(), ctx.NUM().getText());
@@ -56,12 +63,12 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
             numDecl.setValue(visitAExp(ctx.aExp()));
 
-            if(startProcess.contains(numDecl.getVarName())){
+            if (startProcess.contains(numDecl.getVarName())) {
 
                 throw new TypeCheckingError("You can't start anything but an instrument!");
             }
 
-            if(numDecl.getValue().getType().equals("num")){
+            if (numDecl.getValue().getType().equals("num")) {
 
                 nodeList.add(numDecl);
 
@@ -72,7 +79,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         }
 
         // Notes assigned
-        else if (ctx.k() != null){
+        else if (ctx.k() != null) {
 
             // Check if variable name has been used before
             checkVarNames(ctx.VARNAME().getText(), ctx.NOTES().getText());
@@ -81,12 +88,12 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             notesDecl.setVarName(ctx.VARNAME().getText());
             notesDecl.setValue(visitK(ctx.k()));
 
-            if(startProcess.contains(notesDecl.getVarName())){
+            if (startProcess.contains(notesDecl.getVarName())) {
 
                 throw new TypeCheckingError("You can't start anything but an instrument!");
             }
 
-            if(notesDecl.getValue().getType().equals("notes")){
+            if (notesDecl.getValue().getType().equals("notes")) {
 
                 nodeList.add(notesDecl);
 
@@ -103,11 +110,13 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
     }
 
 
-    /** Declaration of an instrument (OK)*/
+    /**
+     * Declaration of an instrument (OK)
+     */
     @Override
     public Node visitDi(CFGParser.DiContext ctx) {
 
-        if(ctx.inst() != null){
+        if (ctx.inst() != null) {
 
             // Check if variable name has been used before
             checkVarNames(ctx.p().getText(), "inst");
@@ -132,11 +141,13 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         return null;
     }
 
-    /** Start a process (don't know if error handling should be done here)*/
+    /**
+     * Start a process (don't know if error handling should be done here)
+     */
     @Override
     public Node visitSp(CFGParser.SpContext ctx) {
 
-        if(ctx.startPause() != null){
+        if (ctx.startPause() != null) {
             StartNode start = new StartNode();
             start.setVarName(ctx.p().getText());
 
@@ -153,11 +164,11 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
     public void visitStmts(CFGParser.StmtsContext ctx, BlockNode blockNode) {
 
         // Block of statements
-        if(ctx.SEMI() != null){
+        if (ctx.SEMI() != null) {
 
             blockNode.addNode(visitStmt(ctx.stmt()));
 
-            if(!ctx.stmts().getText().equals("")){
+            if (!ctx.stmts().getText().equals("")) {
                 visitStmts(ctx.stmts(), blockNode);
             }
 
@@ -168,25 +179,27 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         }
     }
 
-    /** Statements (Should be checked once more, to be sure it's correct)*/
+    /**
+     * Statements (Should be checked once more, to be sure it's correct)
+     */
     @Override
     public Node visitStmt(CFGParser.StmtContext ctx) {
 
         // Assignment
-        if(ctx.ASSIGN() != null){
+        if (ctx.ASSIGN() != null) {
 
             String type = symbolTable.get(ctx.VARNAME().getText());
 
-            if(type != null){
+            if (type != null) {
 
-                if(type.equals("num")){
+                if (type.equals("num")) {
 
                     AssignNode assignNode = new AssignNode();
 
                     assignNode.setVarName(ctx.VARNAME().getText());
                     assignNode.setValue(visitAExp(ctx.aExp(0)));
 
-                    if(assignNode.getValue().getType().equals("num")){
+                    if (assignNode.getValue().getType().equals("num")) {
 
                         return assignNode;
                     }
@@ -201,13 +214,13 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         }
 
         // Start statement
-        else if(ctx.startPause() != null){
+        else if (ctx.startPause() != null) {
 
             StartNode start = new StartNode();
             start.setVarName(ctx.p().getText());
 
             // If the instrument hasn't been declared yet
-            if(symbolTable.get(start.getVarName()) == null){
+            if (symbolTable.get(start.getVarName()) == null) {
 
                 startProcess.add(start.getVarName());
 
@@ -216,7 +229,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             }
 
             // If the instrument has been declared
-            else if(symbolTable.get(start.getVarName()).equals("inst")){
+            else if (symbolTable.get(start.getVarName()).equals("inst")) {
 
                 return start;
             }
@@ -226,13 +239,13 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         }
 
         // Melody statement
-        else if(ctx.MEL() != null){
+        else if (ctx.MEL() != null) {
 
             String variableType = symbolTable.get(ctx.VARNAME().getText());
 
-            if(variableType != null){
+            if (variableType != null) {
 
-                if(variableType.equals("notes")){
+                if (variableType.equals("notes")) {
 
                     MelNode mel = new MelNode();
                     mel.setVarName(ctx.VARNAME().getText());
@@ -248,7 +261,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         }
 
         // ADSR command
-        else if(ctx.ADSR() != null){
+        else if (ctx.ADSR() != null) {
 
             ADSRNode adsrNode = new ADSRNode();
 
@@ -262,7 +275,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             String exp3 = adsrNode.getExp3().getType();
             String exp4 = adsrNode.getExp4().getType();
 
-            if(exp1.equals("num") && exp2.equals("num") && exp3.equals("num") && exp4.equals("num")){
+            if (exp1.equals("num") && exp2.equals("num") && exp3.equals("num") && exp4.equals("num")) {
 
                 return adsrNode;
             }
@@ -271,7 +284,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         }
 
         // Time statement
-        else if(ctx.TIME() != null){
+        else if (ctx.TIME() != null) {
 
             TimeNode time = new TimeNode();
 
@@ -283,35 +296,52 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         }
 
         // Send statement
-        else if(ctx.SEND() != null){
+        else if (ctx.SEND() != null) {
 
             SendNode send = new SendNode();
 
             send.setChannel(ctx.c().getText());
+            send.setChannelType("num");
             send.setValue(visitAExp(ctx.aExp(0)));
+
+            if (receiveMap.containsKey(send.getChannel())) {
+
+                symbolTable.put(receiveMap.get(send.getChannel()), "num");
+
+            }
 
             return send;
         }
 
         // Receive statement
-        else if(ctx.RECEIVE() != null){
+        else if (ctx.RECEIVE() != null) {
 
             ReceiveNode receive = new ReceiveNode();
 
             receive.setChannel(ctx.c().getText());
+            receive.setChannelType("num");
             receive.setVarName(ctx.VARNAME().getText());
+
 
             // Check if variable name has been used before
             checkVarNames(ctx.VARNAME().getText(), "num");
 
-            receive.setStatement(visitStmt(ctx.stmt()));
 
-            return receive;
+            if (receive.getChannelType().equals("num")) {
+                receive.setStatement(visitStmt(ctx.stmt()));
+
+                return receive;
+            } else if (!receive.getChannelType().equals("num")) {
+                receiveMap.put(receive.getChannel(), receive.getVarName());
+            } else {
+                throw new TypeCheckingError("The value receive on channel isn't of type \"num\"!");
+            }
+
 
         }
 
         // If-else statement
-        else if(ctx.IF() != null){
+        else if (ctx.IF() != null) {
 
             IfElseNode ifElseNode = new IfElseNode();
             BlockNode block1 = new BlockNode();
@@ -325,7 +355,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             ifElseNode.setStmtTrue(block1);
 
             // False Block
-            if(ctx.ELSE() != null){
+            if (ctx.ELSE() != null) {
 
                 visitStmts(ctx.stmts(1), block2);
                 ifElseNode.setStmtFalse(block2);
@@ -340,13 +370,13 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
     @Override
     public Node visitNBExp(CFGParser.NBExpContext ctx) {
 
-        if(ctx.NOT() != null){
+        if (ctx.NOT() != null) {
 
             NotNode not = new NotNode();
 
             not.setExpressionNode(visitBExp(ctx.bExp()));
 
-            if(not.getExpressionNode().getType().equals("bool")){
+            if (not.getExpressionNode().getType().equals("bool")) {
 
                 not.setType("bool");
 
@@ -360,11 +390,13 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
     }
 
-    /**Equals expression (may need to change precedence)*/
+    /**
+     * Equals expression (may need to change precedence)
+     */
     @Override
     public Node visitBExp(CFGParser.BExpContext ctx) {
 
-        if(ctx.bExp(0) != null){
+        if (ctx.bExp(0) != null) {
 
             EqualNode equal = new EqualNode();
 
@@ -374,7 +406,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             String leftType = equal.getLeft().getType();
             String rightType = equal.getLeft().getType();
 
-            if(leftType.equals("bool") && rightType.equals("bool") ){
+            if (leftType.equals("bool") && rightType.equals("bool")) {
 
                 equal.setType("bool");
 
@@ -382,9 +414,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             }
 
             throw new TypeCheckingError("The expressions are not the same!");
-        }
-
-        else if(ctx.aExp(0) != null){
+        } else if (ctx.aExp(0) != null) {
 
             EqualNode equal = new EqualNode();
 
@@ -394,7 +424,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             String leftType = equal.getLeft().getType();
             String rightType = equal.getLeft().getType();
 
-            if(leftType.equals("num") && rightType.equals("num") ){
+            if (leftType.equals("num") && rightType.equals("num")) {
 
                 equal.setType("bool");
 
@@ -407,12 +437,14 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         throw new IllegalArgumentException();
     }
 
-    /** Arithmetic expression (OK)*/
+    /**
+     * Arithmetic expression (OK)
+     */
     @Override
     public Node visitAExp(CFGParser.AExpContext ctx) {
 
         // Addition
-        if(ctx.PLUS() != null){
+        if (ctx.PLUS() != null) {
 
             PlusNode plus = new PlusNode();
 
@@ -420,13 +452,13 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             plus.setRight(visitAExp(ctx.aExp(1)));
 
             // Type check if this is valid
-            typeCheckingBindary(plus);
+            typeCheckingBinary(plus);
 
             return plus;
         }
 
         // Subtraction
-        else if(ctx.MINUS() != null){
+        else if (ctx.MINUS() != null) {
 
             MinusNode minus = new MinusNode();
 
@@ -434,7 +466,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             minus.setRight(visitAExp(ctx.aExp(1)));
 
             // Type check if this is valid
-            typeCheckingBindary(minus);
+            typeCheckingBinary(minus);
 
             return minus;
 
@@ -443,18 +475,20 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         return visitMultExp(ctx.multExp());
     }
 
-    /**Multiplication (OK)*/
+    /**
+     * Multiplication (OK)
+     */
     @Override
     public Node visitMultExp(CFGParser.MultExpContext ctx) {
 
-        if(ctx.MULT() != null){
+        if (ctx.MULT() != null) {
             MultNode mult = new MultNode();
 
             mult.setLeft(visitMultExp(ctx.multExp(0)));
             mult.setRight(visitMultExp(ctx.multExp(1)));
 
             // Type check if this is valid
-            typeCheckingBindary(mult);
+            typeCheckingBinary(mult);
 
             return mult;
         }
@@ -463,19 +497,21 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
     }
 
 
-    /** Atom (OK) */
+    /**
+     * Atom (OK)
+     */
     @Override
     public Node visitAtom(CFGParser.AtomContext ctx) {
 
         // Reached the terminal
-        if(ctx.VARNAME() != null){
+        if (ctx.VARNAME() != null) {
 
             AtomNode atom = new AtomNode();
             String type = symbolTable.get(ctx.VARNAME().getText());
 
-            if(type != null){
+            if (type != null) {
 
-                if(type.equals("num")){
+                if (type.equals("num")) {
 
                     atom.setValue(ctx.VARNAME().getText());
                     atom.setType(symbolTable.get(ctx.VARNAME().getText()));
@@ -490,7 +526,7 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
                 throw new VarException("This variable hasn't been declared!");
             }
 
-        } else if(ctx.NUMBER() != null){
+        } else if (ctx.NUMBER() != null) {
 
             AtomNode atom = new AtomNode();
 
@@ -502,18 +538,20 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
 
 
         // Parenthesis rule
-        if(ctx.aExp() != null){
+        if (ctx.aExp() != null) {
             return visitAExp(ctx.aExp());
         }
 
         return null;
     }
 
-    /** Notes (May have to change because of the semantics)*/
+    /**
+     * Notes (May have to change because of the semantics)
+     */
     @Override
     public Node visitK(CFGParser.KContext ctx) {
 
-        if(ctx.k() != null){
+        if (ctx.k() != null) {
             NotesNode note = new NotesNode();
             note.setValue(ctx.getText());
             note.setType("notes");
@@ -522,9 +560,9 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         return super.visitK(ctx);
     }
 
-    private void checkVarNames(String varName, String type){
+    private void checkVarNames(String varName, String type) {
 
-        if(symbolTable.get(varName) == null){
+        if (symbolTable.get(varName) == null) {
 
             symbolTable.put(varName, type);
 
@@ -533,9 +571,9 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
         }
     }
 
-    public void typeCheckingBindary(BinaryExpression node){
+    public void typeCheckingBinary(BinaryExpression node) {
 
-        if(node.getLeft().getType().equals("num") && node.getRight().getType().equals("num")){
+        if (node.getLeft().getType().equals("num") && node.getRight().getType().equals("num")) {
 
             node.setType("num");
 
