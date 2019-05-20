@@ -53,4 +53,3 @@ public class ThreadWorker extends Thread {
 
     public void setNotes(List<String> notes){this.notes = notes;}
 }
-}

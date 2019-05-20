@@ -32,4 +32,9 @@ public class BPMDeclaration implements Node {
     public int hashCode() {
         return value;
     }
+
+    @Override
+    public String getType() {
+        return "num";
+    }
 }

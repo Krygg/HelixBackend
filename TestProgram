@@ -6,7 +6,7 @@ num y = 10;
 
 notes melody = c4,c5,d8;
 
-start p;
+start d;
 
 Piano p {
 
@@ -18,34 +18,20 @@ Piano p {
 
     adsr(2,3,4,5);
 
-    send(c,7+4);
-
-    start d;
-
+    send(c, 7);
 }
 
 Drum d {
 
-    receive(c,h) . send(i, h);
+    receive(c,h).y = h;
+    adsr(2,3,4,5);
 
-    start q;
-
-
-}
-
-Piano q {
-
-    receive(i,l).;
-}
-
-Drum k {
-
-    start q;
-
+    start p;
 }
 
 Piano pi{
 
+    receive(c,l).y = l;
     mel(melody);
 
 }

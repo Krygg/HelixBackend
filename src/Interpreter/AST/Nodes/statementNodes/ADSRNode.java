@@ -10,6 +10,7 @@ public class ADSRNode extends StatementNode {
     private Node exp3;
     private Node exp4;
 
+
     public Node getExp1() {
         return exp1;
     }
@@ -49,27 +50,5 @@ public class ADSRNode extends StatementNode {
                 "," + exp3 +
                 "," + exp4 +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ADSRNode adsrNode = (ADSRNode) o;
-
-        if (exp1 != null ? !exp1.equals(adsrNode.exp1) : adsrNode.exp1 != null) return false;
-        if (exp2 != null ? !exp2.equals(adsrNode.exp2) : adsrNode.exp2 != null) return false;
-        if (exp3 != null ? !exp3.equals(adsrNode.exp3) : adsrNode.exp3 != null) return false;
-        return exp4 != null ? exp4.equals(adsrNode.exp4) : adsrNode.exp4 == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = exp1 != null ? exp1.hashCode() : 0;
-        result = 31 * result + (exp2 != null ? exp2.hashCode() : 0);
-        result = 31 * result + (exp3 != null ? exp3.hashCode() : 0);
-        result = 31 * result + (exp4 != null ? exp4.hashCode() : 0);
-        return result;
     }
 }

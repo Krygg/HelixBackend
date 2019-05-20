@@ -82,7 +82,7 @@ public class TestClass {
             bpm = (Integer) semantics.getState().get("bpm");
         }
 
-        System.out.println(semantics.getEnvI());
+        System.out.println(semantics.getMultConfigs());
 
         //streamConverter.ConvertGlobalStreamToOSC(globalStream, bpm);
 
