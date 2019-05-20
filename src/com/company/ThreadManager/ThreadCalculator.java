@@ -23,19 +23,21 @@ public class ThreadCalculator extends Thread {
 
     private void calculateBaseDelay() {
         final long opdateRate = 10000;
-
+        baseDelayList.clear();
         long delayTime = 0;
+        long difTime = 0;
         for (Long aLong : normalDelayList) {
             for (int j = 1; delayTime <= opdateRate; j++) {
-                delayTime = aLong * j;
+                delayTime = (aLong * j);
             }
+            difTime = delayTime - opdateRate;
+            System.out.println("Diff time is " + difTime);
+            baseDelayList.add(difTime);
         }
 
-        long difTime = delayTime - opdateRate;
-
-        baseDelayList.add(delayTime);
         threadSync.setBaseDelayList(baseDelayList);
         threadSync.setFlag(1);
+
     }
 
 
@@ -98,4 +100,6 @@ public class ThreadCalculator extends Thread {
     public void setBpm(int bpm) {
         this.bpm = bpm;
     }
+
+
 }

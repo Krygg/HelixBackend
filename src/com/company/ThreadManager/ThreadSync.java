@@ -3,6 +3,7 @@ package com.company.ThreadManager;
 import terminals.TimeSignature;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ThreadSync extends Thread {
@@ -14,6 +15,7 @@ public class ThreadSync extends Thread {
     private List<Long> normalDelayList = new ArrayList<>();
     private List<ThreadWorker> activeWorkers = new ArrayList<>();
     private List<Long> baseDelayList = new ArrayList<>();
+    private List<Integer> noteSelector = new ArrayList<>();
     private int flag = 0;
     private int bpm;
 
@@ -35,19 +37,23 @@ public class ThreadSync extends Thread {
 
 
     private void startWorkers() throws InterruptedException {
+        normalDelayList.clear();
 
         for (int i = 0; i < streamToPlay.size(); i++) {
             ThreadWorker threadWorker = new ThreadWorker();
             threadWorker.setNoteDelay(calculateDelay(this.bpm, timeSignatures.get(i)));
             threadWorker.setArguments(streamToPlay.get(i));
-            threadWorker.setAddress(getAddress());
+            threadWorker.setAddress(addresses.get(i));
             threadWorker.setNotes(notes.get(i));
             if (flag == 1) {
-                threadWorker.setNoteDelay(baseDelayList.get(i));
+                threadWorker.setBaseDelay(baseDelayList.get(i));
+                threadWorker.setI(noteSelector.get(i));
+
             }
-            threadWorker.start();
             activeWorkers.add(threadWorker);
+            threadWorker.start();
         }
+
 
         //TODO begin process of getting new delays for workers
 
@@ -61,13 +67,18 @@ public class ThreadSync extends Thread {
         //TODO Kill old workers
 
         for (ThreadWorker worker : activeWorkers) {
+            noteSelector.add(worker.getI());
             worker.interrupt();
+            worker.setFlag(1);
         }
+        activeWorkers.clear();
+        threadCalculator.interrupt();
 
 
         //TODO start the workers again();
-
+        flag = 1;
         startWorkers();
+
     }
 
 
@@ -86,6 +97,7 @@ public class ThreadSync extends Thread {
         double timeSignDelay = (double) timeSignature.getN1() / (double) timeSignature.getN2();
         double delay = baseDelay * timeSignDelay;
         normalDelayList.add((long) delay);
+        System.out.println("Just calculated new delay its: " + delay);
         return (long) delay;
     }
 
@@ -96,6 +108,10 @@ public class ThreadSync extends Thread {
             return str;
         }
         return "";
+
+    }
+
+    public void returnAddress(String address) {
 
     }
 
