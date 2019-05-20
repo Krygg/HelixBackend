@@ -13,6 +13,7 @@ public class ThreadCalculator extends Thread {
     private List<List> notes;
     private List<Long> baseDelayList = new ArrayList<>();
     private List<Long> normalDelayList = new ArrayList<>();
+    private List<Long> baseDelayListToSend = new ArrayList<>();
     private ThreadSync threadSync;
     private int bpm;
 
@@ -22,20 +23,28 @@ public class ThreadCalculator extends Thread {
     }
 
     private void calculateBaseDelay() {
+        baseDelayListToSend.clear();
         final long opdateRate = 10000;
-        baseDelayList.clear();
         long delayTime = 0;
         long difTime = 0;
+        int i = 0;
         for (Long aLong : normalDelayList) {
             for (int j = 1; delayTime <= opdateRate; j++) {
-                delayTime = (aLong * j);
+
+                delayTime = (aLong * j) ;
+                if (!baseDelayList.isEmpty()) {
+                    delayTime += baseDelayList.get(i);
+                }
+
             }
+            i++;
             difTime = delayTime - opdateRate;
-            System.out.println("Diff time is " + difTime);
-            baseDelayList.add(difTime);
+            baseDelayListToSend.add(difTime);
         }
 
-        threadSync.setBaseDelayList(baseDelayList);
+
+
+        threadSync.setBaseDelayList(baseDelayListToSend);
         threadSync.setFlag(1);
 
     }

@@ -59,6 +59,7 @@ public class ThreadSync extends Thread {
 
         ThreadCalculator threadCalculator = new ThreadCalculator();
         threadCalculator.setNormalDelayList(this.normalDelayList);
+        threadCalculator.setBaseDelayList(baseDelayList);
         threadCalculator.setThreadSync(this);
         threadCalculator.start();
 

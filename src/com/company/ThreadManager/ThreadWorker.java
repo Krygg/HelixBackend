@@ -20,6 +20,7 @@ public class ThreadWorker extends Thread {
 
     public void run() {
         try {
+            System.out.println("i had to wait basedelay " + baseDelay);
             Thread.sleep(baseDelay);
         } catch (InterruptedException e) {
             e.printStackTrace();
