@@ -125,6 +125,7 @@ public class Semantics {
                 String[] strings = splitNotes[i].split(",");
 
                 Collections.addAll(notesList, strings);
+                notesList.remove("");
             }
         }
 
