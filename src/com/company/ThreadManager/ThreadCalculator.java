@@ -23,6 +23,7 @@ public class ThreadCalculator extends Thread {
     }
 
     private void calculateBaseDelay() {
+        //Calculate the delay, that the new Threads new after starting.
         baseDelayListToSend.clear();
         final long opdateRate = 10000;
         long delayTime = 0;
@@ -41,8 +42,6 @@ public class ThreadCalculator extends Thread {
             difTime = delayTime - opdateRate;
             baseDelayListToSend.add(difTime);
         }
-
-
 
         threadSync.setBaseDelayList(baseDelayListToSend);
         threadSync.setFlag(1);

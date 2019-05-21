@@ -1,10 +1,7 @@
 package com.company;
 
 import com.company.ThreadManager.ThreadSync;
-import terminals.GlobalStream;
-import terminals.LocalStream;
-import terminals.Note;
-import terminals.TimeSignature;
+import terminals.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,7 +44,6 @@ public class StreamConverter {
         int size = 0;
 
 
-        //TODO come back and finish this
         for (int i = 0; i < localStream.getNotes().size(); i++) {
             for (int j = 0; j < localStream.getNotes().get(i).getNotes().size(); j++) {
                 if (localStream.getNotes().get(i).getNotes().size() > 1) {
@@ -67,12 +63,22 @@ public class StreamConverter {
         notes.add(localNotes);
 
         localStream.setSoundProfile(localStream.getSoundProfile().toLowerCase());
-        //TODO check if the soundprofile is real.
         if (localStream.getSoundProfile().isEmpty()) {
             soundProfile = "piano";
         }
 
         soundProfile = localStream.getSoundProfile();
+
+        //Checker om adsr er tom
+        if (localStream.getAdsr() == null) {
+            ADSR adsr  = new ADSR(0,0,0,0);
+            localStream.setAdsr(adsr);
+        }
+
+        if (localStream.getTime() == null) {
+            TimeSignature timeSignature = new TimeSignature(4,4);
+            localStream.setTime(timeSignature);
+        }
 
         return new Synth("60",soundProfile,
                 localStream.getAdsr().getAttack(),localStream.getAdsr().getDecay(),localStream.getAdsr().getSustain(),

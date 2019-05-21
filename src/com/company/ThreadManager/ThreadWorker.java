@@ -19,15 +19,17 @@ public class ThreadWorker extends Thread {
 
 
     public void run() {
+        //baseDelay that it needs to sleep before a Thread starts.
         try {
-            System.out.println("i had to wait basedelay " + baseDelay);
             Thread.sleep(baseDelay);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+        // runs this, then it dies
         while (flag != 1) {
             try {
+                //sending the information to sonicPI over OSC
                 PiSender piSender = new PiSender();
                 nodeSelector = i % notes.size();
                 piSender.send(address, arguments, notes.get(nodeSelector));
@@ -36,9 +38,7 @@ public class ThreadWorker extends Thread {
                 e.printStackTrace();
             }
 
-
-
-
+            //Sleep the noteDelay.
             try {
                 Thread.sleep(noteDelay);
             } catch (InterruptedException e) {
@@ -49,7 +49,6 @@ public class ThreadWorker extends Thread {
     }
 
     public void setBaseDelay(long baseDelay) {
-        System.out.println("We needed to wait" + baseDelay);
         this.baseDelay = baseDelay;
     }
 
