@@ -20,6 +20,7 @@ public class ThreadWorker extends Thread {
 
     public void run() {
         //baseDelay that it needs to sleep before a Thread starts.
+        System.out.println(baseDelay);
         try {
             Thread.sleep(baseDelay);
         } catch (InterruptedException e) {
@@ -30,6 +31,8 @@ public class ThreadWorker extends Thread {
         while (flag != 1) {
             try {
                 //sending the information to sonicPI over OSC
+
+                //TODO fix the divide by 0 error
                 PiSender piSender = new PiSender();
                 nodeSelector = i % notes.size();
                 piSender.send(address, arguments, notes.get(nodeSelector));

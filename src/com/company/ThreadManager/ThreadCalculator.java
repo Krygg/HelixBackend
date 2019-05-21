@@ -15,6 +15,8 @@ public class ThreadCalculator extends Thread {
     private List<Long> normalDelayList = new ArrayList<>();
     private List<Long> baseDelayListToSend = new ArrayList<>();
     private ThreadSync threadSync;
+    private List<ThreadWorker> threadWorkers = new ArrayList<>();
+    private List<Integer> noteSelector = new ArrayList<>();
     private int bpm;
 
 
@@ -31,16 +33,32 @@ public class ThreadCalculator extends Thread {
         int i = 0;
         for (Long aLong : normalDelayList) {
             for (int j = 1; delayTime <= opdateRate; j++) {
-
                 delayTime = (aLong * j) ;
                 if (!baseDelayList.isEmpty()) {
                     delayTime += baseDelayList.get(i);
                 }
 
+                if (delayTime >= opdateRate) {
+                    break;
+                }
+
             }
-            i++;
             difTime = delayTime - opdateRate;
+            i++;
+            System.out.println(difTime);
             baseDelayListToSend.add(difTime);
+        }
+
+        //Creating workers, so timing works.
+        for (int o = 0; o < streamToPlay.size(); o++) {
+            ThreadWorker threadWorker = new ThreadWorker();
+            threadWorker.setNoteDelay(normalDelayList.get(o));
+            System.out.println(normalDelayList.toString());
+            threadWorker.setArguments(streamToPlay.get(o));
+            threadWorker.setAddress(addresses.get(o));
+            threadWorker.setNotes(notes.get(o));
+            threadWorker.setBaseDelay(baseDelayListToSend.get(o));
+            threadWorkers.add(threadWorker);
         }
 
         threadSync.setBaseDelayList(baseDelayListToSend);
@@ -109,5 +127,19 @@ public class ThreadCalculator extends Thread {
         this.bpm = bpm;
     }
 
+    public void setThreadWorkers(List<ThreadWorker> threadWorkers) {
+        this.threadWorkers = threadWorkers;
+    }
 
+    public List<Integer> getNodeSelector() {
+        return noteSelector;
+    }
+
+    public List<ThreadWorker> getThreadWorkers() {
+        return threadWorkers;
+    }
+
+    public void setNoteSelector(List<Integer> noteSelector) {
+        this.noteSelector = noteSelector;
+    }
 }

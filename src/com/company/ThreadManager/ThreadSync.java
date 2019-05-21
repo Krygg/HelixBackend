@@ -16,6 +16,7 @@ public class ThreadSync extends Thread {
     private List<ThreadWorker> activeWorkers = new ArrayList<>();
     private List<Long> baseDelayList = new ArrayList<>();
     private List<Integer> noteSelector = new ArrayList<>();
+    private List<ThreadWorker> workers = new ArrayList<>();
     private int flag = 0;
     private int bpm;
 
@@ -39,26 +40,30 @@ public class ThreadSync extends Thread {
 
     private void startWorkers() throws InterruptedException {
         final long updateRate = 10000;
-        normalDelayList.clear();
 
-
+        System.out.println("Creating all the workers");
         //Creates workers and sets information, that it needs to play
-        for (int i = 0; i < streamToPlay.size(); i++) {
-            ThreadWorker threadWorker = new ThreadWorker();
-            threadWorker.setNoteDelay(calculateDelay(this.bpm, timeSignatures.get(i)));
-            threadWorker.setArguments(streamToPlay.get(i));
-            threadWorker.setAddress(addresses.get(i));
-            threadWorker.setNotes(notes.get(i));
-            //only needs to be set after first run
-            if (flag == 1) {
-                //Sets the delay and the note, it needs to start on
-                threadWorker.setBaseDelay(baseDelayList.get(i));
-                threadWorker.setI(noteSelector.get(i));
 
+        if (flag == 0) {
+            for (int i = 0; i < streamToPlay.size(); i++) {
+                ThreadWorker threadWorker = new ThreadWorker();
+                threadWorker.setNoteDelay(calculateDelay(this.bpm, timeSignatures.get(i)));
+                threadWorker.setArguments(streamToPlay.get(i));
+                threadWorker.setAddress(addresses.get(i));
+                threadWorker.setNotes(notes.get(i));
+                activeWorkers.add(threadWorker);
+                threadWorker.start();
             }
-            activeWorkers.add(threadWorker);
-            threadWorker.start();
         }
+
+        if (flag == 1) {
+            for (ThreadWorker worker : activeWorkers) {
+                System.out.println("We started the worker");
+                worker.start();
+            }
+        }
+
+        System.out.println("Finished creatting the works");
 
         //Begging the Thread for calculating the time each thread has to wait before playing again
 
@@ -66,11 +71,18 @@ public class ThreadSync extends Thread {
         threadCalculator.setNormalDelayList(this.normalDelayList);
         threadCalculator.setBaseDelayList(baseDelayList);
         threadCalculator.setThreadSync(this);
+        threadCalculator.setStreamToPlay(streamToPlay);
+        threadCalculator.setNormalDelayList(normalDelayList);
+        threadCalculator.setAddresses(addresses);
+        threadCalculator.setNotes(notes);
+        threadCalculator.setNoteSelector(noteSelector);
         threadCalculator.start();
 
 
         //Sleep until the program need to sync all the threads.
         Thread.sleep(updateRate);
+
+        System.out.println("Beginning the sync");
 
 
         //Killing old worker, and adding the last note played so the new workers plays the same
@@ -80,7 +92,10 @@ public class ThreadSync extends Thread {
             worker.setFlag(1);
         }
         activeWorkers.clear();
+        activeWorkers = threadCalculator.getThreadWorkers();
+        System.out.println(activeWorkers);
         threadCalculator.interrupt();
+
 
 
         //setting a flag, after first time run. And calling the method again.
@@ -98,6 +113,7 @@ public class ThreadSync extends Thread {
         double timeSignDelay = (double) timeSignature.getN1() / (double) timeSignature.getN2();
         double delay = baseDelay * timeSignDelay;
         normalDelayList.add((long) delay);
+        System.out.println(delay);
         return (long) delay;
     }
 
