@@ -301,14 +301,17 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             SendNode send = new SendNode();
 
             send.setChannel(ctx.c().getText());
-            send.setChannelType("num");
             send.setValue(visitAExp(ctx.aExp(0)));
+            send.setChannelType(send.getValue().getType());
 
+            /*
             if (receiveMap.containsKey(send.getChannel())) {
-
                 symbolTable.put(receiveMap.get(send.getChannel()), "num");
 
-            }
+                receiveMap.remove(send.getChannel());
+            } */
+
+            symbolTable.put(send.getChannel(), send.getValue().getType());
 
             return send;
         }
@@ -319,28 +322,23 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             ReceiveNode receive = new ReceiveNode();
 
             receive.setChannel(ctx.c().getText());
-            receive.setChannelType("num");
             receive.setVarName(ctx.VARNAME().getText());
 
 
             // Check if variable name has been used before
             checkVarNames(ctx.VARNAME().getText(), "num");
 
+            //if (symbolTable.containsKey(receive.getChannel())) {
+                symbolTable.put(receive.getVarName(), "num");
+            //}
+            //else receiveMap.put(receive.getChannel(), receive.getVarName());
 
-            if (receive.getChannelType().equals("num")) {
-                receive.setStatement(visitStmt(ctx.stmt()));
-
-                return receive;
-            } else if (!receive.getChannelType().equals("num")) {
-                receiveMap.put(receive.getChannel(), receive.getVarName());
-            } else {
-                throw new TypeCheckingError("The value receive on channel isn't of type \"num\"!");
-            }
-
-
+            receive.setStatement(visitStmt(ctx.stmt()));
+            return receive;
         }
 
-        // If-else statement
+
+// If-else statement
         else if (ctx.IF() != null) {
 
             IfElseNode ifElseNode = new IfElseNode();
@@ -364,7 +362,10 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             return ifElseNode;
         }
 
-        return super.visitStmt(ctx);
+        return super.
+
+                visitStmt(ctx);
+
     }
 
     @Override
