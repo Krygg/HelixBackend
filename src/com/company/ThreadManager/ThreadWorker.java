@@ -26,7 +26,7 @@ public class ThreadWorker extends Thread {
             e.printStackTrace();
         }
 
-        // runs this untils it dies
+        // runs this, then it dies
         while (flag != 1) {
             try {
                 //sending the information to sonicPI over OSC
