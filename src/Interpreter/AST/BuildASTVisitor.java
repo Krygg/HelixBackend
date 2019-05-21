@@ -305,12 +305,8 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             send.setValue(visitAExp(ctx.aExp(0)));
 
             if (receiveMap.containsKey(send.getChannel())) {
-
                 symbolTable.put(receiveMap.get(send.getChannel()), "num");
-
-            }
-
-            return send;
+            } else return send;
         }
 
         // Receive statement
@@ -326,18 +322,10 @@ public class BuildASTVisitor extends CFGBaseVisitor<Node> {
             // Check if variable name has been used before
             checkVarNames(ctx.VARNAME().getText(), "num");
 
-
             if (receive.getChannelType().equals("num")) {
                 receive.setStatement(visitStmt(ctx.stmt()));
-
                 return receive;
-            } else if (!receive.getChannelType().equals("num")) {
-                receiveMap.put(receive.getChannel(), receive.getVarName());
-            } else {
-                throw new TypeCheckingError("The value receive on channel isn't of type \"num\"!");
-            }
-
-
+            } else receiveMap.put(receive.getChannel(), receive.getVarName());
         }
 
         // If-else statement
