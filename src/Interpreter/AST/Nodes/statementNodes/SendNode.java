@@ -6,8 +6,13 @@ import Interpreter.AST.Nodes.statementNodes.StatementNode;
 public class SendNode extends StatementNode {
 
     private String channel;
+    private String channelType;
     private Node value;
 
+
+    public String getChannelType() { return channelType; }
+
+    public void setChannelType(String channelType) { this.channelType = channelType; }
 
     public String getChannel() {
         return channel;
