@@ -41,7 +41,6 @@ public class ThreadSync extends Thread {
     private void startWorkers() throws InterruptedException {
         final long updateRate = 10000;
 
-        System.out.println("Creating all the workers");
         //Creates workers and sets information, that it needs to play
 
         if (flag == 0) {
@@ -56,14 +55,16 @@ public class ThreadSync extends Thread {
             }
         }
 
+        /*
         if (flag == 1) {
+            int h = 0;
             for (ThreadWorker worker : activeWorkers) {
-                System.out.println("We started the worker");
+                worker.setI(noteSelector.get(h));
                 worker.start();
+                h++;
             }
         }
-
-        System.out.println("Finished creatting the works");
+*/
 
         //Begging the Thread for calculating the time each thread has to wait before playing again
 
@@ -82,7 +83,6 @@ public class ThreadSync extends Thread {
         //Sleep until the program need to sync all the threads.
         Thread.sleep(updateRate);
 
-        System.out.println("Beginning the sync");
 
 
         //Killing old worker, and adding the last note played so the new workers plays the same
@@ -91,9 +91,12 @@ public class ThreadSync extends Thread {
             worker.interrupt();
             worker.setFlag(1);
         }
+        ThreadWorkStarter threadWorkStarter = new ThreadWorkStarter();
+        threadWorkStarter.setThreadWorkers(threadCalculator.getThreadWorkers());
+        threadWorkStarter.setLasti(noteSelector);
+        threadWorkStarter.start();
         activeWorkers.clear();
         activeWorkers = threadCalculator.getThreadWorkers();
-        System.out.println(activeWorkers);
         threadCalculator.interrupt();
 
 
@@ -113,7 +116,6 @@ public class ThreadSync extends Thread {
         double timeSignDelay = (double) timeSignature.getN1() / (double) timeSignature.getN2();
         double delay = baseDelay * timeSignDelay;
         normalDelayList.add((long) delay);
-        System.out.println(delay);
         return (long) delay;
     }
 

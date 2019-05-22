@@ -21,6 +21,9 @@ public class ThreadWorker extends Thread {
     public void run() {
         //baseDelay that it needs to sleep before a Thread starts.
         System.out.println(baseDelay);
+        if (baseDelay > 200) {
+            baseDelay -= 200;
+        }
         try {
             Thread.sleep(baseDelay);
         } catch (InterruptedException e) {

@@ -45,15 +45,14 @@ public class ThreadCalculator extends Thread {
             }
             difTime = delayTime - opdateRate;
             i++;
-            System.out.println(difTime);
             baseDelayListToSend.add(difTime);
+            delayTime = 0;
         }
 
         //Creating workers, so timing works.
         for (int o = 0; o < streamToPlay.size(); o++) {
             ThreadWorker threadWorker = new ThreadWorker();
             threadWorker.setNoteDelay(normalDelayList.get(o));
-            System.out.println(normalDelayList.toString());
             threadWorker.setArguments(streamToPlay.get(o));
             threadWorker.setAddress(addresses.get(o));
             threadWorker.setNotes(notes.get(o));
