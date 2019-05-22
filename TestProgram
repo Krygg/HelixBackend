@@ -10,15 +10,10 @@ start p;
 start pi;
 
 Piano p {
-
     x = x + 1;
-
     mel(melody);
-
     time(4,4);
-
     adsr(1,1,1,1);
-
     send(c, 7);
 }
 
@@ -28,5 +23,3 @@ Piano pi{
     receive(c,l).y = l;
     mel(melody);
 }
-
-Piano d {}
