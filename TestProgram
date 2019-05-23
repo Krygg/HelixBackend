@@ -9,7 +9,7 @@ notes melody = c4,c4,c4,d4,e4,e4,e4,d4,d4,d4,e4,c4,c4;
 start p;
 start pi;
 
-Piano p {
+tri p {
 
     x = x + 1;
 
