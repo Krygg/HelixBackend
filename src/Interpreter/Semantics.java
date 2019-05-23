@@ -445,7 +445,7 @@ public class Semantics {
             }
         }
 
-        // The rest of te statements are processed
+        // The rest of the statements are processed
         for (MultConfig multConfig : multConfigs) {
 
             BlockNode body = (BlockNode) multConfig.getBody();
