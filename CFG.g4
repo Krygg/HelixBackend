@@ -35,7 +35,7 @@ p: VARNAME;
 
 c: VARNAME;
 
-inst: PIANO | DRUM | BEEP  |BLADE  |BNOICE  |CHIPBASE  |CHIPLEAD  |CHIPNOISE  |CNOISE
+inst: PIANO | DRUM | BEEP |BLADE  |BNOICE  |CHIPBASE  |CHIPLEAD  |CHIPNOISE  |CNOISE
   |DPULSE  |DSAW  |DTRI  |FM  |GNOISE  |GROWL  |HOLLOW  |HOOVER  |NOISE  |PLUCK  |PNOISE
    |PROPHET  |PULSE  |SAW  | SINE  |SQUARE  |SUBPULSE  |SUPERSAW  |TB303  |TRI  |ZAWA;
 
@@ -60,31 +60,6 @@ IF: 'if';
 ELSE: 'else';
 PIANO: 'Piano';
 DRUM: 'Drum';
-
-// SIGNS
-LPAR: '(';
-RPAR: ')';
-BEGIN: '{';
-END: '}';
-ASSIGN: '=';
-SEMI: ';';
-COMMA: ',';
-
-// OPERATORS
-PLUS: '+';
-MINUS: '-';
-MULT: '*';
-NOT: '!';
-EQUAL: '==';
-
-
-// TERMINALS
-NUMBER: [0-9]+;
-VARNAME: [a-zA-Z]+('_'[0-9]+)?;
-KEY: [A-Ga-g]('#')?([0-9]|'-1');
-
-/* WHITE SPACE */
-WS  :   (' '|'\r'|'\n'|'\t') -> channel(HIDDEN);
 
 //Synth
 BEEP: 'beep';
@@ -115,3 +90,28 @@ SUPERSAW: 'supersaw';
 TB303: 'tb303';
 TRI: 'tri';
 ZAWA: 'zawa';
+
+// SIGNS
+LPAR: '(';
+RPAR: ')';
+BEGIN: '{';
+END: '}';
+ASSIGN: '=';
+SEMI: ';';
+COMMA: ',';
+
+// OPERATORS
+PLUS: '+';
+MINUS: '-';
+MULT: '*';
+NOT: '!';
+EQUAL: '==';
+
+
+// TERMINALS
+NUMBER: [0-9]+;
+VARNAME: [a-zA-Z]+('_'[0-9]+)?;
+KEY: [A-Ga-g]('#')?([0-9]|'-1');
+
+/* WHITE SPACE */
+WS  :   (' '|'\r'|'\n'|'\t') -> channel(HIDDEN);
