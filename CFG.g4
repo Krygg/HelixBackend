@@ -35,7 +35,9 @@ p: VARNAME;
 
 c: VARNAME;
 
-inst: PIANO | DRUM ;
+inst: PIANO | DRUM | BEEP |BLADE  |BNOICE  |CHIPBASE  |CHIPLEAD  |CHIPNOISE  |CNOISE
+  |DPULSE  |DSAW  |DTRI  |FM  |GNOISE  |GROWL  |HOLLOW  |HOOVER  |NOISE  |PLUCK  |PNOISE
+   |PROPHET  |PULSE  |SAW  | SINE  |SQUARE  |SUBPULSE  |SUPERSAW  |TB303  |TRI  |ZAWA;
 
 startPause: START | PAUSE ;
 
@@ -58,6 +60,36 @@ IF: 'if';
 ELSE: 'else';
 PIANO: 'Piano';
 DRUM: 'Drum';
+
+//Synth
+BEEP: 'beep';
+BLADE: 'blade';
+BNOICE: 'bnoise';
+CHIPBASE: 'chipbass';
+CHIPLEAD: 'chiplead';
+CHIPNOISE: 'chipnoise';
+CNOISE: 'cnoice';
+DPULSE: 'dpulse';
+DSAW: 'dsaw';
+DTRI: 'dtri';
+FM: 'fm';
+GNOISE: 'gnoise';
+GROWL: 'growl';
+HOLLOW: 'hollow';
+HOOVER: 'hoover';
+NOISE: 'noise';
+PLUCK: 'pluck';
+PNOISE: 'pnoise';
+PROPHET: 'prophet';
+PULSE: 'pulse';
+SAW: 'saw';
+SINE: 'sine';
+SQUARE: 'square';
+SUBPULSE: 'subpulse';
+SUPERSAW: 'supersaw';
+TB303: 'tb303';
+TRI: 'tri';
+ZAWA: 'zawa';
 
 // SIGNS
 LPAR: '(';

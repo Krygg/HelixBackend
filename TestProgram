@@ -9,11 +9,16 @@ notes melody = c4,c4,c4,d4,e4,e4,e4,d4,d4,d4,e4,c4,c4;
 start p;
 start pi;
 
-Piano p {
+tri p {
+
     x = x + 1;
+
     mel(melody);
+
     time(4,4);
+
     adsr(1,1,1,1);
+
     send(c, 7);
 }
 
@@ -23,3 +28,5 @@ Piano pi{
     receive(c,l).y = l;
     mel(melody);
 }
+
+Piano d {}

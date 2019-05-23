@@ -1,4 +1,4 @@
-// Generated from /Users/Maria/Documents/GitHub/HelixBackend/CFG.g4 by ANTLR 4.7.2
+// Generated from C:/Users/Krog/IdeaProjects/OSCtest\CFG.g4 by ANTLR 4.7.2
 package antlr;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -18,9 +18,13 @@ public class CFGParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, BPM=2, NUM=3, NOTES=4, MEL=5, ADSR=6, TIME=7, START=8, PAUSE=9, 
-		SEND=10, RECEIVE=11, IF=12, ELSE=13, PIANO=14, DRUM=15, LPAR=16, RPAR=17, 
-		BEGIN=18, END=19, ASSIGN=20, SEMI=21, COMMA=22, PLUS=23, MINUS=24, MULT=25, 
-		NOT=26, EQUAL=27, NUMBER=28, VARNAME=29, KEY=30, WS=31;
+		SEND=10, RECEIVE=11, IF=12, ELSE=13, PIANO=14, DRUM=15, BEEP=16, BLADE=17, 
+		BNOICE=18, CHIPBASE=19, CHIPLEAD=20, CHIPNOISE=21, CNOISE=22, DPULSE=23, 
+		DSAW=24, DTRI=25, FM=26, GNOISE=27, GROWL=28, HOLLOW=29, HOOVER=30, NOISE=31, 
+		PLUCK=32, PNOISE=33, PROPHET=34, PULSE=35, SAW=36, SINE=37, SQUARE=38, 
+		SUBPULSE=39, SUPERSAW=40, TB303=41, TRI=42, ZAWA=43, LPAR=44, RPAR=45, 
+		BEGIN=46, END=47, ASSIGN=48, SEMI=49, COMMA=50, PLUS=51, MINUS=52, MULT=53, 
+		NOT=54, EQUAL=55, NUMBER=56, VARNAME=57, KEY=58, WS=59;
 	public static final int
 		RULE_program = 0, RULE_db = 1, RULE_dv = 2, RULE_di = 3, RULE_sp = 4, 
 		RULE_stmts = 5, RULE_stmt = 6, RULE_nBExp = 7, RULE_bExp = 8, RULE_aExp = 9, 
@@ -38,17 +42,25 @@ public class CFGParser extends Parser {
 		return new String[] {
 			null, "'.'", "'bpm'", "'num'", "'notes'", "'mel'", "'adsr'", "'time'", 
 			"'start'", "'pause'", "'send'", "'receive'", "'if'", "'else'", "'Piano'", 
-			"'Drum'", "'('", "')'", "'{'", "'}'", "'='", "';'", "','", "'+'", "'-'", 
-			"'*'", "'!'", "'=='"
+			"'Drum'", "'beep'", "'blade'", "'bnoise'", "'chipbass'", "'chiplead'", 
+			"'chipnoise'", "'cnoice'", "'dpulse'", "'dsaw'", "'dtri'", "'fm'", "'gnoise'", 
+			"'growl'", "'hollow'", "'hoover'", "'noise'", "'pluck'", "'pnoise'", 
+			"'prophet'", "'pulse'", "'saw'", "'sine'", "'square'", "'subpulse'", 
+			"'supersaw'", "'tb303'", "'tri'", "'zawa'", "'('", "')'", "'{'", "'}'", 
+			"'='", "';'", "','", "'+'", "'-'", "'*'", "'!'", "'=='"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, "BPM", "NUM", "NOTES", "MEL", "ADSR", "TIME", "START", "PAUSE", 
-			"SEND", "RECEIVE", "IF", "ELSE", "PIANO", "DRUM", "LPAR", "RPAR", "BEGIN", 
-			"END", "ASSIGN", "SEMI", "COMMA", "PLUS", "MINUS", "MULT", "NOT", "EQUAL", 
-			"NUMBER", "VARNAME", "KEY", "WS"
+			"SEND", "RECEIVE", "IF", "ELSE", "PIANO", "DRUM", "BEEP", "BLADE", "BNOICE", 
+			"CHIPBASE", "CHIPLEAD", "CHIPNOISE", "CNOISE", "DPULSE", "DSAW", "DTRI", 
+			"FM", "GNOISE", "GROWL", "HOLLOW", "HOOVER", "NOISE", "PLUCK", "PNOISE", 
+			"PROPHET", "PULSE", "SAW", "SINE", "SQUARE", "SUBPULSE", "SUPERSAW", 
+			"TB303", "TRI", "ZAWA", "LPAR", "RPAR", "BEGIN", "END", "ASSIGN", "SEMI", 
+			"COMMA", "PLUS", "MINUS", "MULT", "NOT", "EQUAL", "NUMBER", "VARNAME", 
+			"KEY", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -220,6 +232,34 @@ public class CFGParser extends Parser {
 			case PAUSE:
 			case PIANO:
 			case DRUM:
+			case BEEP:
+			case BLADE:
+			case BNOICE:
+			case CHIPBASE:
+			case CHIPLEAD:
+			case CHIPNOISE:
+			case CNOISE:
+			case DPULSE:
+			case DSAW:
+			case DTRI:
+			case FM:
+			case GNOISE:
+			case GROWL:
+			case HOLLOW:
+			case HOOVER:
+			case NOISE:
+			case PLUCK:
+			case PNOISE:
+			case PROPHET:
+			case PULSE:
+			case SAW:
+			case SINE:
+			case SQUARE:
+			case SUBPULSE:
+			case SUPERSAW:
+			case TB303:
+			case TRI:
+			case ZAWA:
 				enterOuterAlt(_localctx, 2);
 				{
 				}
@@ -319,6 +359,34 @@ public class CFGParser extends Parser {
 			case PAUSE:
 			case PIANO:
 			case DRUM:
+			case BEEP:
+			case BLADE:
+			case BNOICE:
+			case CHIPBASE:
+			case CHIPLEAD:
+			case CHIPNOISE:
+			case CNOISE:
+			case DPULSE:
+			case DSAW:
+			case DTRI:
+			case FM:
+			case GNOISE:
+			case GROWL:
+			case HOLLOW:
+			case HOOVER:
+			case NOISE:
+			case PLUCK:
+			case PNOISE:
+			case PROPHET:
+			case PULSE:
+			case SAW:
+			case SINE:
+			case SQUARE:
+			case SUBPULSE:
+			case SUPERSAW:
+			case TB303:
+			case TRI:
+			case ZAWA:
 				enterOuterAlt(_localctx, 3);
 				{
 				}
@@ -381,6 +449,34 @@ public class CFGParser extends Parser {
 			switch (_input.LA(1)) {
 			case PIANO:
 			case DRUM:
+			case BEEP:
+			case BLADE:
+			case BNOICE:
+			case CHIPBASE:
+			case CHIPLEAD:
+			case CHIPNOISE:
+			case CNOISE:
+			case DPULSE:
+			case DSAW:
+			case DTRI:
+			case FM:
+			case GNOISE:
+			case GROWL:
+			case HOLLOW:
+			case HOOVER:
+			case NOISE:
+			case PLUCK:
+			case PNOISE:
+			case PROPHET:
+			case PULSE:
+			case SAW:
+			case SINE:
+			case SQUARE:
+			case SUBPULSE:
+			case SUPERSAW:
+			case TB303:
+			case TRI:
+			case ZAWA:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(65);
@@ -471,6 +567,34 @@ public class CFGParser extends Parser {
 			case EOF:
 			case PIANO:
 			case DRUM:
+			case BEEP:
+			case BLADE:
+			case BNOICE:
+			case CHIPBASE:
+			case CHIPLEAD:
+			case CHIPNOISE:
+			case CNOISE:
+			case DPULSE:
+			case DSAW:
+			case DTRI:
+			case FM:
+			case GNOISE:
+			case GROWL:
+			case HOLLOW:
+			case HOOVER:
+			case NOISE:
+			case PLUCK:
+			case PNOISE:
+			case PROPHET:
+			case PULSE:
+			case SAW:
+			case SINE:
+			case SQUARE:
+			case SUBPULSE:
+			case SUPERSAW:
+			case TB303:
+			case TRI:
+			case ZAWA:
 				enterOuterAlt(_localctx, 2);
 				{
 				}
@@ -1427,6 +1551,34 @@ public class CFGParser extends Parser {
 	public static class InstContext extends ParserRuleContext {
 		public TerminalNode PIANO() { return getToken(CFGParser.PIANO, 0); }
 		public TerminalNode DRUM() { return getToken(CFGParser.DRUM, 0); }
+		public TerminalNode BEEP() { return getToken(CFGParser.BEEP, 0); }
+		public TerminalNode BLADE() { return getToken(CFGParser.BLADE, 0); }
+		public TerminalNode BNOICE() { return getToken(CFGParser.BNOICE, 0); }
+		public TerminalNode CHIPBASE() { return getToken(CFGParser.CHIPBASE, 0); }
+		public TerminalNode CHIPLEAD() { return getToken(CFGParser.CHIPLEAD, 0); }
+		public TerminalNode CHIPNOISE() { return getToken(CFGParser.CHIPNOISE, 0); }
+		public TerminalNode CNOISE() { return getToken(CFGParser.CNOISE, 0); }
+		public TerminalNode DPULSE() { return getToken(CFGParser.DPULSE, 0); }
+		public TerminalNode DSAW() { return getToken(CFGParser.DSAW, 0); }
+		public TerminalNode DTRI() { return getToken(CFGParser.DTRI, 0); }
+		public TerminalNode FM() { return getToken(CFGParser.FM, 0); }
+		public TerminalNode GNOISE() { return getToken(CFGParser.GNOISE, 0); }
+		public TerminalNode GROWL() { return getToken(CFGParser.GROWL, 0); }
+		public TerminalNode HOLLOW() { return getToken(CFGParser.HOLLOW, 0); }
+		public TerminalNode HOOVER() { return getToken(CFGParser.HOOVER, 0); }
+		public TerminalNode NOISE() { return getToken(CFGParser.NOISE, 0); }
+		public TerminalNode PLUCK() { return getToken(CFGParser.PLUCK, 0); }
+		public TerminalNode PNOISE() { return getToken(CFGParser.PNOISE, 0); }
+		public TerminalNode PROPHET() { return getToken(CFGParser.PROPHET, 0); }
+		public TerminalNode PULSE() { return getToken(CFGParser.PULSE, 0); }
+		public TerminalNode SAW() { return getToken(CFGParser.SAW, 0); }
+		public TerminalNode SINE() { return getToken(CFGParser.SINE, 0); }
+		public TerminalNode SQUARE() { return getToken(CFGParser.SQUARE, 0); }
+		public TerminalNode SUBPULSE() { return getToken(CFGParser.SUBPULSE, 0); }
+		public TerminalNode SUPERSAW() { return getToken(CFGParser.SUPERSAW, 0); }
+		public TerminalNode TB303() { return getToken(CFGParser.TB303, 0); }
+		public TerminalNode TRI() { return getToken(CFGParser.TRI, 0); }
+		public TerminalNode ZAWA() { return getToken(CFGParser.ZAWA, 0); }
 		public InstContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1455,7 +1607,7 @@ public class CFGParser extends Parser {
 			{
 			setState(224);
 			_la = _input.LA(1);
-			if ( !(_la==PIANO || _la==DRUM) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << PIANO) | (1L << DRUM) | (1L << BEEP) | (1L << BLADE) | (1L << BNOICE) | (1L << CHIPBASE) | (1L << CHIPLEAD) | (1L << CHIPNOISE) | (1L << CNOISE) | (1L << DPULSE) | (1L << DSAW) | (1L << DTRI) | (1L << FM) | (1L << GNOISE) | (1L << GROWL) | (1L << HOLLOW) | (1L << HOOVER) | (1L << NOISE) | (1L << PLUCK) | (1L << PNOISE) | (1L << PROPHET) | (1L << PULSE) | (1L << SAW) | (1L << SINE) | (1L << SQUARE) | (1L << SUBPULSE) | (1L << SUPERSAW) | (1L << TB303) | (1L << TRI) | (1L << ZAWA))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -1562,7 +1714,7 @@ public class CFGParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3!\u00e7\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3=\u00e7\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\3\2\3\2\3\2\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\61\n\3\3\4\3\4\3"+
@@ -1578,63 +1730,61 @@ public class CFGParser extends Parser {
 		"\f\u00c3\13\f\3\r\3\r\3\r\3\r\3\r\3\r\5\r\u00cb\n\r\3\16\3\16\3\16\3\16"+
 		"\3\16\3\16\3\16\3\16\5\16\u00d5\n\16\3\16\3\16\3\16\7\16\u00da\n\16\f"+
 		"\16\16\16\u00dd\13\16\3\17\3\17\3\20\3\20\3\21\3\21\3\22\3\22\3\22\2\5"+
-		"\24\26\32\23\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"\2\5\3\2\31\32\3"+
-		"\2\20\21\3\2\n\13\2\u00ee\2$\3\2\2\2\4\60\3\2\2\2\6A\3\2\2\2\bK\3\2\2"+
-		"\2\nS\3\2\2\2\fZ\3\2\2\2\16\u0096\3\2\2\2\20\u009e\3\2\2\2\22\u00ac\3"+
-		"\2\2\2\24\u00ae\3\2\2\2\26\u00b9\3\2\2\2\30\u00ca\3\2\2\2\32\u00d4\3\2"+
-		"\2\2\34\u00de\3\2\2\2\36\u00e0\3\2\2\2 \u00e2\3\2\2\2\"\u00e4\3\2\2\2"+
-		"$%\5\4\3\2%&\5\6\4\2&\'\5\n\6\2\'(\5\b\5\2(\3\3\2\2\2)*\7\4\2\2*+\7\22"+
-		"\2\2+,\7\36\2\2,-\7\23\2\2-.\7\27\2\2.\61\5\4\3\2/\61\3\2\2\2\60)\3\2"+
-		"\2\2\60/\3\2\2\2\61\5\3\2\2\2\62\63\7\5\2\2\63\64\7\37\2\2\64\65\7\26"+
-		"\2\2\65\66\5\24\13\2\66\67\7\27\2\2\678\5\6\4\28B\3\2\2\29:\7\6\2\2:;"+
-		"\7\37\2\2;<\7\26\2\2<=\5\32\16\2=>\7\27\2\2>?\5\6\4\2?B\3\2\2\2@B\3\2"+
-		"\2\2A\62\3\2\2\2A9\3\2\2\2A@\3\2\2\2B\7\3\2\2\2CD\5 \21\2DE\5\34\17\2"+
-		"EF\7\24\2\2FG\5\f\7\2GH\7\25\2\2HI\5\b\5\2IL\3\2\2\2JL\3\2\2\2KC\3\2\2"+
-		"\2KJ\3\2\2\2L\t\3\2\2\2MN\5\"\22\2NO\5\34\17\2OP\7\27\2\2PQ\5\n\6\2QT"+
-		"\3\2\2\2RT\3\2\2\2SM\3\2\2\2SR\3\2\2\2T\13\3\2\2\2UV\5\16\b\2VW\7\27\2"+
-		"\2WX\5\f\7\2X[\3\2\2\2Y[\5\16\b\2ZU\3\2\2\2ZY\3\2\2\2[\r\3\2\2\2\\]\5"+
-		"\"\22\2]^\5\34\17\2^\u0097\3\2\2\2_`\7\7\2\2`a\7\22\2\2ab\7\37\2\2b\u0097"+
-		"\7\23\2\2cd\7\37\2\2de\7\26\2\2e\u0097\5\24\13\2fg\7\b\2\2gh\7\22\2\2"+
-		"hi\5\24\13\2ij\7\30\2\2jk\5\24\13\2kl\7\30\2\2lm\5\24\13\2mn\7\30\2\2"+
-		"no\5\24\13\2op\7\23\2\2p\u0097\3\2\2\2qr\7\t\2\2rs\7\22\2\2st\7\36\2\2"+
-		"tu\7\30\2\2uv\7\36\2\2v\u0097\7\23\2\2wx\7\f\2\2xy\7\22\2\2yz\5\36\20"+
-		"\2z{\7\30\2\2{|\5\24\13\2|}\7\23\2\2}\u0097\3\2\2\2~\177\7\r\2\2\177\u0080"+
-		"\7\22\2\2\u0080\u0081\5\36\20\2\u0081\u0082\7\30\2\2\u0082\u0083\7\37"+
-		"\2\2\u0083\u0084\7\23\2\2\u0084\u0085\7\3\2\2\u0085\u0086\5\16\b\2\u0086"+
-		"\u0097\3\2\2\2\u0087\u0088\7\16\2\2\u0088\u0089\7\22\2\2\u0089\u008a\5"+
-		"\20\t\2\u008a\u008b\7\23\2\2\u008b\u008c\7\24\2\2\u008c\u008d\5\f\7\2"+
-		"\u008d\u0093\7\25\2\2\u008e\u008f\7\17\2\2\u008f\u0090\7\24\2\2\u0090"+
-		"\u0091\5\f\7\2\u0091\u0092\7\25\2\2\u0092\u0094\3\2\2\2\u0093\u008e\3"+
-		"\2\2\2\u0093\u0094\3\2\2\2\u0094\u0097\3\2\2\2\u0095\u0097\3\2\2\2\u0096"+
-		"\\\3\2\2\2\u0096_\3\2\2\2\u0096c\3\2\2\2\u0096f\3\2\2\2\u0096q\3\2\2\2"+
-		"\u0096w\3\2\2\2\u0096~\3\2\2\2\u0096\u0087\3\2\2\2\u0096\u0095\3\2\2\2"+
-		"\u0097\17\3\2\2\2\u0098\u0099\7\34\2\2\u0099\u009a\7\22\2\2\u009a\u009b"+
-		"\5\22\n\2\u009b\u009c\7\23\2\2\u009c\u009f\3\2\2\2\u009d\u009f\5\22\n"+
-		"\2\u009e\u0098\3\2\2\2\u009e\u009d\3\2\2\2\u009f\21\3\2\2\2\u00a0\u00a1"+
-		"\7\22\2\2\u00a1\u00a2\5\22\n\2\u00a2\u00a3\7\23\2\2\u00a3\u00a4\7\35\2"+
-		"\2\u00a4\u00a5\7\22\2\2\u00a5\u00a6\5\22\n\2\u00a6\u00a7\7\23\2\2\u00a7"+
-		"\u00ad\3\2\2\2\u00a8\u00a9\5\24\13\2\u00a9\u00aa\7\35\2\2\u00aa\u00ab"+
-		"\5\24\13\2\u00ab\u00ad\3\2\2\2\u00ac\u00a0\3\2\2\2\u00ac\u00a8\3\2\2\2"+
-		"\u00ad\23\3\2\2\2\u00ae\u00af\b\13\1\2\u00af\u00b0\5\26\f\2\u00b0\u00b6"+
-		"\3\2\2\2\u00b1\u00b2\f\3\2\2\u00b2\u00b3\t\2\2\2\u00b3\u00b5\5\24\13\4"+
-		"\u00b4\u00b1\3\2\2\2\u00b5\u00b8\3\2\2\2\u00b6\u00b4\3\2\2\2\u00b6\u00b7"+
-		"\3\2\2\2\u00b7\25\3\2\2\2\u00b8\u00b6\3\2\2\2\u00b9\u00ba\b\f\1\2\u00ba"+
-		"\u00bb\5\30\r\2\u00bb\u00c1\3\2\2\2\u00bc\u00bd\f\3\2\2\u00bd\u00be\7"+
-		"\33\2\2\u00be\u00c0\5\26\f\4\u00bf\u00bc\3\2\2\2\u00c0\u00c3\3\2\2\2\u00c1"+
-		"\u00bf\3\2\2\2\u00c1\u00c2\3\2\2\2\u00c2\27\3\2\2\2\u00c3\u00c1\3\2\2"+
-		"\2\u00c4\u00cb\7\36\2\2\u00c5\u00cb\7\37\2\2\u00c6\u00c7\7\22\2\2\u00c7"+
-		"\u00c8\5\24\13\2\u00c8\u00c9\7\23\2\2\u00c9\u00cb\3\2\2\2\u00ca\u00c4"+
-		"\3\2\2\2\u00ca\u00c5\3\2\2\2\u00ca\u00c6\3\2\2\2\u00cb\31\3\2\2\2\u00cc"+
-		"\u00cd\b\16\1\2\u00cd\u00d5\7 \2\2\u00ce\u00cf\7\22\2\2\u00cf\u00d0\5"+
-		"\32\16\2\u00d0\u00d1\7\23\2\2\u00d1\u00d5\3\2\2\2\u00d2\u00d5\7\36\2\2"+
-		"\u00d3\u00d5\3\2\2\2\u00d4\u00cc\3\2\2\2\u00d4\u00ce\3\2\2\2\u00d4\u00d2"+
-		"\3\2\2\2\u00d4\u00d3\3\2\2\2\u00d5\u00db\3\2\2\2\u00d6\u00d7\f\7\2\2\u00d7"+
-		"\u00d8\7\30\2\2\u00d8\u00da\5\32\16\b\u00d9\u00d6\3\2\2\2\u00da\u00dd"+
-		"\3\2\2\2\u00db\u00d9\3\2\2\2\u00db\u00dc\3\2\2\2\u00dc\33\3\2\2\2\u00dd"+
-		"\u00db\3\2\2\2\u00de\u00df\7\37\2\2\u00df\35\3\2\2\2\u00e0\u00e1\7\37"+
-		"\2\2\u00e1\37\3\2\2\2\u00e2\u00e3\t\3\2\2\u00e3!\3\2\2\2\u00e4\u00e5\t"+
-		"\4\2\2\u00e5#\3\2\2\2\20\60AKSZ\u0093\u0096\u009e\u00ac\u00b6\u00c1\u00ca"+
-		"\u00d4\u00db";
+		"\24\26\32\23\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"\2\5\3\2\65\66\3"+
+		"\2\20-\3\2\n\13\2\u00ee\2$\3\2\2\2\4\60\3\2\2\2\6A\3\2\2\2\bK\3\2\2\2"+
+		"\nS\3\2\2\2\fZ\3\2\2\2\16\u0096\3\2\2\2\20\u009e\3\2\2\2\22\u00ac\3\2"+
+		"\2\2\24\u00ae\3\2\2\2\26\u00b9\3\2\2\2\30\u00ca\3\2\2\2\32\u00d4\3\2\2"+
+		"\2\34\u00de\3\2\2\2\36\u00e0\3\2\2\2 \u00e2\3\2\2\2\"\u00e4\3\2\2\2$%"+
+		"\5\4\3\2%&\5\6\4\2&\'\5\n\6\2\'(\5\b\5\2(\3\3\2\2\2)*\7\4\2\2*+\7.\2\2"+
+		"+,\7:\2\2,-\7/\2\2-.\7\63\2\2.\61\5\4\3\2/\61\3\2\2\2\60)\3\2\2\2\60/"+
+		"\3\2\2\2\61\5\3\2\2\2\62\63\7\5\2\2\63\64\7;\2\2\64\65\7\62\2\2\65\66"+
+		"\5\24\13\2\66\67\7\63\2\2\678\5\6\4\28B\3\2\2\29:\7\6\2\2:;\7;\2\2;<\7"+
+		"\62\2\2<=\5\32\16\2=>\7\63\2\2>?\5\6\4\2?B\3\2\2\2@B\3\2\2\2A\62\3\2\2"+
+		"\2A9\3\2\2\2A@\3\2\2\2B\7\3\2\2\2CD\5 \21\2DE\5\34\17\2EF\7\60\2\2FG\5"+
+		"\f\7\2GH\7\61\2\2HI\5\b\5\2IL\3\2\2\2JL\3\2\2\2KC\3\2\2\2KJ\3\2\2\2L\t"+
+		"\3\2\2\2MN\5\"\22\2NO\5\34\17\2OP\7\63\2\2PQ\5\n\6\2QT\3\2\2\2RT\3\2\2"+
+		"\2SM\3\2\2\2SR\3\2\2\2T\13\3\2\2\2UV\5\16\b\2VW\7\63\2\2WX\5\f\7\2X[\3"+
+		"\2\2\2Y[\5\16\b\2ZU\3\2\2\2ZY\3\2\2\2[\r\3\2\2\2\\]\5\"\22\2]^\5\34\17"+
+		"\2^\u0097\3\2\2\2_`\7\7\2\2`a\7.\2\2ab\7;\2\2b\u0097\7/\2\2cd\7;\2\2d"+
+		"e\7\62\2\2e\u0097\5\24\13\2fg\7\b\2\2gh\7.\2\2hi\5\24\13\2ij\7\64\2\2"+
+		"jk\5\24\13\2kl\7\64\2\2lm\5\24\13\2mn\7\64\2\2no\5\24\13\2op\7/\2\2p\u0097"+
+		"\3\2\2\2qr\7\t\2\2rs\7.\2\2st\7:\2\2tu\7\64\2\2uv\7:\2\2v\u0097\7/\2\2"+
+		"wx\7\f\2\2xy\7.\2\2yz\5\36\20\2z{\7\64\2\2{|\5\24\13\2|}\7/\2\2}\u0097"+
+		"\3\2\2\2~\177\7\r\2\2\177\u0080\7.\2\2\u0080\u0081\5\36\20\2\u0081\u0082"+
+		"\7\64\2\2\u0082\u0083\7;\2\2\u0083\u0084\7/\2\2\u0084\u0085\7\3\2\2\u0085"+
+		"\u0086\5\16\b\2\u0086\u0097\3\2\2\2\u0087\u0088\7\16\2\2\u0088\u0089\7"+
+		".\2\2\u0089\u008a\5\20\t\2\u008a\u008b\7/\2\2\u008b\u008c\7\60\2\2\u008c"+
+		"\u008d\5\f\7\2\u008d\u0093\7\61\2\2\u008e\u008f\7\17\2\2\u008f\u0090\7"+
+		"\60\2\2\u0090\u0091\5\f\7\2\u0091\u0092\7\61\2\2\u0092\u0094\3\2\2\2\u0093"+
+		"\u008e\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u0097\3\2\2\2\u0095\u0097\3\2"+
+		"\2\2\u0096\\\3\2\2\2\u0096_\3\2\2\2\u0096c\3\2\2\2\u0096f\3\2\2\2\u0096"+
+		"q\3\2\2\2\u0096w\3\2\2\2\u0096~\3\2\2\2\u0096\u0087\3\2\2\2\u0096\u0095"+
+		"\3\2\2\2\u0097\17\3\2\2\2\u0098\u0099\78\2\2\u0099\u009a\7.\2\2\u009a"+
+		"\u009b\5\22\n\2\u009b\u009c\7/\2\2\u009c\u009f\3\2\2\2\u009d\u009f\5\22"+
+		"\n\2\u009e\u0098\3\2\2\2\u009e\u009d\3\2\2\2\u009f\21\3\2\2\2\u00a0\u00a1"+
+		"\7.\2\2\u00a1\u00a2\5\22\n\2\u00a2\u00a3\7/\2\2\u00a3\u00a4\79\2\2\u00a4"+
+		"\u00a5\7.\2\2\u00a5\u00a6\5\22\n\2\u00a6\u00a7\7/\2\2\u00a7\u00ad\3\2"+
+		"\2\2\u00a8\u00a9\5\24\13\2\u00a9\u00aa\79\2\2\u00aa\u00ab\5\24\13\2\u00ab"+
+		"\u00ad\3\2\2\2\u00ac\u00a0\3\2\2\2\u00ac\u00a8\3\2\2\2\u00ad\23\3\2\2"+
+		"\2\u00ae\u00af\b\13\1\2\u00af\u00b0\5\26\f\2\u00b0\u00b6\3\2\2\2\u00b1"+
+		"\u00b2\f\3\2\2\u00b2\u00b3\t\2\2\2\u00b3\u00b5\5\24\13\4\u00b4\u00b1\3"+
+		"\2\2\2\u00b5\u00b8\3\2\2\2\u00b6\u00b4\3\2\2\2\u00b6\u00b7\3\2\2\2\u00b7"+
+		"\25\3\2\2\2\u00b8\u00b6\3\2\2\2\u00b9\u00ba\b\f\1\2\u00ba\u00bb\5\30\r"+
+		"\2\u00bb\u00c1\3\2\2\2\u00bc\u00bd\f\3\2\2\u00bd\u00be\7\67\2\2\u00be"+
+		"\u00c0\5\26\f\4\u00bf\u00bc\3\2\2\2\u00c0\u00c3\3\2\2\2\u00c1\u00bf\3"+
+		"\2\2\2\u00c1\u00c2\3\2\2\2\u00c2\27\3\2\2\2\u00c3\u00c1\3\2\2\2\u00c4"+
+		"\u00cb\7:\2\2\u00c5\u00cb\7;\2\2\u00c6\u00c7\7.\2\2\u00c7\u00c8\5\24\13"+
+		"\2\u00c8\u00c9\7/\2\2\u00c9\u00cb\3\2\2\2\u00ca\u00c4\3\2\2\2\u00ca\u00c5"+
+		"\3\2\2\2\u00ca\u00c6\3\2\2\2\u00cb\31\3\2\2\2\u00cc\u00cd\b\16\1\2\u00cd"+
+		"\u00d5\7<\2\2\u00ce\u00cf\7.\2\2\u00cf\u00d0\5\32\16\2\u00d0\u00d1\7/"+
+		"\2\2\u00d1\u00d5\3\2\2\2\u00d2\u00d5\7:\2\2\u00d3\u00d5\3\2\2\2\u00d4"+
+		"\u00cc\3\2\2\2\u00d4\u00ce\3\2\2\2\u00d4\u00d2\3\2\2\2\u00d4\u00d3\3\2"+
+		"\2\2\u00d5\u00db\3\2\2\2\u00d6\u00d7\f\7\2\2\u00d7\u00d8\7\64\2\2\u00d8"+
+		"\u00da\5\32\16\b\u00d9\u00d6\3\2\2\2\u00da\u00dd\3\2\2\2\u00db\u00d9\3"+
+		"\2\2\2\u00db\u00dc\3\2\2\2\u00dc\33\3\2\2\2\u00dd\u00db\3\2\2\2\u00de"+
+		"\u00df\7;\2\2\u00df\35\3\2\2\2\u00e0\u00e1\7;\2\2\u00e1\37\3\2\2\2\u00e2"+
+		"\u00e3\t\3\2\2\u00e3!\3\2\2\2\u00e4\u00e5\t\4\2\2\u00e5#\3\2\2\2\20\60"+
+		"AKSZ\u0093\u0096\u009e\u00ac\u00b6\u00c1\u00ca\u00d4\u00db";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
